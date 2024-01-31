@@ -26,8 +26,7 @@ namespace FSM
         {
             base.OperateUpdate();
 
-            if (_player.ThisReadyToSprint)
-                SetPlayerMovement();
+            SetPlayerMovement();
         }
 
         public override void OperateExit()

@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimData ThisAnimData => _animData;
     public StateMachine ThisStateMachine => _stateMachine;
     public float ThisMoveSpeed => _moveSpeed;
-    public bool ThisReadyToSprint => _readyToSprint;
 
     private void Awake()
     {
