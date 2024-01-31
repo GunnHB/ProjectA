@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     // Components
     private Movement _movement;
+    private GroundCheker _groundChecker;
     private PlayerInput _playerInput;
     private Animator _animator;
 
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _movement = GetComponent<Movement>();
+        _groundChecker = GetComponent<GroundCheker>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
 
@@ -67,6 +69,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _stateMachine.DoOperatorUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        _movement.MovementUpdate();
+        _groundChecker.GravityUpdate();
     }
 
     public void SetMovementSpeed(float speed)

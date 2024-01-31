@@ -36,13 +36,8 @@ public class Movement : MonoBehaviour
         _controller = GetComponent<CharacterController>();
     }
 
-    public void FixedUpdate()
-    {
-        StartMove();
-    }
-
     // 실제 캐릭터를 이동시키는 함수
-    private void StartMove()
+    public void MovementUpdate()
     {
         // 이동하지 않는 것으로 판단
         if (_direction == Vector3.zero || _direction.magnitude < .1f)
