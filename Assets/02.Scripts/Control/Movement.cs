@@ -3,16 +3,31 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Sirenix.OdinInspector;
+
 /// <summary>
 /// 캐릭터의 움직임과 관련된 클래스
 /// </summary>
 public class Movement : MonoBehaviour
 {
+    [Title("[Ground check]")]
+    [SerializeField] private Transform _targetTransform;
+    [SerializeField] private Vector3 _boxSize;
+    [SerializeField] private float _maxDistance;
+    [SerializeField] private LayerMask _groundMask;
+
+    [Title("[Debug]")]
+    [SerializeField] private bool _drawGizmo;
+
+    // Components
     private CharacterController _controller;
+
+    // speed
     private float _applySpeed;
 
     // direction
     private Vector3 _direction = Vector3.zero;
+    private Vector3 _gravityVelocity;
 
     // character rotate
     private float _turnSmoothTime = .1f;
@@ -27,6 +42,17 @@ public class Movement : MonoBehaviour
                 return Camera.main.transform.eulerAngles.y;
             else
                 return 0f;
+        }
+    }
+
+    public bool IsGrounded
+    {
+        get
+        {
+            if (_targetTransform == null)
+                return false;
+            else
+                return Physics.BoxCast(_targetTransform.position, _boxSize, -transform.up, transform.rotation, _maxDistance, _groundMask);
         }
     }
     public Vector3 Direction => _direction;
@@ -60,5 +86,21 @@ public class Movement : MonoBehaviour
     public void SetSpeed(float speed)
     {
         _applySpeed = speed;
+    }
+
+    public void GravityUpdate()
+    {
+        _gravityVelocity.y += GameValue.GRAVITY * Time.deltaTime;
+        _controller.Move(_gravityVelocity * Time.deltaTime);
+    }
+
+    // ground check gizmo
+    private void OnDrawGizmos()
+    {
+        if (!_drawGizmo)
+            return;
+
+        Gizmos.color = IsGrounded ? Color.red : Color.blue;
+        Gizmos.DrawCube(_targetTransform.position - transform.up * _maxDistance, _boxSize);
     }
 }

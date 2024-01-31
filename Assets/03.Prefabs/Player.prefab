@@ -39,41 +39,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _boxSize.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _boxSize.y
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _boxSize.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _drawGizmo
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _maxDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _targetTransform
-      value: 
-      objectReference: {fileID: 4572782487760970914}
-    - target: {fileID: 1418494827692744250, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
-      propertyPath: _groundMask.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
     - target: {fileID: 1554431023728034200, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4920827408185796516, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4920827408185796516, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
       propertyPath: m_Radius
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4920827408185796516, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: m_Center.y
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 7458354243113449665, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
       propertyPath: m_Avatar

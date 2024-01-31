@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
 
     // Components
     private Movement _movement;
-    private GroundCheker _groundChecker;
     private PlayerInput _playerInput;
     private Animator _animator;
 
@@ -29,11 +28,16 @@ public class PlayerController : MonoBehaviour
     private PlayerInputAction _action;                  // 전체 입력 처리
     private InputAction _movementInput;                 // 움직임 입력
     private InputAction _sprintInput;                   // 달리기 입력
+    private InputAction _jumpInput;                     // 점프 입력
+    private InputAction _crouchInput;                   // 웅크리기 입력
 
     // about move
     private float _moveSpeed = 4f;
     private Vector3 _moveDirection;
     private bool _readyToSprint = false;                // 스프린트 키 입력 여부
+
+    // about jump
+    private float _jumpForce = 1f;
 
     // Properties
     public Animator ThisAnimator => _animator;
@@ -44,7 +48,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _movement = GetComponent<Movement>();
-        _groundChecker = GetComponent<GroundCheker>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
 
@@ -58,12 +61,16 @@ public class PlayerController : MonoBehaviour
     {
         RegistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
         RegistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+        RegistAction(_jumpInput, StartJumpInput);
+        RegistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
     }
 
     private void OnDisable()
     {
         UnregistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
         UnregistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+        UnregistAction(_jumpInput, StartJumpInput);
+        UnregistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
     }
 
     private void Update()
@@ -74,7 +81,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         _movement.MovementUpdate();
-        _groundChecker.GravityUpdate();
+        _movement.GravityUpdate();
     }
 
     public void SetMovementSpeed(float speed)
@@ -92,12 +99,16 @@ public class PlayerController : MonoBehaviour
         IState idleState = new IdleState(this, StateType.IDLE);
         IState walkState = new WalkState(this, StateType.WALK);
         IState sprintState = new SprintState(this, StateType.SPRINT);
+        IState jumpState = new JumpState(this, StateType.JUMP);
+        IState crouchState = new CrouchState(this, StateType.CROUCH);
         IState deathState = new DeathState(this, StateType.DEATH);
 
         // 상태 등록
         _stateDic.Add(StateType.IDLE, idleState);
         _stateDic.Add(StateType.WALK, walkState);
         _stateDic.Add(StateType.SPRINT, sprintState);
+        _stateDic.Add(StateType.JUMP, jumpState);
+        _stateDic.Add(StateType.CROUCH, crouchState);
         _stateDic.Add(StateType.DEATH, deathState);
 
         // Idle을 첫 상태로 세팅
@@ -159,6 +170,7 @@ public class PlayerController : MonoBehaviour
         if (cancelCallback != null)
             inputAction.canceled -= cancelCallback;
     }
+    #endregion
 
     /// <summary>
     /// 입력 이벤트를 등록하기 위한 메서드
@@ -169,8 +181,11 @@ public class PlayerController : MonoBehaviour
 
         _movementInput = _action.PlayerActionMap.Movement;
         _sprintInput = _action.PlayerActionMap.Sprint;
+        _jumpInput = _action.PlayerActionMap.Jump;
+        _crouchInput = _action.PlayerActionMap.Crouch;
     }
 
+    #region Movement
     private void PerformMovementInput(InputAction.CallbackContext context)
     {
         // 입력 감지
@@ -194,7 +209,9 @@ public class PlayerController : MonoBehaviour
         _stateMachine.SetState(_stateDic[StateType.IDLE]);
         _movement.SetDirection(_moveDirection);
     }
+    #endregion
 
+    #region Sprint
     private void PerformSprintInput(InputAction.CallbackContext context)
     {
         _readyToSprint = true;
@@ -215,6 +232,25 @@ public class PlayerController : MonoBehaviour
             _stateMachine.SetState(_stateDic[StateType.WALK]);
         else
             _stateMachine.SetState(_stateDic[StateType.IDLE]);
+    }
+    #endregion
+
+    #region Jump
+    private void StartJumpInput(InputAction.CallbackContext context)
+    {
+        _stateMachine.SetState(_stateDic[StateType.JUMP]);
+    }
+    #endregion
+
+    #region Crouch
+    private void PerformCrouchInput(InputAction.CallbackContext context)
+    {
+        _stateMachine.SetState(_stateDic[StateType.CROUCH]);
+    }
+
+    private void CancelCrouchInput(InputAction.CallbackContext context)
+    {
+        _stateMachine.SetState(_stateDic[StateType.IDLE]);
     }
     #endregion
 }

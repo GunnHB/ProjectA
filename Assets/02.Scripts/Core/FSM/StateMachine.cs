@@ -10,6 +10,8 @@ namespace FSM
         IDLE,
         WALK,
         SPRINT,
+        JUMP,
+        CROUCH,
         DEATH,
     }
 
