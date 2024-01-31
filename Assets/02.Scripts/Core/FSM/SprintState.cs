@@ -6,7 +6,7 @@ namespace FSM
 {
     public class SprintState : BaseState
     {
-        public SprintState(PlayerController player, StateType stateType) : base(player, stateType)
+        public SprintState(PlayerController player) : base(player)
         {
         }
 
@@ -16,7 +16,7 @@ namespace FSM
 
             _dampTarget = 1.5f;
 
-            if (GetPreviousState(StateType.WALK))
+            if (GetPreviousState(_player.ThisWalkState))
                 _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
             else
                 _currLengthOfVector = 0f;

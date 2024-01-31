@@ -4,17 +4,6 @@ using UnityEngine;
 
 namespace FSM
 {
-    public enum StateType
-    {
-        NONE = 0,
-        IDLE,
-        WALK,
-        SPRINT,
-        JUMP,
-        CROUCH,
-        DEATH,
-    }
-
     /// <summary>
     /// 상태머신을 제어
     /// </summary>

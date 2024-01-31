@@ -11,7 +11,7 @@ namespace FSM
         bool _isStopped = false;
         float _currBlendValue = 0f;
 
-        public IdleState(PlayerController player, StateType stateType) : base(player, stateType)
+        public IdleState(PlayerController player) : base(player)
         {
         }
 
@@ -19,7 +19,7 @@ namespace FSM
         {
             base.OperateEnter();
 
-            if (GetPreviousState(StateType.WALK) || GetPreviousState(StateType.SPRINT))
+            if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisSprintState))
             {
                 _currBlendValue = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
                 _isStopped = true;

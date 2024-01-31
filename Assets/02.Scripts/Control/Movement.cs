@@ -27,7 +27,7 @@ public class Movement : MonoBehaviour
 
     // direction
     private Vector3 _direction = Vector3.zero;
-    private Vector3 _gravityVelocity;
+    [SerializeField] private Vector3 _gravityVelocity;
 
     // character rotate
     private float _turnSmoothTime = .1f;
@@ -91,7 +91,17 @@ public class Movement : MonoBehaviour
     public void GravityUpdate()
     {
         _gravityVelocity.y += GameValue.GRAVITY * Time.deltaTime;
+
+        if (IsGrounded && _gravityVelocity.y < 0f)
+            _gravityVelocity.y = Mathf.Max(_gravityVelocity.y, -2f);
+
         _controller.Move(_gravityVelocity * Time.deltaTime);
+    }
+
+    public void Jump(float force)
+    {
+        if (IsGrounded)
+            _gravityVelocity.y = Mathf.Sqrt(force * -2f * GameValue.GRAVITY);
     }
 
     // ground check gizmo

@@ -7,7 +7,7 @@ namespace FSM
 {
     public class DeathState : BaseState
     {
-        public DeathState(PlayerController player, StateType stateType) : base(player, stateType)
+        public DeathState(PlayerController player) : base(player)
         {
         }
 

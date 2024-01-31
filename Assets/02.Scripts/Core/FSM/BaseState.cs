@@ -10,20 +10,17 @@ namespace FSM
     {
         protected PlayerController _player;
         protected StateMachine _stateMachine;
-        private StateType _stateType;
 
         protected float _currLengthOfVector;
         protected float _smoothVelocity;
         protected float _smoothTime = .15f;
         protected float _dampTarget;
-        // protected float _applySpeed;
 
-        public StateType ThisStateType => _stateType;
+        protected bool _onAir = false;
 
-        public BaseState(PlayerController player, StateType stateType)
+        public BaseState(PlayerController player)
         {
             _player = player;
-            _stateType = stateType;
         }
 
         public virtual void OperateEnter()
@@ -61,9 +58,9 @@ namespace FSM
             _player.SetMovementSpeed(_currLengthOfVector * _player.ThisMoveSpeed);
         }
 
-        protected bool GetPreviousState(StateType type)
+        protected bool GetPreviousState(IState type)
         {
-            return _stateMachine != null && (_stateMachine.PreviousState as BaseState).ThisStateType == type;
+            return _stateMachine != null && _stateMachine.PreviousState == type;
         }
 
         protected void StartAnimation(int animHash)

@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
 {
     // State machine
     private StateMachine _stateMachine;
-    private Dictionary<StateType, IState> _stateDic = new();
 
     // Components
     private Movement _movement;
@@ -31,6 +30,15 @@ public class PlayerController : MonoBehaviour
     private InputAction _jumpInput;                     // 점프 입력
     private InputAction _crouchInput;                   // 웅크리기 입력
 
+    // States
+    private IState _idleState;
+    private IState _walkState;
+    private IState _sprintState;
+    private IState _jumpState;
+    private IState _crouchState;
+    private IState _landingState;
+    private IState _deathState;
+
     // about move
     private float _moveSpeed = 4f;
     private Vector3 _moveDirection;
@@ -44,6 +52,15 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimData ThisAnimData => _animData;
     public StateMachine ThisStateMachine => _stateMachine;
     public float ThisMoveSpeed => _moveSpeed;
+    public bool IsGrounded => _movement.IsGrounded;
+
+    public IState ThisIdleState => _idleState;
+    public IState ThisWalkState => _walkState;
+    public IState ThisSprintState => _sprintState;
+    public IState ThisJumpState => _jumpState;
+    public IState ThisCrouchState => _crouchState;
+    public IState ThisLandingState => _landingState;
+    public IState ThisDeathState => _deathState;
 
     private void Awake()
     {
@@ -89,6 +106,11 @@ public class PlayerController : MonoBehaviour
         _movement.SetSpeed(speed);
     }
 
+    public void DoJump()
+    {
+        _movement.Jump(_jumpForce);
+    }
+
     #region StateMachine
     /// <summary>
     /// 상태 등록
@@ -96,23 +118,16 @@ public class PlayerController : MonoBehaviour
     private void RegistStateDictionary()
     {
         // 상태 생성
-        IState idleState = new IdleState(this, StateType.IDLE);
-        IState walkState = new WalkState(this, StateType.WALK);
-        IState sprintState = new SprintState(this, StateType.SPRINT);
-        IState jumpState = new JumpState(this, StateType.JUMP);
-        IState crouchState = new CrouchState(this, StateType.CROUCH);
-        IState deathState = new DeathState(this, StateType.DEATH);
-
-        // 상태 등록
-        _stateDic.Add(StateType.IDLE, idleState);
-        _stateDic.Add(StateType.WALK, walkState);
-        _stateDic.Add(StateType.SPRINT, sprintState);
-        _stateDic.Add(StateType.JUMP, jumpState);
-        _stateDic.Add(StateType.CROUCH, crouchState);
-        _stateDic.Add(StateType.DEATH, deathState);
+        _idleState = new IdleState(this);
+        _walkState = new WalkState(this);
+        _sprintState = new SprintState(this);
+        _jumpState = new JumpState(this);
+        _crouchState = new CrouchState(this);
+        _landingState = new LandingState(this);
+        _deathState = new DeathState(this);
 
         // Idle을 첫 상태로 세팅
-        _stateMachine = new StateMachine(idleState);
+        _stateMachine = new StateMachine(_idleState);
     }
     #endregion
 
@@ -194,9 +209,9 @@ public class PlayerController : MonoBehaviour
 
         // 상태 세팅
         if (_readyToSprint)
-            _stateMachine.SetState(_stateDic[StateType.SPRINT]);
+            _stateMachine.SetState(_sprintState);
         else
-            _stateMachine.SetState(_stateDic[StateType.WALK]);
+            _stateMachine.SetState(_walkState);
 
         _movement.SetDirection(_moveDirection);
     }
@@ -206,7 +221,7 @@ public class PlayerController : MonoBehaviour
         // 상태 세팅
         _moveDirection = Vector3.zero;
 
-        _stateMachine.SetState(_stateDic[StateType.IDLE]);
+        _stateMachine.SetState(_idleState);
         _movement.SetDirection(_moveDirection);
     }
     #endregion
@@ -218,9 +233,9 @@ public class PlayerController : MonoBehaviour
 
         // 상태 세팅
         if (_moveDirection != Vector3.zero)
-            _stateMachine.SetState(_stateDic[StateType.SPRINT]);
+            _stateMachine.SetState(_sprintState);
         else
-            _stateMachine.SetState(_stateDic[StateType.IDLE]);
+            _stateMachine.SetState(_jumpState);
     }
 
     private void CancelSprintInput(InputAction.CallbackContext context)
@@ -229,28 +244,28 @@ public class PlayerController : MonoBehaviour
 
         // 상태 세팅
         if (_moveDirection != Vector3.zero)
-            _stateMachine.SetState(_stateDic[StateType.WALK]);
+            _stateMachine.SetState(_walkState);
         else
-            _stateMachine.SetState(_stateDic[StateType.IDLE]);
+            _stateMachine.SetState(_idleState);
     }
     #endregion
 
     #region Jump
     private void StartJumpInput(InputAction.CallbackContext context)
     {
-        _stateMachine.SetState(_stateDic[StateType.JUMP]);
+        _stateMachine.SetState(_jumpState);
     }
     #endregion
 
     #region Crouch
     private void PerformCrouchInput(InputAction.CallbackContext context)
     {
-        _stateMachine.SetState(_stateDic[StateType.CROUCH]);
+        _stateMachine.SetState(_crouchState);
     }
 
     private void CancelCrouchInput(InputAction.CallbackContext context)
     {
-        _stateMachine.SetState(_stateDic[StateType.IDLE]);
+        _stateMachine.SetState(_idleState);
     }
     #endregion
 }

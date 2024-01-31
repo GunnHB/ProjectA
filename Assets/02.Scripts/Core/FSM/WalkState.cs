@@ -7,7 +7,7 @@ namespace FSM
 {
     public class WalkState : BaseState
     {
-        public WalkState(PlayerController player, StateType stateType) : base(player, stateType)
+        public WalkState(PlayerController player) : base(player)
         {
         }
 
@@ -15,7 +15,7 @@ namespace FSM
         {
             base.OperateEnter();
 
-            if (GetPreviousState(StateType.SPRINT))
+            if (GetPreviousState(_player.ThisSprintState))
                 _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
             else
                 _currLengthOfVector = 0;
