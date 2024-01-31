@@ -49,5 +49,7 @@ public class GroundCheker : MonoBehaviour
 
         Gizmos.color = IsGrounded ? Color.red : Color.blue;
         Gizmos.DrawCube(_targetTransform.position - transform.up * _maxDistance, _boxSize);
+
+        Debug.Log("테스트 커밋용");
     }
 }
