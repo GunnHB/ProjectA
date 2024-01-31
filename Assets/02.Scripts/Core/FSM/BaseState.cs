@@ -28,7 +28,7 @@ namespace FSM
 
         public virtual void OperateEnter()
         {
-            Debug.Log($"{this} enter");
+            // Debug.Log($"{this} enter");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -36,7 +36,7 @@ namespace FSM
 
         public virtual void OperateExit()
         {
-            Debug.Log($"{this} exit");
+            // Debug.Log($"{this} exit");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -44,7 +44,7 @@ namespace FSM
 
         public virtual void OperateUpdate()
         {
-            Debug.Log($"{this} update");
+            // Debug.Log($"{this} update");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
