@@ -19,7 +19,7 @@ namespace FSM
         {
             base.OperateEnter();
 
-            if (_stateMachine != null && (_stateMachine.PreviousState as BaseState).ThisStateType == StateType.WALK)
+            if (GetPreviousState(StateType.WALK) || GetPreviousState(StateType.SPRINT))
             {
                 _currBlendValue = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
                 _isStopped = true;

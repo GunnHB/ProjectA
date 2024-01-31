@@ -14,19 +14,25 @@ namespace FSM
         {
             base.OperateEnter();
 
-            // StartAnimation(_player.ThisAnimData.AnimParamSprint);
+            _dampTarget = 1.5f;
+
+            if (GetPreviousState(StateType.WALK))
+                _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
+            else
+                _currLengthOfVector = 0f;
         }
 
         public override void OperateUpdate()
         {
             base.OperateUpdate();
+
+            if (_player.ThisReadyToSprint)
+                SetPlayerMovement();
         }
 
         public override void OperateExit()
         {
             base.OperateExit();
-
-            // StopAnimation(_player.ThisAnimData.AnimParamSprint);
         }
     }
 }

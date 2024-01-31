@@ -30,17 +30,16 @@ public class PlayerController : MonoBehaviour
     private InputAction _sprintInput;                   // 달리기 입력
 
     // about move
-    private float _walkSpeed = 4f;
-    private float _sprintSpeed = 7f;
+    private float _moveSpeed = 4f;
+    private Vector3 _moveDirection;
+    private bool _readyToSprint = false;                // 스프린트 키 입력 여부
 
     // Properties
     public Animator ThisAnimator => _animator;
     public PlayerAnimData ThisAnimData => _animData;
     public StateMachine ThisStateMachine => _stateMachine;
-    public Dictionary<StateType, IState> ThisStateDic => _stateDic;
-    public float ThisWalkSpeed => _walkSpeed;
-    public float ThisSprintSpeed => _sprintSpeed;
-    public Vector3 ThisMoveVector { get; private set; }
+    public float ThisMoveSpeed => _moveSpeed;
+    public bool ThisReadyToSprint => _readyToSprint;
 
     private void Awake()
     {
@@ -167,41 +166,48 @@ public class PlayerController : MonoBehaviour
 
     private void PerformMovementInput(InputAction.CallbackContext context)
     {
+        // 입력 감지
         var inputValue = context.ReadValue<Vector2>();
-        ThisMoveVector = new Vector3(inputValue.x, 0f, inputValue.y);
+        _moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
 
-        _stateMachine.SetState(_stateDic[StateType.WALK]);
-        _movement.SetDirection(ThisMoveVector);
+        // 상태 세팅
+        if (_readyToSprint)
+            _stateMachine.SetState(_stateDic[StateType.SPRINT]);
+        else
+            _stateMachine.SetState(_stateDic[StateType.WALK]);
+
+        _movement.SetDirection(_moveDirection);
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
     {
-        ThisMoveVector = Vector3.zero;
+        // 상태 세팅
+        _moveDirection = Vector3.zero;
 
         _stateMachine.SetState(_stateDic[StateType.IDLE]);
-        _movement.SetDirection(ThisMoveVector);
+        _movement.SetDirection(_moveDirection);
     }
 
     private void PerformSprintInput(InputAction.CallbackContext context)
     {
-        // if (_stateMachine.CurrentState == _stateDic[StateType.WALK])
-        // {
-        //     _stateMachine.SetState(_stateDic[StateType.SPRINT]);
-        //     _movement.SetSpeed(_sprintSpeed);
-        // }
-        _stateMachine.SetState(_stateDic[StateType.SPRINT]);
-        _movement.SetSpeed(_sprintSpeed);
+        _readyToSprint = true;
+
+        // 상태 세팅
+        if (_moveDirection != Vector3.zero)
+            _stateMachine.SetState(_stateDic[StateType.SPRINT]);
+        else
+            _stateMachine.SetState(_stateDic[StateType.IDLE]);
     }
 
     private void CancelSprintInput(InputAction.CallbackContext context)
     {
-        if (_movement.Direction == Vector3.zero)
-            _stateMachine.SetState(_stateDic[StateType.IDLE]);
-        else
-        {
+        _readyToSprint = false;
+
+        // 상태 세팅
+        if (_moveDirection != Vector3.zero)
             _stateMachine.SetState(_stateDic[StateType.WALK]);
-            _movement.SetSpeed(_walkSpeed);
-        }
+        else
+            _stateMachine.SetState(_stateDic[StateType.IDLE]);
     }
     #endregion
 }
