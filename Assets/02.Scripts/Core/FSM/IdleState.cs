@@ -21,8 +21,13 @@ namespace FSM
 
             if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisSprintState))
             {
-                _currBlendValue = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
+                _currBlendValue = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
                 _isStopped = true;
+            }
+            else
+            {
+                _currBlendValue = 0f;
+                SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, _currBlendValue);
             }
         }
 
@@ -34,7 +39,7 @@ namespace FSM
             {
                 _currBlendValue = Mathf.SmoothDamp(_currBlendValue, 0, ref _smoothVelocity, _smoothTime);
 
-                SetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed, (float)Math.Round(_currBlendValue, 2));
+                SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, (float)Math.Round(_currBlendValue, 2));
 
                 if (Mathf.Approximately((float)Math.Round(_currBlendValue, 2), 0))
                 {

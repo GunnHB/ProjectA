@@ -15,18 +15,28 @@ public class LandingState : BaseState
     {
         base.OperateEnter();
 
-        Debug.Log("다쓰요");
-        _onAir = false;
-        _stateMachine.SetState(_player.ThisIdleState);
+        StartAnimation(_player.ThisAnimData.AnimParamLanding);
     }
 
     public override void OperateUpdate()
     {
         base.OperateUpdate();
+
+        if (_player.ThisMoveDirection == Vector3.zero)
+            _stateMachine.SetState(_player.ThisIdleState);
+        else
+        {
+            if (_player.ReadyToSprint)
+                _stateMachine.SetState(_player.ThisSprintState);
+            else
+                _stateMachine.SetState(_player.ThisWalkState);
+        }
     }
 
     public override void OperateExit()
     {
         base.OperateExit();
+
+        StopAnimation(_player.ThisAnimData.AnimParamLanding);
     }
 }

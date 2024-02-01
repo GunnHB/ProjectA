@@ -31,17 +31,11 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerAnimatorController
+  m_Name: CharacterAnimatorController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Walk
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Sprint
-    m_Type: 4
+  - m_Name: Jump
+    m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -52,7 +46,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: BlendSpeed
+  - m_Name: Blend_Locomotion
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -137,7 +131,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveSpeed
     m_Mirror: 0
-  m_BlendParameter: BlendSpeed
+  m_BlendParameter: Blend_Locomotion
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1.5
@@ -151,7 +145,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Locomotion
+  m_Name: BlendTree_Locomotion
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

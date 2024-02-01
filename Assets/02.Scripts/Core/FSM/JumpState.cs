@@ -7,6 +7,8 @@ using FSM;
 
 public class JumpState : BaseState
 {
+    bool _isjumped = false;
+
     public JumpState(PlayerController player) : base(player)
     {
     }
@@ -15,7 +17,8 @@ public class JumpState : BaseState
     {
         base.OperateEnter();
 
-        Debug.Log("점프");
+        StartAnimation(_player.ThisAnimData.AnimParamJump);
+
         _player.DoJump();
     }
 
@@ -24,14 +27,19 @@ public class JumpState : BaseState
         base.OperateUpdate();
 
         if (!_player.IsGrounded)
-            _onAir = true;
+            _isjumped = true;
 
-        if (_onAir && _player.IsGrounded)
+        if (_player.IsPeak)
+            _stateMachine.SetState(_player.ThisFallingState);
+        else if (_isjumped && _player.IsGrounded)
             _stateMachine.SetState(_player.ThisLandingState);
     }
 
     public override void OperateExit()
     {
         base.OperateExit();
+
+        _isjumped = false;
+        StopAnimation(_player.ThisAnimData.AnimParamJump);
     }
 }

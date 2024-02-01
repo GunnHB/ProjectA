@@ -46,5 +46,15 @@ namespace FSM
         {
             _currentState.OperateUpdate();
         }
+
+        public bool IsPreviousState(IState state)
+        {
+            return _previousState != null && _previousState == state;
+        }
+
+        public bool IsCurrentState(IState state)
+        {
+            return _currentState != null && _currentState == state;
+        }
     }
 }

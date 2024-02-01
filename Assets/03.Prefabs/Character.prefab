@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetTransform: {fileID: 3567864348658858371}
-  _boxSize: {x: 0.5, y: 0.05, z: 0.5}
+  _boxSize: {x: 0.25, y: 0.05, z: 0.25}
   _maxDistance: 1
   _groundMask:
     serializedVersion: 2

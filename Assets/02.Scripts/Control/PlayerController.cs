@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private IState _walkState;
     private IState _sprintState;
     private IState _jumpState;
+    private IState _fallingState;
     private IState _crouchState;
     private IState _landingState;
     private IState _deathState;
@@ -51,16 +52,32 @@ public class PlayerController : MonoBehaviour
     public Animator ThisAnimator => _animator;
     public PlayerAnimData ThisAnimData => _animData;
     public StateMachine ThisStateMachine => _stateMachine;
+    public Vector3 ThisMoveDirection => _moveDirection;
     public float ThisMoveSpeed => _moveSpeed;
-    public bool IsGrounded => _movement.IsGrounded;
 
     public IState ThisIdleState => _idleState;
     public IState ThisWalkState => _walkState;
     public IState ThisSprintState => _sprintState;
     public IState ThisJumpState => _jumpState;
+    public IState ThisFallingState => _fallingState;
     public IState ThisCrouchState => _crouchState;
     public IState ThisLandingState => _landingState;
     public IState ThisDeathState => _deathState;
+
+    public bool IsGrounded => _movement.IsGrounded;
+    public bool IsPeak => _movement.IsPeak;
+    public bool ReadyToSprint => _readyToSprint;
+
+    // 공중에 있는 상태
+    public bool IsOnAir
+    {
+        get
+        {
+            return _stateMachine.IsCurrentState(_jumpState) ||
+                _stateMachine.IsCurrentState(_fallingState) ||
+                _stateMachine.IsCurrentState(_landingState);
+        }
+    }
 
     private void Awake()
     {
@@ -122,6 +139,7 @@ public class PlayerController : MonoBehaviour
         _walkState = new WalkState(this);
         _sprintState = new SprintState(this);
         _jumpState = new JumpState(this);
+        _fallingState = new FallingState(this);
         _crouchState = new CrouchState(this);
         _landingState = new LandingState(this);
         _deathState = new DeathState(this);
@@ -207,22 +225,27 @@ public class PlayerController : MonoBehaviour
         var inputValue = context.ReadValue<Vector2>();
         _moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
 
+        _movement.SetDirection(_moveDirection);
+
+        if (IsOnAir)
+            return;
+
         // 상태 세팅
         if (_readyToSprint)
             _stateMachine.SetState(_sprintState);
         else
             _stateMachine.SetState(_walkState);
-
-        _movement.SetDirection(_moveDirection);
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
     {
         // 상태 세팅
         _moveDirection = Vector3.zero;
-
-        _stateMachine.SetState(_idleState);
         _movement.SetDirection(_moveDirection);
+
+        // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
+        if (!IsOnAir)
+            _stateMachine.SetState(_idleState);
     }
     #endregion
 
@@ -231,22 +254,24 @@ public class PlayerController : MonoBehaviour
     {
         _readyToSprint = true;
 
+        if (IsOnAir)
+            return;
+
         // 상태 세팅
         if (_moveDirection != Vector3.zero)
             _stateMachine.SetState(_sprintState);
-        else
-            _stateMachine.SetState(_jumpState);
     }
 
     private void CancelSprintInput(InputAction.CallbackContext context)
     {
         _readyToSprint = false;
 
+        if (IsOnAir)
+            return;
+
         // 상태 세팅
         if (_moveDirection != Vector3.zero)
             _stateMachine.SetState(_walkState);
-        else
-            _stateMachine.SetState(_idleState);
     }
     #endregion
 

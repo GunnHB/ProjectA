@@ -16,8 +16,8 @@ namespace FSM
 
             _dampTarget = 1.5f;
 
-            if (GetPreviousState(_player.ThisWalkState))
-                _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
+            if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisLandingState))
+                _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
             else
                 _currLengthOfVector = 0f;
         }

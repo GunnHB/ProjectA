@@ -15,8 +15,8 @@ namespace FSM
         {
             base.OperateEnter();
 
-            if (GetPreviousState(_player.ThisSprintState))
-                _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed);
+            if (GetPreviousState(_player.ThisSprintState) || GetPreviousState(_player.ThisLandingState))
+                _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
             else
                 _currLengthOfVector = 0;
 

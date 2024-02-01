@@ -27,11 +27,14 @@ public class Movement : MonoBehaviour
 
     // direction
     private Vector3 _direction = Vector3.zero;
-    [SerializeField] private Vector3 _gravityVelocity;
+    private Vector3 _gravityVelocity;
 
     // character rotate
     private float _turnSmoothTime = .1f;
     private float _turnSmoothVelocity;
+
+    // jump peak
+    private bool _wasPeaked = false;        // 고점 여러 번 체크되는 것 방지
 
     // properties
     private float _camAngle
@@ -55,6 +58,23 @@ public class Movement : MonoBehaviour
                 return Physics.BoxCast(_targetTransform.position, _boxSize, -transform.up, transform.rotation, _maxDistance, _groundMask);
         }
     }
+
+    public bool IsPeak
+    {
+        get
+        {
+            CheckPeak();
+
+            if (_gravityVelocity.sqrMagnitude <= .1f && !_wasPeaked)
+            {
+                _wasPeaked = true;
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+
     public Vector3 Direction => _direction;
 
     private void Awake()
@@ -102,6 +122,12 @@ public class Movement : MonoBehaviour
     {
         if (IsGrounded)
             _gravityVelocity.y = Mathf.Sqrt(force * -2f * GameValue.GRAVITY);
+    }
+
+    private void CheckPeak()
+    {
+        if (IsGrounded)
+            _wasPeaked = false;
     }
 
     // ground check gizmo

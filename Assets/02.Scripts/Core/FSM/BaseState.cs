@@ -16,8 +16,6 @@ namespace FSM
         protected float _smoothTime = .15f;
         protected float _dampTarget;
 
-        protected bool _onAir = false;
-
         public BaseState(PlayerController player)
         {
             _player = player;
@@ -25,7 +23,7 @@ namespace FSM
 
         public virtual void OperateEnter()
         {
-            // Debug.Log($"{this} enter");
+            Debug.Log($"{this} enter");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -33,7 +31,7 @@ namespace FSM
 
         public virtual void OperateExit()
         {
-            // Debug.Log($"{this} exit");
+            Debug.Log($"{this} exit");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -41,7 +39,7 @@ namespace FSM
 
         public virtual void OperateUpdate()
         {
-            // Debug.Log($"{this} update");
+            Debug.Log($"{this} update");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -54,13 +52,13 @@ namespace FSM
         {
             _currLengthOfVector = Mathf.SmoothDamp(_currLengthOfVector, _dampTarget, ref _smoothVelocity, _smoothTime);
 
-            SetFloatParam(_player.ThisAnimData.AnimParamBlendSpeed, _currLengthOfVector);
+            SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, _currLengthOfVector);
             _player.SetMovementSpeed(_currLengthOfVector * _player.ThisMoveSpeed);
         }
 
-        protected bool GetPreviousState(IState type)
+        protected bool GetPreviousState(IState state)
         {
-            return _stateMachine != null && _stateMachine.PreviousState == type;
+            return _stateMachine != null && _stateMachine.IsPreviousState(state);
         }
 
         protected void StartAnimation(int animHash)
