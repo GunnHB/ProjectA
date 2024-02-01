@@ -79,6 +79,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 웅크린 상태
+    public bool IsCrouching => _stateMachine.IsCurrentState(_crouchState);
+
     private void Awake()
     {
         _movement = GetComponent<Movement>();
@@ -227,7 +230,7 @@ public class PlayerController : MonoBehaviour
 
         _movement.SetDirection(_moveDirection);
 
-        if (IsOnAir)
+        if (IsOnAir || IsCrouching)
             return;
 
         // 상태 세팅
@@ -244,7 +247,7 @@ public class PlayerController : MonoBehaviour
         _movement.SetDirection(_moveDirection);
 
         // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
-        if (!IsOnAir)
+        if (!IsOnAir && !IsCrouching)
             _stateMachine.SetState(_idleState);
     }
     #endregion

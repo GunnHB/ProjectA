@@ -26,7 +26,7 @@ namespace FSM
         {
             base.OperateUpdate();
 
-            SetPlayerMovement();
+            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendLocomotion);
         }
 
         public override void OperateExit()

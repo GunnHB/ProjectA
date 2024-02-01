@@ -48,11 +48,11 @@ namespace FSM
         /// <summary>
         /// 캐릭터의 애니와 속도를 세팅
         /// </summary>
-        protected void SetPlayerMovement()
+        protected void SetPlayerMovement(int animHash)
         {
             _currLengthOfVector = Mathf.SmoothDamp(_currLengthOfVector, _dampTarget, ref _smoothVelocity, _smoothTime);
 
-            SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, _currLengthOfVector);
+            SetFloatParam(animHash, _currLengthOfVector);
             _player.SetMovementSpeed(_currLengthOfVector * _player.ThisMoveSpeed);
         }
 
