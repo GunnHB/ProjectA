@@ -11,22 +11,30 @@ public partial class PlayerController : MonoBehaviour
 {
     // States
     private IState _idleState;
+
     private IState _walkState;
     private IState _sprintState;
+
     private IState _jumpState;
     private IState _fallingState;
-    private IState _crouchState;
     private IState _landingState;
+
+    private IState _crouchState;
+
     private IState _deathState;
 
     // Properties
     public IState ThisIdleState => _idleState;
+
     public IState ThisWalkState => _walkState;
     public IState ThisSprintState => _sprintState;
+
     public IState ThisJumpState => _jumpState;
     public IState ThisFallingState => _fallingState;
-    public IState ThisCrouchState => _crouchState;
     public IState ThisLandingState => _landingState;
+
+    public IState ThisCrouchState => _crouchState;
+
     public IState ThisDeathState => _deathState;
 
     #region StateMachine
@@ -53,62 +61,6 @@ public partial class PlayerController : MonoBehaviour
 
         // Idle을 첫 상태로 세팅
         _stateMachine = new StateMachine(_idleState);
-    }
-    #endregion
-
-    #region InputSystem
-    /// <summary>
-    /// 입력 등록
-    /// </summary>
-    /// <param name="inputAction"></param>
-    /// <param name="startCallback"></param>
-    /// <param name="performCallback"></param>
-    /// <param name="cancelCallback"></param>
-    private void RegistAction(InputAction inputAction,
-                              Action<InputAction.CallbackContext> startCallback = null,
-                              Action<InputAction.CallbackContext> performCallback = null,
-                              Action<InputAction.CallbackContext> cancelCallback = null)
-    {
-        if (inputAction == null)
-        {
-            Debug.LogError("no input action! please check this");
-            return;
-        }
-
-        inputAction.Enable();
-
-        if (startCallback != null)
-            inputAction.started += startCallback;
-
-        if (performCallback != null)
-            inputAction.performed += performCallback;
-
-        if (cancelCallback != null)
-            inputAction.canceled += cancelCallback;
-    }
-
-    /// <summary>
-    /// 등록된 입력 해지
-    /// </summary>
-    /// <param name="inputAction"></param>
-    /// <param name="startCallback"></param>
-    /// <param name="performCallback"></param>
-    /// <param name="cancelCallback"></param>
-    private void UnregistAction(InputAction inputAction,
-                              Action<InputAction.CallbackContext> startCallback = null,
-                              Action<InputAction.CallbackContext> performCallback = null,
-                              Action<InputAction.CallbackContext> cancelCallback = null)
-    {
-        inputAction.Disable();
-
-        if (startCallback != null)
-            inputAction.started -= startCallback;
-
-        if (performCallback != null)
-            inputAction.performed -= performCallback;
-
-        if (cancelCallback != null)
-            inputAction.canceled -= cancelCallback;
     }
     #endregion
 }

@@ -11,28 +11,44 @@ public partial class PlayerController : MonoBehaviour
 {
     // Input Systems
     private PlayerInputAction _action;                  // 전체 입력 처리
+
     private InputAction _movementInput;                 // 움직임 입력
     private InputAction _sprintInput;                   // 달리기 입력
+
     private InputAction _jumpInput;                     // 점프 입력
+
     private InputAction _crouchInput;                   // 웅크리기 입력
     private InputAction _drawWeaponInput;               // 무기 듦
+
+    private InputAction _zoomInInput;                   // 카메라 줌 인
+    private InputAction _zoomOutInput;                  // 카메라 줌 아웃
 
     private void OnEnable()
     {
         RegistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
         RegistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+
         RegistAction(_jumpInput, StartJumpInput);
+
         RegistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
         RegistAction(_drawWeaponInput, StartDrawWeaponInput);
+
+        RegistAction(_zoomInInput, null, PerformZoomInInput, null);
+        RegistAction(_zoomOutInput, null, PerformZoomOutInput, null);
     }
 
     private void OnDisable()
     {
         UnregistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
         UnregistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+
         UnregistAction(_jumpInput, StartJumpInput);
+
         UnregistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
         UnregistAction(_drawWeaponInput, StartDrawWeaponInput);
+
+        UnregistAction(_zoomInInput, null, PerformZoomInInput, null);
+        UnregistAction(_zoomOutInput, null, PerformZoomOutInput, null);
     }
 
     /// <summary>
@@ -44,10 +60,71 @@ public partial class PlayerController : MonoBehaviour
 
         _movementInput = _action.PlayerActionMap.Movement;
         _sprintInput = _action.PlayerActionMap.Sprint;
+
         _jumpInput = _action.PlayerActionMap.Jump;
         _crouchInput = _action.PlayerActionMap.Crouch;
+
         _drawWeaponInput = _action.PlayerActionMap.DrawWeapon;
+
+        _zoomInInput = _action.PlayerActionMap.ZoomIn;
+        _zoomOutInput = _action.PlayerActionMap.ZoomOut;
     }
+
+    #region InputSystem
+    /// <summary>
+    /// 입력 등록
+    /// </summary>
+    /// <param name="inputAction"></param>
+    /// <param name="startCallback"></param>
+    /// <param name="performCallback"></param>
+    /// <param name="cancelCallback"></param>
+    private void RegistAction(InputAction inputAction,
+                              Action<InputAction.CallbackContext> startCallback = null,
+                              Action<InputAction.CallbackContext> performCallback = null,
+                              Action<InputAction.CallbackContext> cancelCallback = null)
+    {
+        if (inputAction == null)
+        {
+            Debug.LogError("no input action! please check this");
+            return;
+        }
+
+        inputAction.Enable();
+
+        if (startCallback != null)
+            inputAction.started += startCallback;
+
+        if (performCallback != null)
+            inputAction.performed += performCallback;
+
+        if (cancelCallback != null)
+            inputAction.canceled += cancelCallback;
+    }
+
+    /// <summary>
+    /// 등록된 입력 해지
+    /// </summary>
+    /// <param name="inputAction"></param>
+    /// <param name="startCallback"></param>
+    /// <param name="performCallback"></param>
+    /// <param name="cancelCallback"></param>
+    private void UnregistAction(InputAction inputAction,
+                              Action<InputAction.CallbackContext> startCallback = null,
+                              Action<InputAction.CallbackContext> performCallback = null,
+                              Action<InputAction.CallbackContext> cancelCallback = null)
+    {
+        inputAction.Disable();
+
+        if (startCallback != null)
+            inputAction.started -= startCallback;
+
+        if (performCallback != null)
+            inputAction.performed -= performCallback;
+
+        if (cancelCallback != null)
+            inputAction.canceled -= cancelCallback;
+    }
+    #endregion
 
     #region Movement
     private void PerformMovementInput(InputAction.CallbackContext context)
@@ -143,6 +220,22 @@ public partial class PlayerController : MonoBehaviour
     private void StartDrawWeaponInput(InputAction.CallbackContext context)
     {
         Debug.Log("Draw weapon");
+    }
+    #endregion
+
+    #region Zoom
+    private void PerformZoomInInput(InputAction.CallbackContext context)
+    {
+        var zoomValue = context.ReadValue<float>();
+
+        Debug.Log("IN " + zoomValue);
+    }
+
+    private void PerformZoomOutInput(InputAction.CallbackContext context)
+    {
+        var zoomValue = context.ReadValue<float>();
+
+        Debug.Log("OUT " + zoomValue);
     }
     #endregion
 }
