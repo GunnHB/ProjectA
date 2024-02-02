@@ -288,12 +288,26 @@ public class PlayerController : MonoBehaviour
     #region Crouch
     private void PerformCrouchInput(InputAction.CallbackContext context)
     {
-        _stateMachine.SetState(_crouchState);
+        // 공중에 있는 상태에서는 웅크리기 불가
+        if (!IsOnAir)
+            _stateMachine.SetState(_crouchState);
     }
 
     private void CancelCrouchInput(InputAction.CallbackContext context)
     {
-        _stateMachine.SetState(_idleState);
+        // 공중에 있는 상태에서는 무시
+        if (IsOnAir)
+            return;
+
+        if (_moveDirection == Vector3.zero)
+            _stateMachine.SetState(_idleState);
+        else
+        {
+            if (_readyToSprint)
+                _stateMachine.SetState(_sprintState);
+            else
+                _stateMachine.SetState(_walkState);
+        }
     }
     #endregion
 }

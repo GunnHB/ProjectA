@@ -7,6 +7,8 @@ using FSM;
 
 public class CrouchState : BaseState
 {
+    private float _maxBlendValue = .5f;
+
     public CrouchState(PlayerController player) : base(player)
     {
     }
@@ -24,19 +26,17 @@ public class CrouchState : BaseState
         base.OperateUpdate();
 
         if (_player.ThisMoveDirection != Vector3.zero)
-        {
-            _dampTarget = 1f;
-            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
-        }
+            _dampTarget = _maxBlendValue;
         else
-            _dampTarget = .5f;
+            _dampTarget = 0f;
+
+        SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
     }
 
     public override void OperateExit()
     {
         base.OperateExit();
 
-        SetFloatParam(_player.ThisAnimData.AnimParamBlendCrouch, 1f);
         StopAnimation(_player.ThisAnimData.AnimParamCrouch);
     }
 }
