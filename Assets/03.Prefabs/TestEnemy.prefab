@@ -78,10 +78,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4920827408185796516, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7458354243113449665, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: b6ef2f4d0154b2747860a3332fa05f97, type: 3}
+      objectReference: {fileID: 9000000, guid: b69174d668ba02d44b14a084b217670a, type: 3}
     - target: {fileID: 7458354243113449665, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
       propertyPath: m_Controller
       value: 
@@ -159,3 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb716d7c74b77b4d9796ca877c57da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _setRandom: 1
+  _wayPointList: []
+  _radius: 5
