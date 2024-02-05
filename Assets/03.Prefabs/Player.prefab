@@ -105,6 +105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1554431023728034200, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4920827408185796516, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
       propertyPath: m_Height
       value: 2
