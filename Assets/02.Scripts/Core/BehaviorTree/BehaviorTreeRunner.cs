@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BehaviorTree
 {
-    public class BehaviorTreeRunner : MonoBehaviour
+    public class BehaviorTreeRunner
     {
         private INode _rootNode;
 

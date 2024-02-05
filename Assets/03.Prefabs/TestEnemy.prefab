@@ -166,3 +166,4 @@ MonoBehaviour:
   _setRandom: 1
   _wayPointList: []
   _radius: 5
+  _drawGizmos: 1
