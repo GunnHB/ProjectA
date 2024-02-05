@@ -43,8 +43,8 @@ public class EnemyController : MonoBehaviour
     // for anim damp
     private float _currDamp;
     private float _targetDamp;
-    private float _smoothVelocity = .1f;
-    private float _smoothTime;
+    private float _smoothVelocity;
+    private float _smoothTime = .1f;
 
     protected CharacterAnimData _animData;
 
@@ -160,7 +160,8 @@ public class EnemyController : MonoBehaviour
             return INode.ENodeState.SuccessState;
         }
 
-        SetAnimDamp(.5f);
+        _targetDamp = .5f;
+        SetAnimDamp(_targetDamp);
 
         _movement.SetDirection(_currWayPoint);
         _movement.SetSpeed(_speed * _currDamp);
@@ -200,7 +201,8 @@ public class EnemyController : MonoBehaviour
 
     private INode.ENodeState DoIdle()
     {
-        SetAnimDamp(0f);
+        _targetDamp = 0f;
+        SetAnimDamp(_targetDamp);
 
         if (_doNotPatrol)
         {
