@@ -13,6 +13,13 @@ using UnityEngine.Events;
 /// </summary>
 public partial class PlayerController : MonoBehaviour
 {
+    public enum PlayerMode
+    {
+        None = -1,
+        Normal,         // 일반 모드
+        Combat,         // 전투 모드
+    }
+
     // State machine
     private StateMachine _stateMachine;
 
@@ -32,6 +39,8 @@ public partial class PlayerController : MonoBehaviour
     // about jump
     private float _jumpForce = 1f;
 
+    private PlayerMode _playerMode;
+
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
 
@@ -45,6 +54,8 @@ public partial class PlayerController : MonoBehaviour
     public bool IsGrounded => _movement.IsGrounded;
     public bool IsPeak => _movement.IsPeak;
     public bool ReadyToSprint => _readyToSprint;
+
+    public PlayerMode ThisPlayerMode => _playerMode;
 
     // 공중에 있는 상태
     public bool IsOnAir
@@ -67,6 +78,8 @@ public partial class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         _animData.Initialize();
+
+        _playerMode = PlayerMode.Normal;
 
         RegistStateDictionary();
         SetPlayerInput();
