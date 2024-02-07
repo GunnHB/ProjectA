@@ -219,7 +219,16 @@ public partial class PlayerController : MonoBehaviour
     #region Draw weapon
     private void StartDrawWeaponInput(InputAction.CallbackContext context)
     {
-        Debug.Log("Draw weapon");
+        if (_stateMachine.IsCurrentState(_combatState))
+        {
+            SheathWeaponAction?.Invoke();
+            _stateMachine.SetState(_idleState);
+        }
+        else
+        {
+            DrawWeaponAction?.Invoke();
+            _stateMachine.SetState(_combatState);
+        }
     }
     #endregion
 

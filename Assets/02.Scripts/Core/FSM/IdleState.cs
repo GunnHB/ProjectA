@@ -13,6 +13,10 @@ namespace FSM
 
         public IdleState(PlayerController player) : base(player)
         {
+            if (player == null)
+                return;
+
+            player.DrawWeaponAction = () => { SetTriggerAnimation(_player.ThisAnimData.AnimParamDrawWeapon); };
         }
 
         public override void OperateEnter()

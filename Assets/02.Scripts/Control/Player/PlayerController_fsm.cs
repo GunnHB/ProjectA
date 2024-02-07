@@ -23,6 +23,8 @@ public partial class PlayerController : MonoBehaviour
 
     private IState _deathState;
 
+    private IState _combatState;
+
     // Properties
     public IState ThisIdleState => _idleState;
 
@@ -36,6 +38,8 @@ public partial class PlayerController : MonoBehaviour
     public IState ThisCrouchState => _crouchState;
 
     public IState ThisDeathState => _deathState;
+
+    public IState ThisCombatState => _combatState;
 
     #region StateMachine
     /// <summary>
@@ -58,6 +62,8 @@ public partial class PlayerController : MonoBehaviour
         _crouchState = new CrouchState(this);
 
         _deathState = new DeathState(this);
+
+        _combatState = new CombatState(this);
 
         // Idle을 첫 상태로 세팅
         _stateMachine = new StateMachine(_idleState);

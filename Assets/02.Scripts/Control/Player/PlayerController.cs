@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using FSM;
+using UnityEngine.Events;
 
 /// <summary>
 /// 플레이어의 총괄 클래스
@@ -30,6 +31,9 @@ public partial class PlayerController : MonoBehaviour
 
     // about jump
     private float _jumpForce = 1f;
+
+    public UnityAction DrawWeaponAction;
+    public UnityAction SheathWeaponAction;
 
     // Properties
     public Animator ThisAnimator => _animator;
