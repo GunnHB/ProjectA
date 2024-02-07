@@ -225,6 +225,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95898450327325348, guid: 55b617bc15522b544909ebbde68db7ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -327,6 +331,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8491142642591431491, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: _weapon
+      value: 
+      objectReference: {fileID: 1586301124448702, guid: 181c5c49a962f96468635ea191e01184, type: 3}
+    - target: {fileID: 8491142642591431491, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: _handHolder
+      value: 
+      objectReference: {fileID: 5262618204127821962}
+    - target: {fileID: 8491142642591431491, guid: 220bf8857760a984c85f742f70bfb7d9, type: 3}
+      propertyPath: _sheathHolder
+      value: 
+      objectReference: {fileID: 3482096788763190929}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
