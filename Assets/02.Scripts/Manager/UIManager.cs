@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Playables;
 using UnityEngine;
 
 public class UIManager : SingletonObject<UIManager>
@@ -9,12 +10,18 @@ public class UIManager : SingletonObject<UIManager>
 
     public Canvas HUDCanvas
     {
-        get; set;
-        // get
-        // {
-        //     if (_hudCanvas == null)
+        get
+        {
+            if (_hudCanvas == null)
+            {
+                var canvasObj = GameObject.Find("HUDCanvas");
 
-        // }
+                if (canvasObj != null)
+                    _hudCanvas = canvasObj.GetComponent<Canvas>();
+            }
+
+            return _hudCanvas;
+        }
     }
 
     protected override void Awake()
@@ -55,12 +62,26 @@ public class UIManager : SingletonObject<UIManager>
     /// <returns></returns>
     private bool IsOpenedUI<T>() where T : UIBase
     {
-        return false;
+        var canvas = GetCanvas<T>();
 
-        if (typeof(T).BaseType.Equals(typeof(HUDBase)))
+        if (canvas == null)
         {
-
+            Debug.Log("there is no canvas");
+            return false;
         }
+
+        // 최상단의 ui를 확인함
+        for (int index = 0; index < canvas.transform.childCount; index++)
+        {
+            var childObj = canvas.transform.GetChild(index);
+
+            if (childObj.TryGetComponent(out T uiCompo))
+                return true;
+            else
+                continue;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -70,6 +91,22 @@ public class UIManager : SingletonObject<UIManager>
     /// <returns></returns>
     private T OpenUI<T>() where T : UIBase
     {
+        var canvas = GetCanvas<T>();
+
+        if (canvas == null)
+        {
+            Debug.Log("there is no canvas");
+            return null;
+        }
+
         return null;
+    }
+
+    private Canvas GetCanvas<T>() where T : UIBase
+    {
+        if (typeof(T).BaseType.Equals(typeof(HUDBase)))
+            return HUDCanvas;
+        else
+            return null;
     }
 }
