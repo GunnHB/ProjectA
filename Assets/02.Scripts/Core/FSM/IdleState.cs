@@ -16,7 +16,8 @@ namespace FSM
             if (player == null)
                 return;
 
-            player.DrawWeaponAction = () => { SetTriggerAnimation(_player.ThisAnimData.AnimParamDrawWeapon); };
+            player.DrawWeaponAction = () => { SetTriggerAnimation(player.ThisAnimData.AnimParamDrawWeapon); };
+            player.SheathWeaponAction = () => { SetTriggerAnimation(player.ThisAnimData.AnimParamSheathWeapon); };
         }
 
         public override void OperateEnter()

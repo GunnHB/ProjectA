@@ -22,7 +22,12 @@ namespace FSM
         {
             _player = player;
 
+            // 하이어라키에 있으면 가져오기
             _stateHud = UIManager.Instance.GetUI<CheckStateHUD>();
+
+            // 없으면 생성하기
+            if (_stateHud == null)
+                _stateHud = UIManager.Instance.LoadUI<CheckStateHUD>();
         }
 
         public virtual void OperateEnter()

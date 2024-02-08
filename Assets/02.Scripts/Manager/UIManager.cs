@@ -29,17 +29,11 @@ public class UIManager : SingletonObject<UIManager>
     protected override void Awake()
     {
         base.Awake();
-    }
 
-    private void Start()
-    {
         _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "uibundle"));
 
         if (_loadedAssetBundle == null)
-        {
             Debug.Log("fail to load asset bundle!!!");
-            return;
-        }
     }
 
     /// <summary>
@@ -119,8 +113,21 @@ public class UIManager : SingletonObject<UIManager>
             return null;
         }
 
-        // 에셋번들에서 불러오기 
-        return _loadedAssetBundle.LoadAsset<T>(typeof(T).Name);
+        // 에셋번들에서 불러오기
+        // 불러오는 에셋의 이름이 같아야 함둥
+        var prefab = _loadedAssetBundle.LoadAsset<GameObject>(typeof(T).Name);
+
+        if (prefab == null)
+            return null;
+
+        var ui = Instantiate(prefab).GetComponent<T>();
+
+        if (ui == null)
+            return null;
+
+        ui.transform.SetParent(canvas.transform);
+
+        return ui;
     }
 
     private Canvas GetCanvas<T>() where T : UIBase
