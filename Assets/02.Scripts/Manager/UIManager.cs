@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Playables;
+using System.IO;
 using UnityEngine;
 
 public class UIManager : SingletonObject<UIManager>
 {
+    private AssetBundle _loadedAssetBundle;
+
     private Canvas _hudCanvas;
 
     public Canvas HUDCanvas
@@ -29,38 +31,51 @@ public class UIManager : SingletonObject<UIManager>
         base.Awake();
     }
 
+    private void Start()
+    {
+        _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "uibundle"));
+
+        if (_loadedAssetBundle == null)
+        {
+            Debug.Log("fail to load asset bundle!!!");
+            return;
+        }
+    }
+
     /// <summary>
     /// 하이어라키에 올라간 특정 UI 찾기 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public T GetOpenedUI<T>() where T : UIBase
+    public T GetUI<T>() where T : UIBase
     {
-        // if (typeof(T) == typeof(HUDBase))
-        //     Debug.Log("uibase 같음?? " + typeof(T));
-        // else if (typeof(T).BaseType == typeof(HUDBase))
-        //     Debug.Log("아니면 여기랑 같음?? " + typeof(T).BaseType);
+        var canvas = GetCanvas<T>();
 
-        // return null;
-
-        if (!IsOpenedUI<T>())
+        if (canvas == null)
         {
-            // 프리팹 불러와주기
+            Debug.Log("there is no cnavas");
+            return null;
         }
-        else
-        {
 
+        for (int index = 0; index < canvas.transform.childCount; index++)
+        {
+            var childObj = canvas.transform.GetChild(index);
+
+            if (childObj.TryGetComponent(out T uiCompo))
+                return uiCompo;
+            else
+                continue;
         }
 
         return null;
     }
 
     /// <summary>
-    /// 특정 UI가 열렸는지 확인
+    /// 특정 UI가 하이어라키에 올라와 있는지 확인
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    private bool IsOpenedUI<T>() where T : UIBase
+    public bool IsOpenedUI<T>() where T : UIBase
     {
         var canvas = GetCanvas<T>();
 
@@ -89,7 +104,7 @@ public class UIManager : SingletonObject<UIManager>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    private T OpenUI<T>() where T : UIBase
+    public T LoadUI<T>() where T : UIBase
     {
         var canvas = GetCanvas<T>();
 
@@ -98,8 +113,14 @@ public class UIManager : SingletonObject<UIManager>
             Debug.Log("there is no canvas");
             return null;
         }
+        else if (_loadedAssetBundle == null)
+        {
+            Debug.Log("fail to load assetbundle!");
+            return null;
+        }
 
-        return null;
+        // 에셋번들에서 불러오기 
+        return _loadedAssetBundle.LoadAsset<T>(typeof(T).Name);
     }
 
     private Canvas GetCanvas<T>() where T : UIBase

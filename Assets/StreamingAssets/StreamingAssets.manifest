@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 486645555
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: uibundle
+      Dependencies: {}

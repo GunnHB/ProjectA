@@ -16,24 +16,21 @@ namespace FSM
         protected float _smoothTime = .15f;
         protected float _dampTarget;
 
-        protected static CheckStateHUD _stateHud;
+        private CheckStateHUD _stateHud;
 
         public BaseState(PlayerController player)
         {
             _player = player;
 
-            if (_stateHud == null)
-            {
-                Debug.Log("과연 여기는 계속 탈까요");
-                _stateHud = UIManager.Instance.GetOpenedUI<CheckStateHUD>();
-            }
+            _stateHud = UIManager.Instance.GetUI<CheckStateHUD>();
         }
 
         public virtual void OperateEnter()
         {
             // Debug.Log($"{this} enter");
 
-            _stateHud.SetStateText(this);
+            if (_stateHud != null)
+                _stateHud.SetStateText(this);
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -42,17 +39,11 @@ namespace FSM
         public virtual void OperateExit()
         {
             // Debug.Log($"{this} exit");
-
-            if (_stateMachine == null)
-                _stateMachine = _player.ThisStateMachine;
         }
 
         public virtual void OperateUpdate()
         {
             // Debug.Log($"{this} update");
-
-            if (_stateMachine == null)
-                _stateMachine = _player.ThisStateMachine;
         }
 
         /// <summary>

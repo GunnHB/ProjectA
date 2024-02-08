@@ -20,9 +20,6 @@ public class SingletonCreator : MonoBehaviour
         GameObject prefab = new GameObject(typeof(T).Name);
 
         if (prefab != null)
-        {
-            prefab.transform.SetParent(this.transform);
             prefab.AddComponent(typeof(T));
-        }
     }
 }
