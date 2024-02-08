@@ -18,7 +18,9 @@ public partial class PlayerController : MonoBehaviour
     private InputAction _jumpInput;                     // 점프 입력
 
     private InputAction _crouchInput;                   // 웅크리기 입력
-    private InputAction _drawWeaponInput;               // 무기 듦
+
+    private InputAction _drawWeaponInput;               // 무기 듦 
+    private InputAction _attackInput;                   // 공격
 
     private InputAction _zoomInInput;                   // 카메라 줌 인
     private InputAction _zoomOutInput;                  // 카메라 줌 아웃
@@ -31,7 +33,9 @@ public partial class PlayerController : MonoBehaviour
         RegistAction(_jumpInput, StartJumpInput);
 
         RegistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+
         RegistAction(_drawWeaponInput, StartDrawWeaponInput);
+        RegistAction(_attackInput, StartAttackInput);
 
         RegistAction(_zoomInInput, null, PerformZoomInInput, null);
         RegistAction(_zoomOutInput, null, PerformZoomOutInput, null);
@@ -45,7 +49,9 @@ public partial class PlayerController : MonoBehaviour
         UnregistAction(_jumpInput, StartJumpInput);
 
         UnregistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+
         UnregistAction(_drawWeaponInput, StartDrawWeaponInput);
+        UnregistAction(_attackInput, StartAttackInput);
 
         UnregistAction(_zoomInInput, null, PerformZoomInInput, null);
         UnregistAction(_zoomOutInput, null, PerformZoomOutInput, null);
@@ -65,6 +71,7 @@ public partial class PlayerController : MonoBehaviour
         _crouchInput = _action.PlayerActionMap.Crouch;
 
         _drawWeaponInput = _action.PlayerActionMap.DrawWeapon;
+        _attackInput = _action.PlayerActionMap.Attack;
 
         _zoomInInput = _action.PlayerActionMap.ZoomIn;
         _zoomOutInput = _action.PlayerActionMap.ZoomOut;
@@ -229,6 +236,16 @@ public partial class PlayerController : MonoBehaviour
             DrawWeaponAction?.Invoke();
             _playerMode = PlayerMode.Combat;
         }
+    }
+    #endregion
+
+    #region Attack
+    private void StartAttackInput(InputAction.CallbackContext context)
+    {
+        if (_playerMode != PlayerMode.Combat)
+            return;
+
+        _stateMachine.SetState(_attackState);
     }
     #endregion
 

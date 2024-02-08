@@ -43,6 +43,7 @@ public partial class PlayerController : MonoBehaviour
 
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
+    public UnityAction AttackAction;
 
     // Properties
     public Animator ThisAnimator => _animator;

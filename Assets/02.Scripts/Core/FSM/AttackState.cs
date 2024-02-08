@@ -5,14 +5,11 @@ using FSM;
 
 using UnityEngine;
 
-public class CombatState : BaseState
+public class AttackState : BaseState
 {
-    public CombatState(PlayerController player) : base(player)
+    public AttackState(PlayerController player) : base(player)
     {
-        if (player == null)
-            return;
 
-        player.SheathWeaponAction = () => { SetTriggerAnimation(_player.ThisAnimData.AnimParamSheathWeapon); };
     }
 
     public override void OperateEnter()

@@ -82,6 +82,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3ef5c75-f158-4f58-8e61-4723f4f3bb2b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""ZoomIn"",
                     ""type"": ""Value"",
                     ""id"": ""d536393c-ea67-4fbe-b4a0-c9e48c6cee0a"",
@@ -287,6 +296,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""ZoomOut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec45656f-4a8b-49cc-af25-2f39c354c58d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -318,6 +338,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerActionMap_Jump = m_PlayerActionMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActionMap_Crouch = m_PlayerActionMap.FindAction("Crouch", throwIfNotFound: true);
         m_PlayerActionMap_DrawWeapon = m_PlayerActionMap.FindAction("DrawWeapon", throwIfNotFound: true);
+        m_PlayerActionMap_Attack = m_PlayerActionMap.FindAction("Attack", throwIfNotFound: true);
         m_PlayerActionMap_ZoomIn = m_PlayerActionMap.FindAction("ZoomIn", throwIfNotFound: true);
         m_PlayerActionMap_ZoomOut = m_PlayerActionMap.FindAction("ZoomOut", throwIfNotFound: true);
     }
@@ -387,6 +408,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_Jump;
     private readonly InputAction m_PlayerActionMap_Crouch;
     private readonly InputAction m_PlayerActionMap_DrawWeapon;
+    private readonly InputAction m_PlayerActionMap_Attack;
     private readonly InputAction m_PlayerActionMap_ZoomIn;
     private readonly InputAction m_PlayerActionMap_ZoomOut;
     public struct PlayerActionMapActions
@@ -399,6 +421,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerActionMap_Jump;
         public InputAction @Crouch => m_Wrapper.m_PlayerActionMap_Crouch;
         public InputAction @DrawWeapon => m_Wrapper.m_PlayerActionMap_DrawWeapon;
+        public InputAction @Attack => m_Wrapper.m_PlayerActionMap_Attack;
         public InputAction @ZoomIn => m_Wrapper.m_PlayerActionMap_ZoomIn;
         public InputAction @ZoomOut => m_Wrapper.m_PlayerActionMap_ZoomOut;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
@@ -428,6 +451,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @DrawWeapon.started += instance.OnDrawWeapon;
             @DrawWeapon.performed += instance.OnDrawWeapon;
             @DrawWeapon.canceled += instance.OnDrawWeapon;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
             @ZoomIn.started += instance.OnZoomIn;
             @ZoomIn.performed += instance.OnZoomIn;
             @ZoomIn.canceled += instance.OnZoomIn;
@@ -456,6 +482,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @DrawWeapon.started -= instance.OnDrawWeapon;
             @DrawWeapon.performed -= instance.OnDrawWeapon;
             @DrawWeapon.canceled -= instance.OnDrawWeapon;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
             @ZoomIn.started -= instance.OnZoomIn;
             @ZoomIn.performed -= instance.OnZoomIn;
             @ZoomIn.canceled -= instance.OnZoomIn;
@@ -496,6 +525,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnDrawWeapon(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         void OnZoomIn(InputAction.CallbackContext context);
         void OnZoomOut(InputAction.CallbackContext context);
     }

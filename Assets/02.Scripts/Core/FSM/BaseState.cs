@@ -16,14 +16,24 @@ namespace FSM
         protected float _smoothTime = .15f;
         protected float _dampTarget;
 
+        protected static CheckStateHUD _stateHud;
+
         public BaseState(PlayerController player)
         {
             _player = player;
+
+            if (_stateHud == null)
+            {
+                Debug.Log("과연 여기는 계속 탈까요");
+                _stateHud = UIManager.Instance.GetOpenedUI<CheckStateHUD>();
+            }
         }
 
         public virtual void OperateEnter()
         {
-            Debug.Log($"{this} enter");
+            // Debug.Log($"{this} enter");
+
+            _stateHud.SetStateText(this);
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -31,7 +41,7 @@ namespace FSM
 
         public virtual void OperateExit()
         {
-            Debug.Log($"{this} exit");
+            // Debug.Log($"{this} exit");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -39,7 +49,7 @@ namespace FSM
 
         public virtual void OperateUpdate()
         {
-            Debug.Log($"{this} update");
+            // Debug.Log($"{this} update");
 
             if (_stateMachine == null)
                 _stateMachine = _player.ThisStateMachine;
@@ -84,6 +94,16 @@ namespace FSM
         protected float GetFloatParam(int animHash)
         {
             return _player.ThisAnimator.GetFloat(animHash);
+        }
+
+        protected float GetCurrentClipLength(int layerIndex)
+        {
+            return _player.ThisAnimator.GetCurrentAnimatorClipInfo(layerIndex)[0].clip.length;
+        }
+
+        protected float GetCurrentClipSpeed(int layerIndex)
+        {
+            return _player.ThisAnimator.GetCurrentAnimatorStateInfo(layerIndex).speed;
         }
     }
 }

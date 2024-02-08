@@ -23,7 +23,7 @@ public partial class PlayerController : MonoBehaviour
 
     private IState _deathState;
 
-    private IState _combatState;
+    private IState _attackState;
 
     // Properties
     public IState ThisIdleState => _idleState;
@@ -39,7 +39,7 @@ public partial class PlayerController : MonoBehaviour
 
     public IState ThisDeathState => _deathState;
 
-    public IState ThisCombatState => _combatState;
+    public IState ThisAttackState => _attackState;
 
     #region StateMachine
     /// <summary>
@@ -63,7 +63,7 @@ public partial class PlayerController : MonoBehaviour
 
         _deathState = new DeathState(this);
 
-        _combatState = new CombatState(this);
+        _attackState = new AttackState(this);
 
         // Idle을 첫 상태로 세팅
         _stateMachine = new StateMachine(_idleState);
