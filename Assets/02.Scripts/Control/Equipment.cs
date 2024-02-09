@@ -11,6 +11,10 @@ public class Equipment : MonoBehaviour
     private GameObject _currWeaponInHand;
     private GameObject _currWeaponInSheath;
 
+    private bool _doAction = false;
+
+    public bool DoAction => _doAction;
+
     private void Start()
     {
         if (_sheathHolder != null)
@@ -27,5 +31,15 @@ public class Equipment : MonoBehaviour
     {
         _currWeaponInSheath = Instantiate(_weapon, _sheathHolder.transform);
         Destroy(_currWeaponInHand);
+    }
+
+    public void StartAction()
+    {
+        _doAction = true;
+    }
+
+    public void EndAction()
+    {
+        _doAction = false;
     }
 }

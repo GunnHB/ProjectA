@@ -223,9 +223,12 @@ public partial class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region Draw weapon
+    #region Draw / Sheath weapon
     private void StartDrawWeaponInput(InputAction.CallbackContext context)
     {
+        if (_equipment.DoAction)
+            return;
+
         if (_playerMode == PlayerMode.Combat)
         {
             SheathWeaponAction?.Invoke();

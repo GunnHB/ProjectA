@@ -25,6 +25,7 @@ public partial class PlayerController : MonoBehaviour
 
     // Components
     private Movement _movement;
+    private Equipment _equipment;
     private PlayerInput _playerInput;
     private Animator _animator;
 
@@ -79,6 +80,7 @@ public partial class PlayerController : MonoBehaviour
     private void Awake()
     {
         _movement = GetComponent<Movement>();
+        _equipment = GetComponent<Equipment>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
 
