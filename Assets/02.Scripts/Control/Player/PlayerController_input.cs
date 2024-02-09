@@ -245,7 +245,10 @@ public partial class PlayerController : MonoBehaviour
         if (_playerMode != PlayerMode.Combat)
             return;
 
-        _stateMachine.SetState(_attackState);
+        if (_stateMachine.IsCurrentState(_attackState))
+            _doCombo = true;
+        else
+            _stateMachine.SetState(_attackState);
     }
     #endregion
 

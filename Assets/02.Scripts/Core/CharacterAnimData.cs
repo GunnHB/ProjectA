@@ -10,6 +10,7 @@ public class CharacterAnimData
     protected string _animParamDeath = "Trigger_Death";
     protected string _animParamDrawWeapon = "Trigger_DrawWeapon";
     protected string _animParamSheathWeapon = "Trigger_SheathWeapon";
+    protected string _animParamAttack = "Trigger_Attack";
     protected string _animParamFalling = "Bool_Falling";
     protected string _animParamLanding = "Bool_Landing";
     protected string _animParamBlendLocomotion = "Float_Locomotion";
@@ -18,6 +19,7 @@ public class CharacterAnimData
     public int AnimParamDeath { get; private set; }
     public int AnimParamDrawWeapon { get; private set; }
     public int AnimParamSheathWeapon { get; private set; }
+    public int AnimParamAttack { get; private set; }
     public int AnimParamFalling { get; private set; }
     public int AnimParamLanding { get; private set; }
     public int AnimParamBlendLocomotion { get; private set; }
@@ -30,6 +32,7 @@ public class CharacterAnimData
         AnimParamDeath = Animator.StringToHash(_animParamDeath);
         AnimParamDrawWeapon = Animator.StringToHash(_animParamDrawWeapon);
         AnimParamSheathWeapon = Animator.StringToHash(_animParamSheathWeapon);
+        AnimParamAttack = Animator.StringToHash(_animParamAttack);
         AnimParamFalling = Animator.StringToHash(_animParamFalling);
         AnimParamLanding = Animator.StringToHash(_animParamLanding);
         AnimParamBlendLocomotion = Animator.StringToHash(_animParamBlendLocomotion);

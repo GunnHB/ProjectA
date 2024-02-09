@@ -39,6 +39,9 @@ public partial class PlayerController : MonoBehaviour
     // about jump
     private float _jumpForce = 1f;
 
+    // combo attack
+    private bool _doCombo;
+
     private PlayerMode _playerMode;
 
     public UnityAction DrawWeaponAction;
@@ -55,6 +58,7 @@ public partial class PlayerController : MonoBehaviour
     public bool IsGrounded => _movement.IsGrounded;
     public bool IsPeak => _movement.IsPeak;
     public bool ReadyToSprint => _readyToSprint;
+    public bool DoCombo => _doCombo;
 
     public PlayerMode ThisPlayerMode => _playerMode;
 
@@ -105,5 +109,10 @@ public partial class PlayerController : MonoBehaviour
     public void DoJump()
     {
         _movement.Jump(_jumpForce);
+    }
+
+    public void SetDoCombo(bool active)
+    {
+        _doCombo = active;
     }
 }

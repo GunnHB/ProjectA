@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class UIManager : SingletonObject<UIManager>
 {
+    private const string BUNDLE_UI = "uibundle";
+
     private AssetBundle _loadedAssetBundle;
 
     private Canvas _hudCanvas;
@@ -29,8 +31,14 @@ public class UIManager : SingletonObject<UIManager>
     protected override void Awake()
     {
         base.Awake();
+    }
 
-        _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "uibundle"));
+    private void LoadFromFile()
+    {
+        if (_loadedAssetBundle != null)
+            return;
+
+        _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, BUNDLE_UI));
 
         if (_loadedAssetBundle == null)
             Debug.Log("fail to load asset bundle!!!");
@@ -107,11 +115,8 @@ public class UIManager : SingletonObject<UIManager>
             Debug.Log("there is no canvas");
             return null;
         }
-        else if (_loadedAssetBundle == null)
-        {
-            Debug.Log("fail to load assetbundle!");
-            return null;
-        }
+
+        LoadFromFile();
 
         // 에셋번들에서 불러오기
         // 불러오는 에셋의 이름이 같아야 함둥
