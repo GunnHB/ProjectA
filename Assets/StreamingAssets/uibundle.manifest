@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1062488365
+CRC: 359411689
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5a83291e3bd87b1dd03aace2456ff67c
+    Hash: 5f48e576280a4eb1cb5b1e1627b35423
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 47be9e9f887af9c8b95841123c2c8f90
+    Hash: ff33e00d097c98cc878f2371ac25e0e4
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 5a83291e3bd87b1dd03aace2456ff67c
+    Hash: 5f48e576280a4eb1cb5b1e1627b35423
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,20 +21,38 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f9cfa8d737fe0764bb4cdb5d73938f0f, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d225cd0e677e1394c81cfe901667e2cc, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
+  Script: {instanceID: 0}
+- Class: 213
   Script: {instanceID: 0}
 - Class: 222
   Script: {instanceID: 0}
 - Class: 224
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: ObjectPool
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.FaceInfo_Legacy
 - AssemblyName: Unity.TextMeshPro
@@ -57,6 +75,8 @@ SerializeReferenceClassIdentifiers:
   ClassName: TMPro.VertexGradient
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.RectOffset
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.FaceInfo
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
@@ -67,6 +87,12 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.TextCore.GlyphRect
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
 Assets:
-- Assets/03.Prefabs/UI/CheckStateHUD.prefab
+- Assets/03.Prefabs/UI/ItemSlot.prefab
+- Assets/03.Prefabs/UI/Inventory.prefab
+- Assets/03.Prefabs/UI/InventoryRow.prefab
+- Assets/03.Prefabs/UI/UICheckStateHUD.prefab
+- Assets/03.Prefabs/UI/MenuPanel.prefab
 Dependencies: []

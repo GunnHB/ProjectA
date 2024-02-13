@@ -18,18 +18,12 @@ public class UIManager : SingletonObject<UIManager>
 
     public Canvas HUDCanvas
     {
-        get
-        {
-            return GetCanvasByProperty(_hudCanvas, CANVAS_HUD);
-        }
+        get => GetCanvasByProperty(_hudCanvas, CANVAS_HUD);
     }
 
     public Canvas PanelCanvas
     {
-        get
-        {
-            return GetCanvasByProperty(_panelCanvas, CANVAS_PANEL);
-        }
+        get => GetCanvasByProperty(_panelCanvas, CANVAS_PANEL);
     }
 
     protected override void Awake()

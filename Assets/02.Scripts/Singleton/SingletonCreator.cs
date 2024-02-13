@@ -13,6 +13,7 @@ public class SingletonCreator : MonoBehaviour
     private void Init()
     {
         InitSingletonObject<UIManager>();
+        InitSingletonObject<AtlasManager>();
     }
 
     private void InitSingletonObject<T>()
