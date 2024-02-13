@@ -10,26 +10,53 @@ public class ObjectPool
 
     private Queue<GameObject> _poolQueue = new();
 
-    public void CreateNewObject()
+    public GameObject CreateNewObject()
     {
+        GameObject tempObj = GameObject.Instantiate(_prefabObj);
 
+        tempObj.SetActive(false);
+
+        if (_parentObj != null)
+            tempObj.transform.SetParent(_parentObj.transform);
+
+        return tempObj;
     }
 
-    public void GetObject()
+    public GameObject GetObject()
     {
+        GameObject tempObj;
+
         if (_poolQueue.Count > 0)
-        {
-            // var tempObj = _poolQueue
-        }
+            tempObj = _poolQueue.Dequeue();
+        else
+            tempObj = CreateNewObject();
+
+        tempObj.SetActive(true);
+
+        return tempObj;
     }
 
-    public void ReturnObject()
+    public void ReturnObject(GameObject obj)
     {
+        _poolQueue.Enqueue(obj);
 
+        if (_parentObj != null)
+            obj.transform.SetParent(_parentObj.transform);
+
+        obj.SetActive(false);
     }
 
     public void ReturnAllObject()
     {
+        if (_parentObj == null)
+            return;
 
+        for (int index = 0; index < _parentObj.transform.childCount; index++)
+        {
+            var temp = _parentObj.transform.GetChild(index);
+
+            if (temp.gameObject.activeInHierarchy)
+                ReturnObject(temp.gameObject);
+        }
     }
 }
