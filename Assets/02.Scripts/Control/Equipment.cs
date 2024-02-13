@@ -17,8 +17,8 @@ public class Equipment : MonoBehaviour
 
     private void Start()
     {
-        if (_sheathHolder != null)
-            _currWeaponInSheath = Instantiate(_weapon, _sheathHolder.transform);
+        // if (_sheathHolder != null)
+        //     _currWeaponInSheath = Instantiate(_weapon, _sheathHolder.transform);
     }
 
     public void DrawWeapon()

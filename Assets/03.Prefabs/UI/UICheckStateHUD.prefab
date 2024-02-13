@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 1479316830146042460}
   - component: {fileID: 6598406715457995388}
   m_Layer: 0
-  m_Name: CheckStateHUD
+  m_Name: UICheckStateHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

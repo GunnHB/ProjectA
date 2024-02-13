@@ -8,23 +8,27 @@ public class UIManager : SingletonObject<UIManager>
 {
     private const string BUNDLE_UI = "uibundle";
 
+    private const string CANVAS_HUD = "HUDCanvas";
+    private const string CANVAS_PANEL = "PanelCanvas";
+
     private AssetBundle _loadedAssetBundle;
 
     private Canvas _hudCanvas;
+    private Canvas _panelCanvas;
 
     public Canvas HUDCanvas
     {
         get
         {
-            if (_hudCanvas == null)
-            {
-                var canvasObj = GameObject.Find("HUDCanvas");
+            return GetCanvasByProperty(_hudCanvas, CANVAS_HUD);
+        }
+    }
 
-                if (canvasObj != null)
-                    _hudCanvas = canvasObj.GetComponent<Canvas>();
-            }
-
-            return _hudCanvas;
+    public Canvas PanelCanvas
+    {
+        get
+        {
+            return GetCanvasByProperty(_panelCanvas, CANVAS_PANEL);
         }
     }
 
@@ -141,5 +145,18 @@ public class UIManager : SingletonObject<UIManager>
             return HUDCanvas;
         else
             return null;
+    }
+
+    private Canvas GetCanvasByProperty(Canvas canvas, string canvasName)
+    {
+        if (canvas == null)
+        {
+            var obj = GameObject.Find(canvasName);
+
+            if (obj != null)
+                canvas = obj.GetComponent<Canvas>();
+        }
+
+        return canvas;
     }
 }

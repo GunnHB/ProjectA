@@ -8,6 +8,7 @@ public abstract class UIBase : MonoBehaviour
     {
         NONE = -1,
         HUD,
+        PANEL,
         POPUP,
     }
 
