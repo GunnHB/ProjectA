@@ -299,6 +299,9 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         GameManager.Instance.SetGameMode(GameManager.GameMode.UI);
+        GameManager.Instance.PauseGame(true);
+
+        UIManager.Instance.OpenUI<UIMenuPanel>();
     }
     #endregion
 
@@ -309,6 +312,9 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
+        GameManager.Instance.PauseGame(false);
+
+        UIManager.Instance.CloseAllUI(UIManager.Instance.PanelCanvas);
     }
     #endregion
 

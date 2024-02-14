@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 1075851792
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 766672c243ea9635d84826ccd3737923
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5e762ccb57c4caaabbb5a4199ac82c23
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 766672c243ea9635d84826ccd3737923
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/04.Images/Materials/UIBlurMaterial.mat
+Dependencies: []

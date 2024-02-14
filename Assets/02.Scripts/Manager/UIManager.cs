@@ -14,13 +14,23 @@ public class UIManager : SingletonObject<UIManager>
     private Canvas _panelCanvas;
     private Canvas _popupCanvas;
 
-    public Canvas HUDCanvas { get => GetCanvasByProperty(ref _panelCanvas, CANVAS_HUD); }
+    public Canvas HUDCanvas { get => GetCanvasByProperty(ref _hudCanvas, CANVAS_HUD); }
     public Canvas PanelCanvas { get => GetCanvasByProperty(ref _panelCanvas, CANVAS_PANEL); }
     public Canvas PopupCanvas { get => GetCanvasByProperty(ref _popupCanvas, CANVAS_POPUP); }
 
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    public T OpenUI<T>() where T : UIBase
+    {
+        var openedUI = GetUI<T>();
+
+        if (openedUI == null)
+            openedUI = LoadUI<T>();
+
+        return openedUI;
     }
 
     /// <summary>
@@ -137,5 +147,21 @@ public class UIManager : SingletonObject<UIManager>
         }
 
         return canvas;
+    }
+
+    /// <summary>
+    /// 해당 UI 닫음
+    /// </summary>
+    public void CloseUI<T>() where T : UIBase
+    {
+
+    }
+
+    /// <summary>
+    /// 캔버스의 모든 UI 닫음 
+    /// </summary>
+    public void CloseAllUI(Canvas canvas)
+    {
+
     }
 }

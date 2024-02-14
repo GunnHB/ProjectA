@@ -41,9 +41,9 @@ public class GameManager : SingletonObject<GameManager>
     /// <summary>
     /// 일시정지 / 재개
     /// </summary>
-    public void PauseGame()
+    public void PauseGame(bool doPause)
     {
-        _gamePause = !_gamePause;
+        _gamePause = doPause;
 
         Time.timeScale = _gamePause ? 0 : 1;
     }

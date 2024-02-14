@@ -1,10 +1,14 @@
 ManifestFileVersion: 0
-CRC: 926085984
+CRC: 2757917185
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: uibundle
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: materialbundle
     Info_1:
       Name: atlasbundle
+      Dependencies: {}
+    Info_2:
+      Name: materialbundle
       Dependencies: {}
