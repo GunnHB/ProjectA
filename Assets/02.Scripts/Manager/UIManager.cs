@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class UIManager : SingletonObject<UIManager>
 {
-    private const string BUNDLE_UI = "uibundle";
+    // private const string BUNDLE_UI = "uibundle";
 
     private const string CANVAS_HUD = "HUDCanvas";
     private const string CANVAS_PANEL = "PanelCanvas";
 
-    private AssetBundle _loadedAssetBundle;
+    // private AssetBundle _loadedAssetBundle;
 
     private Canvas _hudCanvas;
     private Canvas _panelCanvas;
@@ -33,13 +33,13 @@ public class UIManager : SingletonObject<UIManager>
 
     private void LoadFromFile()
     {
-        if (_loadedAssetBundle != null)
-            return;
+        // if (_loadedAssetBundle != null)
+        //     return;
 
-        _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, BUNDLE_UI));
+        // _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, BUNDLE_UI));
 
-        if (_loadedAssetBundle == null)
-            Debug.Log("fail to load asset bundle!!!");
+        // if (_loadedAssetBundle == null)
+        //     Debug.Log("fail to load asset bundle!!!");
     }
 
     /// <summary>
@@ -114,11 +114,12 @@ public class UIManager : SingletonObject<UIManager>
             return null;
         }
 
-        LoadFromFile();
+        // LoadFromFile();
 
         // 에셋번들에서 불러오기
         // 불러오는 에셋의 이름이 같아야 함둥
-        var prefab = _loadedAssetBundle.LoadAsset<GameObject>(typeof(T).Name);
+        // var prefab = _loadedAssetBundle.LoadAsset<GameObject>(typeof(T).Name);
+        var prefab = AssetBundleManager.Instance.UIBundle.LoadAsset<GameObject>(typeof(T).Name);
 
         if (prefab == null)
             return null;
