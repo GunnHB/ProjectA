@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 359411689
+CRC: 744458533
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5f48e576280a4eb1cb5b1e1627b35423
+    Hash: c0a28b8950e2b94c8e7d5eeac40722b5
   TypeTreeHash:
     serializedVersion: 2
     Hash: ff33e00d097c98cc878f2371ac25e0e4
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 5f48e576280a4eb1cb5b1e1627b35423
+    Hash: c0a28b8950e2b94c8e7d5eeac40722b5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -93,6 +93,6 @@ Assets:
 - Assets/03.Prefabs/UI/ItemSlot.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab
-- Assets/03.Prefabs/UI/UICheckStateHUD.prefab
+- Assets/03.Prefabs/UI/CheckStateHUD.prefab
 - Assets/03.Prefabs/UI/MenuPanel.prefab
 Dependencies: []

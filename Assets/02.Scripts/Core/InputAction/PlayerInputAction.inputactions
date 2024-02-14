@@ -16,12 +16,12 @@
                 },
                 {
                     "name": "LookAt",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "6772314f-7265-4969-a386-6c0cf44c3f64",
-                    "expectedControlType": "Delta",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Sprint",
@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "70fd4ef1-39a3-4b1c-a940-39f495efb6f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -285,8 +294,25 @@
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "69547a1a-dde2-44b7-afbc-06a9a32aac96",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UIActionMap",
+            "id": "2fdc8122-433f-4ae0-bcd1-406bb2568167",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

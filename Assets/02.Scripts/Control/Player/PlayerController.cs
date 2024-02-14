@@ -13,6 +13,9 @@ using UnityEngine.Events;
 /// </summary>
 public partial class PlayerController : MonoBehaviour
 {
+    private const string PLAYER_ACTION_MAP = "PlayerActionMap";
+    private const string UI_ACTION_MAP = "UIActionMap";
+
     public enum PlayerMode
     {
         None = -1,
@@ -95,6 +98,8 @@ public partial class PlayerController : MonoBehaviour
     private void Update()
     {
         _stateMachine.DoOperatorUpdate();
+
+        Debug.Log(_playerInput.currentActionMap);
     }
 
     private void FixedUpdate()

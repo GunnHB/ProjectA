@@ -25,6 +25,8 @@ public partial class PlayerController : MonoBehaviour
     private InputAction _zoomInInput;                   // 카메라 줌 인
     private InputAction _zoomOutInput;                  // 카메라 줌 아웃
 
+    private InputAction _inventoryInput;                // 인벤토리 기능
+
     private void OnEnable()
     {
         RegistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
@@ -39,6 +41,8 @@ public partial class PlayerController : MonoBehaviour
 
         RegistAction(_zoomInInput, null, PerformZoomInInput, null);
         RegistAction(_zoomOutInput, null, PerformZoomOutInput, null);
+
+        RegistAction(_inventoryInput, StartInventoryInput);
     }
 
     private void OnDisable()
@@ -55,6 +59,8 @@ public partial class PlayerController : MonoBehaviour
 
         UnregistAction(_zoomInInput, null, PerformZoomInInput, null);
         UnregistAction(_zoomOutInput, null, PerformZoomOutInput, null);
+
+        UnregistAction(_inventoryInput, StartInventoryInput);
     }
 
     /// <summary>
@@ -75,6 +81,8 @@ public partial class PlayerController : MonoBehaviour
 
         _zoomInInput = _action.PlayerActionMap.ZoomIn;
         _zoomOutInput = _action.PlayerActionMap.ZoomOut;
+
+        _inventoryInput = _action.PlayerActionMap.Inventory;
     }
 
     #region InputSystem
@@ -268,6 +276,17 @@ public partial class PlayerController : MonoBehaviour
         var zoomValue = context.ReadValue<float>();
 
         Debug.Log("OUT " + zoomValue);
+    }
+    #endregion
+
+    #region Inventory
+    private void StartInventoryInput(InputAction.CallbackContext context)
+    {
+        _action.PlayerActionMap.Disable();
+
+        _playerInput.SwitchCurrentActionMap(UI_ACTION_MAP);
+
+        _action.UIActionMap.Enable();
     }
     #endregion
 }

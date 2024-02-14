@@ -10,22 +10,12 @@ public class GameManager : SingletonObject<GameManager>
     public bool GamePause => _gamePause;
 
     /// <summary>
-    /// 일시정지
+    /// 일시정지 / 재개
     /// </summary>
     public void PauseGame()
     {
-        _gamePause = true;
+        _gamePause = !_gamePause;
 
-        Time.timeScale = 0;
-    }
-
-    /// <summary>
-    /// 재개
-    /// </summary>
-    public void PlayGame()
-    {
-        _gamePause = false;
-
-        Time.timeScale = 1;
+        Time.timeScale = _gamePause ? 0 : 1;
     }
 }
