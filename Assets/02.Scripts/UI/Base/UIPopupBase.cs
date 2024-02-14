@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupBase : UIBase
+public class UIPopupBase : UIBase
 {
     public override void Init()
     {

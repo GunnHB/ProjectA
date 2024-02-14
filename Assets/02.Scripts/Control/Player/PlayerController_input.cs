@@ -25,43 +25,11 @@ public partial class PlayerController : MonoBehaviour
     private InputAction _zoomInInput;                   // 카메라 줌 인
     private InputAction _zoomOutInput;                  // 카메라 줌 아웃
 
-    private InputAction _inventoryInput;                // 인벤토리 기능
+    private InputAction _inventoryInput;                // 인벤토리
 
-    private void OnEnable()
-    {
-        RegistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
-        RegistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+    private InputAction _escapeInput;                   // ui 나가기
 
-        RegistAction(_jumpInput, StartJumpInput);
-
-        RegistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
-
-        RegistAction(_drawWeaponInput, StartDrawWeaponInput);
-        RegistAction(_attackInput, StartAttackInput);
-
-        RegistAction(_zoomInInput, null, PerformZoomInInput, null);
-        RegistAction(_zoomOutInput, null, PerformZoomOutInput, null);
-
-        RegistAction(_inventoryInput, StartInventoryInput);
-    }
-
-    private void OnDisable()
-    {
-        UnregistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
-        UnregistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
-
-        UnregistAction(_jumpInput, StartJumpInput);
-
-        UnregistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
-
-        UnregistAction(_drawWeaponInput, StartDrawWeaponInput);
-        UnregistAction(_attackInput, StartAttackInput);
-
-        UnregistAction(_zoomInInput, null, PerformZoomInInput, null);
-        UnregistAction(_zoomOutInput, null, PerformZoomOutInput, null);
-
-        UnregistAction(_inventoryInput, StartInventoryInput);
-    }
+    private InputAction _settingInput;                  // 설정
 
     /// <summary>
     /// 입력 이벤트를 등록하기 위한 메서드
@@ -83,6 +51,51 @@ public partial class PlayerController : MonoBehaviour
         _zoomOutInput = _action.PlayerActionMap.ZoomOut;
 
         _inventoryInput = _action.PlayerActionMap.Inventory;
+
+        _settingInput = _action.PlayerActionMap.Setting;
+        _escapeInput = _action.UIActionMap.Escape;
+    }
+
+    private void OnEnable()
+    {
+        RegistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
+        RegistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+
+        RegistAction(_jumpInput, StartJumpInput);
+
+        RegistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+
+        RegistAction(_drawWeaponInput, StartDrawWeaponInput);
+        RegistAction(_attackInput, StartAttackInput);
+
+        RegistAction(_zoomInInput, null, PerformZoomInInput, null);
+        RegistAction(_zoomOutInput, null, PerformZoomOutInput, null);
+
+        RegistAction(_inventoryInput, StartInventoryInput);
+
+        RegistAction(_escapeInput, StartEscapeInput);
+        RegistAction(_settingInput, StartSettingInput);
+    }
+
+    private void OnDisable()
+    {
+        UnregistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
+        UnregistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+
+        UnregistAction(_jumpInput, StartJumpInput);
+
+        UnregistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+
+        UnregistAction(_drawWeaponInput, StartDrawWeaponInput);
+        UnregistAction(_attackInput, StartAttackInput);
+
+        UnregistAction(_zoomInInput, null, PerformZoomInInput, null);
+        UnregistAction(_zoomOutInput, null, PerformZoomOutInput, null);
+
+        UnregistAction(_inventoryInput, StartInventoryInput);
+
+        UnregistAction(_escapeInput, StartEscapeInput);
+        UnregistAction(_settingInput, StartSettingInput);
     }
 
     #region InputSystem
@@ -282,11 +295,30 @@ public partial class PlayerController : MonoBehaviour
     #region Inventory
     private void StartInventoryInput(InputAction.CallbackContext context)
     {
-        _action.PlayerActionMap.Disable();
+        if (GameManager.Instance.CurrGameMode == GameManager.GameMode.UI)
+            return;
 
-        _playerInput.SwitchCurrentActionMap(UI_ACTION_MAP);
+        GameManager.Instance.SetGameMode(GameManager.GameMode.UI);
+    }
+    #endregion
 
-        _action.UIActionMap.Enable();
+    #region Escape
+    private void StartEscapeInput(InputAction.CallbackContext context)
+    {
+        if (GameManager.Instance.CurrGameMode == GameManager.GameMode.InGame)
+            return;
+
+        GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
+    }
+    #endregion
+
+    #region Setting
+    private void StartSettingInput(InputAction.CallbackContext context)
+    {
+        if (GameManager.Instance.CurrGameMode == GameManager.GameMode.UI)
+            return;
+
+        GameManager.Instance.SetGameMode(GameManager.GameMode.UI);
     }
     #endregion
 }

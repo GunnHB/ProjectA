@@ -6,40 +6,21 @@ using UnityEngine;
 
 public class UIManager : SingletonObject<UIManager>
 {
-    // private const string BUNDLE_UI = "uibundle";
-
     private const string CANVAS_HUD = "HUDCanvas";
     private const string CANVAS_PANEL = "PanelCanvas";
-
-    // private AssetBundle _loadedAssetBundle;
+    private const string CANVAS_POPUP = "PopupCanvas";
 
     private Canvas _hudCanvas;
     private Canvas _panelCanvas;
+    private Canvas _popupCanvas;
 
-    public Canvas HUDCanvas
-    {
-        get => GetCanvasByProperty(_hudCanvas, CANVAS_HUD);
-    }
-
-    public Canvas PanelCanvas
-    {
-        get => GetCanvasByProperty(_panelCanvas, CANVAS_PANEL);
-    }
+    public Canvas HUDCanvas { get => GetCanvasByProperty(ref _panelCanvas, CANVAS_HUD); }
+    public Canvas PanelCanvas { get => GetCanvasByProperty(ref _panelCanvas, CANVAS_PANEL); }
+    public Canvas PopupCanvas { get => GetCanvasByProperty(ref _popupCanvas, CANVAS_POPUP); }
 
     protected override void Awake()
     {
         base.Awake();
-    }
-
-    private void LoadFromFile()
-    {
-        // if (_loadedAssetBundle != null)
-        //     return;
-
-        // _loadedAssetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, BUNDLE_UI));
-
-        // if (_loadedAssetBundle == null)
-        //     Debug.Log("fail to load asset bundle!!!");
     }
 
     /// <summary>
@@ -135,13 +116,17 @@ public class UIManager : SingletonObject<UIManager>
 
     private Canvas GetCanvas<T>() where T : UIBase
     {
-        if (typeof(T).BaseType.Equals(typeof(HUDBase)))
+        if (typeof(T).BaseType.Equals(typeof(UIHUDBase)))
             return HUDCanvas;
+        else if (typeof(T).BaseType.Equals(typeof(UIPanelBase)))
+            return PanelCanvas;
+        else if (typeof(T).BaseType.Equals(typeof(UIPopupBase)))
+            return PopupCanvas;
         else
             return null;
     }
 
-    private Canvas GetCanvasByProperty(Canvas canvas, string canvasName)
+    private Canvas GetCanvasByProperty(ref Canvas canvas, string canvasName)
     {
         if (canvas == null)
         {

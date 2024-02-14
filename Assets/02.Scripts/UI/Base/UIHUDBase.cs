@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PanelBase : UIBase
+public class UIHUDBase : UIBase
 {
     public override void Init()
     {
-        _uiType = UIType.PANEL;
+        _uiType = UIType.HUD;
     }
 }

@@ -93,13 +93,17 @@ public partial class PlayerController : MonoBehaviour
 
         RegistStateDictionary();
         SetPlayerInput();
+
+        GameManager.Instance.InGameModeAction -= InGameModeAction;
+        GameManager.Instance.UIModeAction -= UIModeAction;
+
+        GameManager.Instance.InGameModeAction += InGameModeAction;
+        GameManager.Instance.UIModeAction += UIModeAction;
     }
 
     private void Update()
     {
         _stateMachine.DoOperatorUpdate();
-
-        Debug.Log(_playerInput.currentActionMap);
     }
 
     private void FixedUpdate()
@@ -121,5 +125,23 @@ public partial class PlayerController : MonoBehaviour
     public void SetDoCombo(bool active)
     {
         _doCombo = active;
+    }
+
+    private void InGameModeAction()
+    {
+        _action.UIActionMap.Disable();
+
+        _playerInput.SwitchCurrentActionMap(PLAYER_ACTION_MAP);
+
+        _action.PlayerActionMap.Enable();
+    }
+
+    private void UIModeAction()
+    {
+        _action.PlayerActionMap.Disable();
+
+        _playerInput.SwitchCurrentActionMap(UI_ACTION_MAP);
+
+        _action.UIActionMap.Enable();
     }
 }

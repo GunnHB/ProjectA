@@ -116,6 +116,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Setting"",
+                    ""type"": ""Button"",
+                    ""id"": ""f2a04616-09a0-48aa-9115-5293b44c0de7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -327,14 +336,47 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0ceba20-1010-4aa7-acd5-d09410d8653d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Setting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
             ""name"": ""UIActionMap"",
             ""id"": ""2fdc8122-433f-4ae0-bcd1-406bb2568167"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f1ba34a-6f91-4624-89e0-7ef4119e896e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b7c21b71-0092-402e-88c9-c36145c2e033"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -368,8 +410,10 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerActionMap_ZoomIn = m_PlayerActionMap.FindAction("ZoomIn", throwIfNotFound: true);
         m_PlayerActionMap_ZoomOut = m_PlayerActionMap.FindAction("ZoomOut", throwIfNotFound: true);
         m_PlayerActionMap_Inventory = m_PlayerActionMap.FindAction("Inventory", throwIfNotFound: true);
+        m_PlayerActionMap_Setting = m_PlayerActionMap.FindAction("Setting", throwIfNotFound: true);
         // UIActionMap
         m_UIActionMap = asset.FindActionMap("UIActionMap", throwIfNotFound: true);
+        m_UIActionMap_Escape = m_UIActionMap.FindAction("Escape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -441,6 +485,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_ZoomIn;
     private readonly InputAction m_PlayerActionMap_ZoomOut;
     private readonly InputAction m_PlayerActionMap_Inventory;
+    private readonly InputAction m_PlayerActionMap_Setting;
     public struct PlayerActionMapActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -455,6 +500,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @ZoomIn => m_Wrapper.m_PlayerActionMap_ZoomIn;
         public InputAction @ZoomOut => m_Wrapper.m_PlayerActionMap_ZoomOut;
         public InputAction @Inventory => m_Wrapper.m_PlayerActionMap_Inventory;
+        public InputAction @Setting => m_Wrapper.m_PlayerActionMap_Setting;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -494,6 +540,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @Setting.started += instance.OnSetting;
+            @Setting.performed += instance.OnSetting;
+            @Setting.canceled += instance.OnSetting;
         }
 
         private void UnregisterCallbacks(IPlayerActionMapActions instance)
@@ -528,6 +577,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @Setting.started -= instance.OnSetting;
+            @Setting.performed -= instance.OnSetting;
+            @Setting.canceled -= instance.OnSetting;
         }
 
         public void RemoveCallbacks(IPlayerActionMapActions instance)
@@ -549,10 +601,12 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     // UIActionMap
     private readonly InputActionMap m_UIActionMap;
     private List<IUIActionMapActions> m_UIActionMapActionsCallbackInterfaces = new List<IUIActionMapActions>();
+    private readonly InputAction m_UIActionMap_Escape;
     public struct UIActionMapActions
     {
         private @PlayerInputAction m_Wrapper;
         public UIActionMapActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Escape => m_Wrapper.m_UIActionMap_Escape;
         public InputActionMap Get() { return m_Wrapper.m_UIActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -562,10 +616,16 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionMapActionsCallbackInterfaces.Add(instance);
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         private void UnregisterCallbacks(IUIActionMapActions instance)
         {
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         public void RemoveCallbacks(IUIActionMapActions instance)
@@ -604,8 +664,10 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnZoomIn(InputAction.CallbackContext context);
         void OnZoomOut(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnSetting(InputAction.CallbackContext context);
     }
     public interface IUIActionMapActions
     {
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

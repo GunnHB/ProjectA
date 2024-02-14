@@ -7,7 +7,7 @@ using TMPro;
 
 using UnityEngine;
 
-public class CheckStateHUD : HUDBase
+public class UICheckStateHUD : UIHUDBase
 {
     [SerializeField] private TextMeshProUGUI _stateText;
 

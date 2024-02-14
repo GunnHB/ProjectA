@@ -16,18 +16,18 @@ namespace FSM
         protected float _smoothTime = .15f;
         protected float _dampTarget;
 
-        private CheckStateHUD _stateHud;
+        private UICheckStateHUD _stateHud;
 
         public BaseState(PlayerController player)
         {
             _player = player;
 
             // 하이어라키에 있으면 가져오기
-            _stateHud = UIManager.Instance.GetUI<CheckStateHUD>();
+            _stateHud = UIManager.Instance.GetUI<UICheckStateHUD>();
 
             // 없으면 생성하기
             if (_stateHud == null)
-                _stateHud = UIManager.Instance.LoadUI<CheckStateHUD>();
+                _stateHud = UIManager.Instance.LoadUI<UICheckStateHUD>();
         }
 
         public virtual void OperateEnter()
