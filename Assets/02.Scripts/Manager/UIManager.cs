@@ -119,8 +119,6 @@ public class UIManager : SingletonObject<UIManager>
         if (ui == null)
             return null;
 
-        ui.transform.SetParent(canvas.transform);
-
         return ui;
     }
 

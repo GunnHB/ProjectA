@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,6 +30,24 @@ public abstract class UIBase : MonoBehaviour
     }
 
     public virtual void Init()
+    {
+        SetBlur();
+        SetAnchor();
+    }
+
+    private void SetAnchor()
+    {
+        var rect = this.transform as RectTransform;
+
+        rect.anchorMin = new Vector2(0f, 0f);
+        rect.anchorMax = new Vector2(1f, 1f);
+        rect.pivot = new Vector2(.5f, .5f);
+
+        rect.offsetMin = new Vector2(0f, 0f);
+        rect.offsetMax = new Vector3(0f, 0f);
+    }
+
+    private void SetBlur()
     {
         _blurObj = transform.Find("Blur").gameObject;
 
