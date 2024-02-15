@@ -6,6 +6,8 @@ public class UIPopupBase : UIBase
 {
     public override void Init()
     {
+        base.Init();
+
         _uiType = UIType.POPUP;
     }
 }

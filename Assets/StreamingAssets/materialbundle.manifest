@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1075851792
+CRC: 1056303794
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 766672c243ea9635d84826ccd3737923
+    Hash: 3a5eeeffad258db5d8945326c665a5df
   TypeTreeHash:
     serializedVersion: 2
     Hash: 5e762ccb57c4caaabbb5a4199ac82c23
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 766672c243ea9635d84826ccd3737923
+    Hash: 3a5eeeffad258db5d8945326c665a5df
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -18,5 +18,6 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/04.Images/Materials/UIBlurShader.shader
 - Assets/04.Images/Materials/UIBlurMaterial.mat
 Dependencies: []

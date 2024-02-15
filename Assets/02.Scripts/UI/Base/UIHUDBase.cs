@@ -6,6 +6,8 @@ public class UIHUDBase : UIBase
 {
     public override void Init()
     {
+        base.Init();
+
         _uiType = UIType.HUD;
     }
 }
