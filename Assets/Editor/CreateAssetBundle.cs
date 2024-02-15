@@ -5,7 +5,7 @@ using UnityEngine;
 public class CreateAssetBundle
 {
     [MenuItem("Assets/Build All Asset Bundles")]
-    private static void BuildAssetBundles()
+    public static void BuildAssetBundles()
     {
         string _assetBundleDir = "Assets/StreamingAssets";
 
