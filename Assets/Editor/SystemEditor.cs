@@ -10,19 +10,22 @@ using UnityEditor;
 
 public class SystemEditor : OdinEditorWindow
 {
+    private const string RUN = "Run";
+    private const string HORIZONTALGROUP = "Run/Horizontal";
+
     [MenuItem("CustomEditor/SystemEditor")]
     public static void OpenWindow()
     {
         GetWindow<SystemEditor>();
     }
 
-    [BoxGroup("Play"), Button(ButtonSizes.Gigantic), DisableIf(nameof(IsPlaying)), GUIColor("magenta")]
+    [BoxGroup(RUN), Button(ButtonSizes.Gigantic), DisableIf(nameof(IsPlaying)), GUIColor("magenta")]
     public void Run()
     {
         EditorApplication.isPlaying = true;
     }
 
-    [BoxGroup("Play"), HorizontalGroup("Play/Horizontal"), Button(ButtonSizes.Large)]
+    [BoxGroup(RUN), HorizontalGroup(HORIZONTALGROUP), Button(ButtonSizes.Large)]
     [DisableIf(nameof(IsPlaying)), GUIColor("green")]
     public void BuildBundleAndRun()
     {
@@ -31,7 +34,7 @@ public class SystemEditor : OdinEditorWindow
         EditorApplication.isPlaying = true;
     }
 
-    [BoxGroup("Play"), HorizontalGroup("Play/Horizontal"), Button(ButtonSizes.Large)]
+    [BoxGroup(RUN), HorizontalGroup(HORIZONTALGROUP), Button(ButtonSizes.Large)]
     [EnableIf(nameof(IsPlaying)), GUIColor("cyan")]
     public void Stop()
     {

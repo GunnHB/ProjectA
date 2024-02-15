@@ -12,10 +12,10 @@ public class Inventory : MonoBehaviour
 
     [BoxGroup(CATEGORY), SerializeField]
     private ObjectPool _categoryPool;
-    [BoxGroup(CATEGORY), SerializeField]
-    private List<Sprite> _normalList = new();
-    [BoxGroup(CATEGORY), SerializeField]
-    private List<Sprite> _selectList = new();
+    // [BoxGroup(CATEGORY), SerializeField]
+    // private List<Sprite> _normalList = new();
+    // [BoxGroup(CATEGORY), SerializeField]
+    // private List<Sprite> _selectList = new();
 
     [BoxGroup(SLOTS), SerializeField]
     private ObjectPool _rowPool;
