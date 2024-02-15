@@ -301,7 +301,10 @@ public partial class PlayerController : MonoBehaviour
         GameManager.Instance.SetGameMode(GameManager.GameMode.UI);
         GameManager.Instance.PauseGame(true);
 
-        UIManager.Instance.OpenUI<UIMenuPanel>();
+        var menuPanel = UIManager.Instance.OpenUI<UIMenuPanel>();
+
+        if (menuPanel != null)
+            menuPanel._inventoryAction?.Invoke();
     }
     #endregion
 

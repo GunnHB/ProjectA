@@ -23,6 +23,9 @@ public class UIManager : SingletonObject<UIManager>
         base.Awake();
     }
 
+    /// <summary>
+    /// UI 열기 
+    /// </summary>
     public T OpenUI<T>() where T : UIBase
     {
         var openedUI = GetUI<T>();
