@@ -82,6 +82,11 @@ public partial class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        SetPlayerInput();
+    }
+
+    private void Start()
+    {
         _movement = GetComponent<Movement>();
         _equipment = GetComponent<Equipment>();
         _playerInput = GetComponent<PlayerInput>();
@@ -92,7 +97,6 @@ public partial class PlayerController : MonoBehaviour
         _playerMode = PlayerMode.Normal;
 
         RegistStateDictionary();
-        SetPlayerInput();
 
         GameManager.Instance.InGameModeAction -= InGameModeAction;
         GameManager.Instance.UIModeAction -= UIModeAction;

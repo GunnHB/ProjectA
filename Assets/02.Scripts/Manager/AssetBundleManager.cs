@@ -15,13 +15,31 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
     private AssetBundle _atlasBundle;
     private AssetBundle _materialBundle;
 
-    public AssetBundle UIBundle { get => GetAssetBundle(ref _uiBundle, BUNDLE_UI); }
-    public AssetBundle AtlasBundle { get => GetAssetBundle(ref _atlasBundle, BUNDLE_ATLAS); }
-    public AssetBundle MaterialBundle { get => GetAssetBundle(ref _materialBundle, BUNDLE_MATERIAL); }
-
     protected override void Awake()
     {
         base.Awake();
+
+        GetUIBundle();
+    }
+
+    public AssetBundle GetUIBundle()
+    {
+        if (_uiBundle == null)
+        {
+            var matBundle = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, BUNDLE_MATERIAL));
+
+            if (matBundle == null)
+                return null;
+            else
+            {
+                matBundle.completed += (AsyncOperation operation) =>
+                {
+                    _uiBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, BUNDLE_UI));
+                };
+            }
+        }
+
+        return _uiBundle;
     }
 
     public AssetBundle GetAssetBundle(ref AssetBundle bundle, string path)
@@ -35,5 +53,20 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
         }
 
         return bundle;
+    }
+
+    public AssetBundle GetAssetBundleByAsync(ref AssetBundle bundle1, ref AssetBundle bundle2, string path1, string path2)
+    {
+        if (bundle1 == null)
+        {
+            var bundle = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, path1));
+
+            bundle.completed += (AsyncOperation operation) =>
+            {
+
+            };
+        }
+
+        return bundle1;
     }
 }

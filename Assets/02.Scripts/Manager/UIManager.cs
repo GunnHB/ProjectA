@@ -109,7 +109,7 @@ public class UIManager : SingletonObject<UIManager>
 
         // 에셋번들에서 불러오기
         // 불러오는 에셋의 이름이 같아야 함둥
-        var prefab = AssetBundleManager.Instance.UIBundle.LoadAsset<GameObject>(typeof(T).Name);
+        var prefab = AssetBundleManager.Instance.GetUIBundle().LoadAsset<GameObject>(typeof(T).Name);
 
         if (prefab == null)
             return null;

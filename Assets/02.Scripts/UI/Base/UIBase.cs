@@ -21,7 +21,7 @@ public abstract class UIBase : MonoBehaviour
     [BoxGroup("[Common]"), SerializeField]
     protected UIType _uiType;
 
-    private Image _blurImage;
+    private GameObject _blurObj;
 
     private void Awake()
     {
@@ -30,22 +30,9 @@ public abstract class UIBase : MonoBehaviour
 
     public virtual void Init()
     {
-        SetBlurMaterial();
+        _blurObj = transform.Find("Blur").gameObject;
 
-        if (_blurImage != null && !_needBlur)
-            _blurImage.gameObject.SetActive(false);
-    }
-
-    private void SetBlurMaterial()
-    {
-        _blurImage = transform.Find("Blur").GetComponent<Image>();
-
-        if (_blurImage != null)
-        {
-            var materialObj = AssetBundleManager.Instance.MaterialBundle.LoadAsset<GameObject>("UIBlurMaterial");
-
-            if (materialObj != null && materialObj.TryGetComponent(out Material mat))
-                _blurImage.material = mat;
-        }
+        if (_blurObj != null && !_needBlur)
+            _blurObj.SetActive(false);
     }
 }

@@ -12,6 +12,6 @@ public class AtlasManager : SingletonObject<AtlasManager>
     {
         base.Awake();
 
-        _inventoryAtlas = AssetBundleManager.Instance.AtlasBundle.LoadAsset<SpriteAtlas>("InventoryAtlas");
+        // _inventoryAtlas = AssetBundleManager.Instance.AtlasBundle.LoadAsset<SpriteAtlas>("InventoryAtlas");
     }
 }
