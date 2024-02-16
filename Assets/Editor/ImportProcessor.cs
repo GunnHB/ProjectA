@@ -75,7 +75,9 @@ public class ImportProcessor : AssetPostprocessor
 
     private static void CreateJsonFile()
     {
-        var fileStream = new FileStream(_targetAsset, FileMode.Open, FileAccess.Read, FileShare.Read);
+        string jsonFile = $"{JSON_PATH}{_targetAssetName}.json";
+
+        var fileStream = new FileStream(_targetAsset, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
         var reader = ExcelReaderFactory.CreateReader(fileStream);
         var dataTable = reader.AsDataSet().Tables[0];
@@ -140,7 +142,7 @@ public class ImportProcessor : AssetPostprocessor
 
         var json = ConvertToJson(jsonData);
 
-        File.WriteAllText($"{JSON_PATH}{_targetAssetName}.json", json);
+        File.WriteAllText(jsonFile, json);
 
         reader.Dispose();
         reader.Close();
@@ -157,7 +159,9 @@ public class ImportProcessor : AssetPostprocessor
         builder.Append("\"").Append(_targetSheetName).Append("\": [");
         builder.Append("\n");
 
-        for (int index = 0; index < dataDic.Values.Count; index++)
+        int lastIndex = dataDic.Values.First().Count;
+
+        for (int index = 0; index < lastIndex; index++)
         {
             builder.Append("{");
             builder.Append("\n");
@@ -175,7 +179,7 @@ public class ImportProcessor : AssetPostprocessor
                 builder.Append("\n");
             }
 
-            if (index != dataDic.Values.Count - 1)
+            if (index != lastIndex - 1)
                 builder.Append("},");
             else
                 builder.Append("}");
