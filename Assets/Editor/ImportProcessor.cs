@@ -24,6 +24,8 @@ public class ImportProcessor : AssetPostprocessor
     {
         ImportExcel(importedAssets);
         DeleteExcel(deletedAssets);
+
+        AssetDatabase.Refresh();
     }
 
     #region About excels

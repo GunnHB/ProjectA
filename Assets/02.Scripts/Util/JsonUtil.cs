@@ -1,10 +1,8 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Collections;
-using System.Collections.Generic;
 
-using UnityEngine;
+using System.Collections.Generic;
 
 using ExcelDataReader;
 
@@ -12,6 +10,13 @@ public class JsonUtil
 {
     private const string JSON_PATH = "Assets/Tables/Json/";
     private const string MODEL_PATH = "Assets/02.Scripts/Model/";
+
+    // 저장될 데이터 딕셔너리
+    // <변수명, 데이터>
+    private static Dictionary<string, List<object>> _jsonData = new();
+    // 모델 필드 생성용
+    // <변수명, 타입>
+    private static Dictionary<string, object> _fieldTypeData = new();
 
     public static void CreateJsonFile(string assetPath, string assetName)
     {
@@ -23,7 +28,9 @@ public class JsonUtil
         var dataTable = reader.AsDataSet().Tables[0];   // 항상 첫번째 시트의 데이터를 사용함둥
 
         // 저장될 데이터 딕셔너리
-        Dictionary<string, List<object>> jsonData = new();
+        // Dictionary<string, List<object>> jsonData = new();
+        _jsonData.Clear();
+        _fieldTypeData.Clear();
 
         for (int colIndex = 0; colIndex < dataTable.Columns.Count; colIndex++)
         {
@@ -42,7 +49,33 @@ public class JsonUtil
                     varName = data.ToString();
                 // 변수 타입
                 else if (rowIndex == 1)
+                {
                     varType = data.ToString();
+
+                    switch (varType)
+                    {
+                        case "int":
+                            _fieldTypeData.Add(varName, typeof(System.Int32));
+                            break;
+                        case "long":
+                            _fieldTypeData.Add(varName, typeof(System.Int64));
+                            break;
+                        case "float":
+                            _fieldTypeData.Add(varName, typeof(System.Single));
+                            break;
+                        case "double":
+                            _fieldTypeData.Add(varName, typeof(System.Double));
+                            break;
+                        case "string":
+                            _fieldTypeData.Add(varName, typeof(System.String));
+                            break;
+                        case "bool":
+                        case "boolean":
+                            _fieldTypeData.Add(varName, typeof(System.Boolean));
+                            break;
+                            // enum도 추가해야쥐
+                    }
+                }
                 else
                 {
                     if (varName != string.Empty && varType != string.Empty)
@@ -76,16 +109,16 @@ public class JsonUtil
 
                 if (dataList.Count != 0)
                 {
-                    if (jsonData.ContainsKey(varName))
-                        jsonData[varName] = dataList;
+                    if (_jsonData.ContainsKey(varName))
+                        _jsonData[varName] = dataList;
                     else
-                        jsonData.Add(varName, dataList);
+                        _jsonData.Add(varName, dataList);
                 }
             }
         }
 
-        File.WriteAllText(jsonFile, ToJson(jsonData));
-        CreateModelScript(jsonFile, assetName);
+        File.WriteAllText(jsonFile, ToJson(_jsonData));
+        CreateModelScript(assetName);
 
         reader.Dispose();
         reader.Close();
@@ -137,24 +170,92 @@ public class JsonUtil
         return builder.ToString();
     }
 
-    public static void CreateModelScript(string jsonFile, string assetName)
+    public static void CreateModelScript(string assetName)
     {
-        string scriptContent = ScriptContent(jsonFile, assetName);
+        string scriptContent = ScriptContent(assetName);
 
         File.WriteAllText($"{MODEL_PATH}{assetName}Model.cs", scriptContent);
     }
 
-    public static string ScriptContent(string jsonFile, string assetName)
+    public static string ScriptContent(string assetName)
     {
         StringBuilder builder = new StringBuilder();
 
+        // for using
         builder.Append("using UnityEngine;").Append("\n").Append("\n");
 
-        builder.Append($"public class {assetName}Model : MonoBehaviour ");
+        // for class
+        builder.Append($"public class {assetName}Model : MonoBehaviour ").Append("\n");
         builder.Append("{").Append("\n");
-        // 내부 구현해야 하잖스으음~~
+
+        // for fields
+        builder.Append(GenerateField());
+
+        // for methods
+        builder.Append(GenerateMethod());
+
         builder.Append("\n").Append("}");
 
         return builder.ToString();
+    }
+
+    private static string GenerateField()
+    {
+        StringBuilder builder = new StringBuilder();
+
+        if (_jsonData == null || _jsonData.Count == 0 ||
+            _fieldTypeData == null || _fieldTypeData.Count == 0)
+            return string.Empty;
+
+        foreach (var typeKey in _fieldTypeData.Keys)
+        {
+            builder.Append("\t");
+            builder.Append($"public {_fieldTypeData[typeKey]} {typeKey};");
+            builder.Append("\n");
+        }
+
+        return builder.ToString();
+    }
+
+    private static string GenerateMethod()
+    {
+        StringBuilder builder = new StringBuilder();
+
+        builder.Append(InitializeMethod()).Append("\n");
+        builder.Append(GetModelMethod());
+
+        return builder.ToString();
+    }
+
+    private static string InitializeMethod()
+    {
+        string mehtodString;
+
+        mehtodString = @"
+    /// <summary>
+    /// 초기화하기
+    /// </summary>
+    public void Initialize()
+    {
+
+    }";
+
+        return mehtodString;
+    }
+
+    private static string GetModelMethod()
+    {
+        string mehtodString;
+
+        mehtodString = @"
+    /// <summary>
+    /// 모델 데이터 가져오기
+    /// </summary>    
+    public void GetModel()
+    {
+        
+    }";
+
+        return mehtodString;
     }
 }
