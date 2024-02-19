@@ -16,6 +16,7 @@ public class SingletonCreator : MonoBehaviour
         InitSingletonObject<AssetBundleManager>();
         InitSingletonObject<UIManager>();
         InitSingletonObject<AtlasManager>();
+        InitSingletonObject<ItemManager>();
     }
 
     private void InitSingletonObject<T>()

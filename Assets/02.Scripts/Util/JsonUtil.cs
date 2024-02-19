@@ -231,7 +231,7 @@ public class JsonUtil
     {
         string scriptContent = ScriptContent(assetName);
 
-        File.WriteAllText($"{MODEL_PATH}{assetName}Model.cs", scriptContent);
+        File.WriteAllText($"{MODEL_PATH}Model{assetName}.cs", scriptContent);
     }
 
     public static string ScriptContent(string assetName)
@@ -242,14 +242,14 @@ public class JsonUtil
         builder.Append(GenerateUsing());
 
         // for class
-        builder.Append($"public class {assetName}Model").Append("\n");
+        builder.Append($"public class Model{assetName}").Append("\n");
         builder.Append("{").Append("\n");
 
         // for fields
         builder.Append(GenerateField());
 
-        // for instance
-        builder.Append(GenerateInstance(assetName));
+        // // for instance
+        // builder.Append(GenerateInstance(assetName));
 
         // for collecitons
         builder.Append(GenerateCollections(assetName));
@@ -268,6 +268,7 @@ public class JsonUtil
 
         builder.Append("using System.IO;").Append("\n");
         builder.Append("using System.Collections.Generic;").Append("\n");
+        builder.Append("\n");
 
         return builder.ToString();
     }
@@ -287,6 +288,8 @@ public class JsonUtil
             builder.Append("\n");
         }
 
+        builder.Append("\n");
+
         return builder.ToString();
     }
 
@@ -296,9 +299,9 @@ public class JsonUtil
 
         builder.Append("\n");
         builder.Append("\t");
-        builder.Append($"private static {assetName}Model _instance;").Append("\n");
+        builder.Append($"private static Model{assetName} _instance;").Append("\n");
         builder.Append("\t");
-        builder.Append($"public static {assetName}Model Instance => _instance;").Append("\n");
+        builder.Append($"public static Model{assetName} Instance => _instance;").Append("\n");
         builder.Append("\n");
 
         return builder.ToString();
@@ -309,10 +312,10 @@ public class JsonUtil
         StringBuilder builder = new StringBuilder();
 
         builder.Append("\t");
-        builder.Append($"private static List<{assetName}Model> modelList = new();").Append("\n");
+        builder.Append($"private static List<Model{assetName}> modelList = new();").Append("\n");
         builder.Append("\t");
-        builder.Append($"private static Dictionary<long, {assetName}Model> modelDic = new();").Append("\n");
-        builder.Append("\n");
+        builder.Append($"private static Dictionary<long, Model{assetName}> modelDic = new();").Append("\n");
+        // builder.Append("\n");
 
         return builder.ToString();
     }
@@ -353,12 +356,21 @@ public class JsonUtil
 
         mehtodString = $@"
     /// <summary>
-    /// 모델 데이터 가져오기
+    /// 모델 리스트 가져오기
     /// </summary>
-    public {assetName}Model GetModel(long id)
+    public static List<Model{assetName}> GetModelList()
     {{
-        return modelDic[id];
-    }}";
+        return modelList;
+    }}
+    
+    /// <summary>
+    /// 모델 딕셔너리 가져오기
+    /// </summary>
+    public static Dictionary<long, Model{assetName}> GetDictionary()
+    {{
+        return modelDic;
+    }}
+    ";
 
         return mehtodString;
     }

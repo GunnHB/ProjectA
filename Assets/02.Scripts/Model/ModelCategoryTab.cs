@@ -1,18 +1,15 @@
 using System.IO;
 using System.Collections.Generic;
-public class CategoryTabModel
+
+public class ModelCategoryTab
 {
 	public System.Int64 id;
 	public System.String tab_name;
 	public System.String normal_sprite;
 	public System.String select_sprite;
 
-	private static CategoryTabModel _instance;
-	public static CategoryTabModel Instance => _instance;
-
-	private static List<CategoryTabModel> modelList = new();
-	private static Dictionary<long, CategoryTabModel> modelDic = new();
-
+	private static List<ModelCategoryTab> modelList = new();
+	private static Dictionary<long, ModelCategoryTab> modelDic = new();
 
     /// <summary>
     /// 초기화하기
@@ -27,10 +24,19 @@ public class CategoryTabModel
     }
 
     /// <summary>
-    /// 모델 데이터 가져오기
+    /// 모델 리스트 가져오기
     /// </summary>
-    public CategoryTabModel GetModel(long id)
+    public static List<ModelCategoryTab> GetModelList()
     {
-        return modelDic[id];
+        return modelList;
     }
+    
+    /// <summary>
+    /// 모델 딕셔너리 가져오기
+    /// </summary>
+    public static Dictionary<long, ModelCategoryTab> GetDictionary()
+    {
+        return modelDic;
+    }
+    
 }

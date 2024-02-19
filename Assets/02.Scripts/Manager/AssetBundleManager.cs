@@ -42,6 +42,14 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
         return _uiBundle;
     }
 
+    public AssetBundle GetAtlasBundle()
+    {
+        if (_atlasBundle == null)
+            GetAssetBundle(ref _atlasBundle, BUNDLE_ATLAS);
+
+        return _atlasBundle;
+    }
+
     public AssetBundle GetAssetBundle(ref AssetBundle bundle, string path)
     {
         if (bundle == null)

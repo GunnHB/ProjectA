@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 685127025
+CRC: 236999730
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b82a83a6434cdbc37b8436c0ff2bd39c
+    Hash: a54c8fb7e5a5a759db49350645598920
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 479861d1159337af2d34af030042db82
+    Hash: 46523b4d7317822d506eec87f36f40bf
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: b82a83a6434cdbc37b8436c0ff2bd39c
+    Hash: a54c8fb7e5a5a759db49350645598920
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,11 +23,15 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4f15d7b08f8906e4994874e82560a9d4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1196cc10f411f7146925c3e217339267, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
 - Class: 114
@@ -37,15 +41,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: f9cfa8d737fe0764bb4cdb5d73938f0f, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 8e57643adbe0e2d459d3d6d70483556d, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 992115d8890859f4cb9d460eebd85288, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d225cd0e677e1394c81cfe901667e2cc, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 1196cc10f411f7146925c3e217339267, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 8e57643adbe0e2d459d3d6d70483556d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -99,6 +101,7 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
 Assets:
 - Assets/03.Prefabs/UI/ItemSlot.prefab
+- Assets/03.Prefabs/UI/CategoryTab.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab
 - Assets/03.Prefabs/UI/UICheckStateHUD.prefab

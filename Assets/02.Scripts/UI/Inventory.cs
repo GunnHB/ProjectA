@@ -12,15 +12,33 @@ public class Inventory : MonoBehaviour
 
     [BoxGroup(CATEGORY), SerializeField]
     private ObjectPool _categoryPool;
-    // [BoxGroup(CATEGORY), SerializeField]
-    // private List<Sprite> _normalList = new();
-    // [BoxGroup(CATEGORY), SerializeField]
-    // private List<Sprite> _selectList = new();
 
     [BoxGroup(SLOTS), SerializeField]
     private ObjectPool _rowPool;
 
     public void Init()
+    {
+        InitCategory();
+    }
+
+    private void InitCategory()
+    {
+        for (int index = 0; index < ModelCategoryTab.GetModelList().Count; index++)
+        {
+            var item = ModelCategoryTab.GetModelList()[index];
+            var catePrefab = _categoryPool.GetObject();
+
+            if (catePrefab.TryGetComponent(out CategoryTab tab))
+            {
+                tab.Init(item);
+
+                if (index == 0)
+                    tab.SetSelect(true);
+            }
+        }
+    }
+
+    private void InitSlots()
     {
 
     }
