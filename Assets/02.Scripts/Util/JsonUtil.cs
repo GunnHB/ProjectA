@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 
 using ExcelDataReader;
+using System.Reflection;
 
 public class JsonUtil
 {
@@ -117,7 +118,7 @@ public class JsonUtil
             }
         }
 
-        File.WriteAllText(jsonFile, ToJson(_jsonData));
+        File.WriteAllText(jsonFile, Serialize(_jsonData));
         CreateModelScript(assetName);
 
         reader.Dispose();
@@ -126,7 +127,7 @@ public class JsonUtil
         fileStream.Close();
     }
 
-    public static string ToJson(Dictionary<string, List<object>> dataDic)
+    public static string Serialize(Dictionary<string, List<object>> dataDic)
     {
         StringBuilder builder = new StringBuilder();
 
@@ -170,6 +171,62 @@ public class JsonUtil
         return builder.ToString();
     }
 
+    public static void Deserialize<T>(string jsonData, List<T> list) where T : new()
+    {
+        list.Clear();
+
+        var objectData = jsonData.Split("{");
+
+        // 0, 1번은 의미없는 데이터
+        for (int jsonIndex = 2; jsonIndex < objectData.Length; jsonIndex++)
+        {
+            var data = objectData[jsonIndex];
+
+            var fieldData = data.Split(",");
+
+            T genericData = new T();
+            FieldInfo[] fieldInfos = genericData.GetType().GetFields();
+
+            for (int dataIndex = 0; dataIndex < fieldData.Length; dataIndex++)
+            {
+                // 공백 없애기
+                var item = fieldData[dataIndex].Trim();
+
+                if (string.IsNullOrEmpty(item))
+                    continue;
+
+                var result = item.Replace("}", string.Empty).Replace("]", string.Empty);
+
+                foreach (var field in fieldInfos)
+                {
+                    if (result.Contains(field.Name))
+                    {
+                        var fieldValue = result.Substring(result.IndexOf(":") + 1).Trim();
+                        var fieldType = field.FieldType;
+
+                        if (fieldType == typeof(System.Int32))
+                            field.SetValue(genericData, int.Parse(fieldValue));
+                        else if (fieldType == typeof(System.Int64))
+                            field.SetValue(genericData, long.Parse(fieldValue));
+                        else if (fieldType == typeof(System.Single))
+                            field.SetValue(genericData, float.Parse(fieldValue));
+                        else if (fieldType == typeof(System.Double))
+                            field.SetValue(genericData, double.Parse(fieldValue));
+                        else if (fieldType == typeof(System.Boolean))
+                            field.SetValue(genericData, bool.Parse(fieldValue));
+                        else if (fieldType == typeof(System.String))
+                            field.SetValue(genericData, fieldValue.ToString().Replace("\"", string.Empty));
+
+                        // 할당했으면 foreach문 나가기
+                        break;
+                    }
+                }
+            }
+
+            list.Add(genericData);
+        }
+    }
+
     public static void CreateModelScript(string assetName)
     {
         string scriptContent = ScriptContent(assetName);
@@ -182,19 +239,35 @@ public class JsonUtil
         StringBuilder builder = new StringBuilder();
 
         // for using
-        builder.Append("using UnityEngine;").Append("\n").Append("\n");
+        builder.Append(GenerateUsing());
 
         // for class
-        builder.Append($"public class {assetName}Model : MonoBehaviour ").Append("\n");
+        builder.Append($"public class {assetName}Model").Append("\n");
         builder.Append("{").Append("\n");
 
         // for fields
         builder.Append(GenerateField());
 
+        // for instance
+        builder.Append(GenerateInstance(assetName));
+
+        // for collecitons
+        builder.Append(GenerateCollections(assetName));
+
         // for methods
-        builder.Append(GenerateMethod());
+        builder.Append(GenerateMethod(assetName));
 
         builder.Append("\n").Append("}");
+
+        return builder.ToString();
+    }
+
+    private static string GenerateUsing()
+    {
+        StringBuilder builder = new StringBuilder();
+
+        builder.Append("using System.IO;").Append("\n");
+        builder.Append("using System.Collections.Generic;").Append("\n");
 
         return builder.ToString();
     }
@@ -217,44 +290,75 @@ public class JsonUtil
         return builder.ToString();
     }
 
-    private static string GenerateMethod()
+    private static string GenerateInstance(string assetName)
     {
         StringBuilder builder = new StringBuilder();
 
-        builder.Append(InitializeMethod()).Append("\n");
-        builder.Append(GetModelMethod());
+        builder.Append("\n");
+        builder.Append("\t");
+        builder.Append($"private static {assetName}Model _instance;").Append("\n");
+        builder.Append("\t");
+        builder.Append($"public static {assetName}Model Instance => _instance;").Append("\n");
+        builder.Append("\n");
 
         return builder.ToString();
     }
 
-    private static string InitializeMethod()
+    private static string GenerateCollections(string assetName)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        builder.Append("\t");
+        builder.Append($"private static List<{assetName}Model> modelList = new();").Append("\n");
+        builder.Append("\t");
+        builder.Append($"private static Dictionary<long, {assetName}Model> modelDic = new();").Append("\n");
+        builder.Append("\n");
+
+        return builder.ToString();
+    }
+
+    private static string GenerateMethod(string assetName)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        builder.Append(InitializeMethod(assetName)).Append("\n");
+        builder.Append(GetModelMethod(assetName));
+
+        return builder.ToString();
+    }
+
+    private static string InitializeMethod(string assetName)
     {
         string mehtodString;
 
-        mehtodString = @"
+        mehtodString = $@"
     /// <summary>
     /// 초기화하기
     /// </summary>
-    public void Initialize()
-    {
+    public static void Initialize()
+    {{
+        var jsonData = File.ReadAllText(""{JSON_PATH}{assetName}.json"");
+        JsonUtil.Deserialize(jsonData, modelList);
 
-    }";
+        foreach(var item in modelList)
+            modelDic.Add(item.id, item);
+    }}";
 
         return mehtodString;
     }
 
-    private static string GetModelMethod()
+    private static string GetModelMethod(string assetName)
     {
         string mehtodString;
 
-        mehtodString = @"
+        mehtodString = $@"
     /// <summary>
     /// 모델 데이터 가져오기
-    /// </summary>    
-    public void GetModel()
-    {
-        
-    }";
+    /// </summary>
+    public {assetName}Model GetModel(long id)
+    {{
+        return modelDic[id];
+    }}";
 
         return mehtodString;
     }

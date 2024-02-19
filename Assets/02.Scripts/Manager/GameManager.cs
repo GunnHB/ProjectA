@@ -23,6 +23,13 @@ public class GameManager : SingletonObject<GameManager>
     public UnityAction InGameModeAction;
     public UnityAction UIModeAction;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        CategoryTabModel.Initialize();
+    }
+
     public void SetGameMode(GameMode mode)
     {
         _gameMode = mode;
