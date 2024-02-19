@@ -24,15 +24,19 @@ public class UIButton : Button, IPointerEnterHandler, IPointerExitHandler, IBegi
         ExitAction = exit;
     }
 
-    // public override void OnPointerEnter(PointerEventData eventData)
-    // {
-    //     base.OnPointerEnter(eventData);
-    // }
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        base.OnPointerEnter(eventData);
 
-    // public override void OnPointerExit(PointerEventData eventData)
-    // {
-    //     base.OnPointerExit(eventData);
-    // }
+        EnterAction?.Invoke();
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        base.OnPointerExit(eventData);
+
+        ExitAction?.Invoke();
+    }
 
     // public override void OnPointerDown(PointerEventData eventData)
     // {

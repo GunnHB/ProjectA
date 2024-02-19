@@ -23,6 +23,8 @@ public class CategoryTab : MonoBehaviour
 
     private void Awake()
     {
+        _normalButton.onClick.AddListener(SelectAction);
+
         _normalButton.SetEnterAndExit(EnterAction, ExitAction);
     }
 
@@ -46,6 +48,9 @@ public class CategoryTab : MonoBehaviour
     {
         _normalImage.gameObject.SetActive(!active);
         _selectImage.gameObject.SetActive(active);
+
+        if (!active)
+            _normalImage.color = new Color(1f, 1f, 1f, .5f);
     }
 
     private void SelectAction()
@@ -55,11 +60,11 @@ public class CategoryTab : MonoBehaviour
 
     private void EnterAction()
     {
-
+        _normalImage.color = new Color(1f, 1f, 1f, .75f);
     }
 
     private void ExitAction()
     {
-
+        _normalImage.color = new Color(1f, 1f, 1f, .5f);
     }
 }

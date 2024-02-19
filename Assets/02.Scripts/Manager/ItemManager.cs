@@ -6,13 +6,18 @@ public class ItemManager : SingletonObject<ItemManager>
 {
     private CategoryTab _currentCategoryTab;
 
-    public CategoryTab CurrentCategoryTab;
+    public CategoryTab CurrentCategoryTab => _currentCategoryTab;
+
+    public void SetCurrentCategoryTab(CategoryTab tab)
+    {
+        _currentCategoryTab = tab;
+    }
 
     public void ChangeCurrentCategoryTab(CategoryTab tab)
     {
         _currentCategoryTab.SetSelect(false);
 
-        _currentCategoryTab = tab;
+        SetCurrentCategoryTab(tab);
 
         _currentCategoryTab.SetSelect(true);
     }

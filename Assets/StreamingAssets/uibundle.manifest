@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 236999730
+CRC: 3859516735
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a54c8fb7e5a5a759db49350645598920
+    Hash: cf242d33d9284f931f9aadd35853abc2
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 46523b4d7317822d506eec87f36f40bf
+    Hash: 99c9a93efeb38a04ccaf52cb54960faf
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: a54c8fb7e5a5a759db49350645598920
+    Hash: cf242d33d9284f931f9aadd35853abc2
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -36,6 +36,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1816588ff9c689a4e9348e572adcde16, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
@@ -96,9 +98,19 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.GlyphRect
 - AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.AnimationTriggers
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ColorBlock
+- AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
 - AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Navigation
+- AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.SpriteState
 Assets:
 - Assets/03.Prefabs/UI/ItemSlot.prefab
 - Assets/03.Prefabs/UI/CategoryTab.prefab

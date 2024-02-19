@@ -51,9 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalImage: {fileID: 3542538345962101491}
-  _normaButton: {fileID: 0}
+  _normalButton: {fileID: 2821310105254920235}
   _selectImage: {fileID: 528178921993336575}
-  _selectButton: {fileID: 0}
 --- !u!1 &2082618806399806450
 GameObject:
   m_ObjectHideFlags: 0

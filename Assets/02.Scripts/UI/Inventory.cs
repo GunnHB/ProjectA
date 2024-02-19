@@ -33,7 +33,10 @@ public class Inventory : MonoBehaviour
                 tab.Init(item);
 
                 if (index == 0)
+                {
+                    ItemManager.Instance.SetCurrentCategoryTab(tab);
                     tab.SetSelect(true);
+                }
             }
         }
     }
