@@ -18,5 +18,10 @@ public class ItemSlot : MonoBehaviour
     public void Init(ItemData itemData)
     {
         _itemData = itemData;
+
+        if (_itemData == null)
+            return;
+
+        AtlasManager.Instance.GetSpriteByInventory(_itemData._itemImage);
     }
 }

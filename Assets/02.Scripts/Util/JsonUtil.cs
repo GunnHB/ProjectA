@@ -74,7 +74,21 @@ public class JsonUtil
                         case "boolean":
                             _fieldTypeData.Add(varName, typeof(System.Boolean));
                             break;
-                            // enum도 추가해야쥐
+                        // enum도 추가해야쥐
+                        default:
+                            {
+                                if (varType.Contains("Enum<"))
+                                {
+                                    string enumName = varType.Replace("Enum<", string.Empty).Replace(">", string.Empty);
+
+
+
+                                    // if(enumName == )
+
+                                    // enumStrings
+                                }
+                            }
+                            break;
                     }
                 }
                 else
