@@ -8,6 +8,7 @@ public class ModelItem
 	public System.String desc;
 	public System.String sprite;
 	public System.String prefab;
+	public GameValue.ItemType type;
 
 	private static List<ModelItem> modelList = new();
 	private static Dictionary<long, ModelItem> modelDic = new();

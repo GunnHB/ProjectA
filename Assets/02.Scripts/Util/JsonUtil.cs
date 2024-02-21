@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 using ExcelDataReader;
 using System.Reflection;
+using System;
+using Sirenix.Utilities;
+using UnityEngine;
 
 public class JsonUtil
 {
@@ -74,18 +77,16 @@ public class JsonUtil
                         case "boolean":
                             _fieldTypeData.Add(varName, typeof(System.Boolean));
                             break;
-                        // enum도 추가해야쥐
                         default:
                             {
                                 if (varType.Contains("Enum<"))
                                 {
                                     string enumName = varType.Replace("Enum<", string.Empty).Replace(">", string.Empty);
+                                    Type enumType = typeof(GameValue).GetNestedType(enumName);
+                                    var tempData = Enum.Parse(enumType, "None");
 
-
-
-                                    // if(enumName == )
-
-                                    // enumStrings
+                                    if (tempData != null)
+                                        _fieldTypeData.Add(varName, tempData.GetType());
                                 }
                             }
                             break;
@@ -117,7 +118,12 @@ public class JsonUtil
                                     dataList.Add(data.ToString());
                                 }
                                 break;
-                                // enum도 추가해야쥐
+                            default:
+                                {
+                                    // enum도 추가해야쥐
+                                    dataList.Add($"\"{data}\"");
+                                }
+                                break;
                         }
                     }
                 }
@@ -213,7 +219,10 @@ public class JsonUtil
 
                 foreach (var field in fieldInfos)
                 {
-                    if (result.Contains(field.Name))
+                    var varName = result.Replace("\"", string.Empty);
+                    varName = varName.Substring(0, varName.IndexOf(":"));
+
+                    if (varName.Equals(field.Name))
                     {
                         var fieldValue = result.Substring(result.IndexOf(":") + 1).Trim();
                         var fieldType = field.FieldType;
@@ -298,7 +307,12 @@ public class JsonUtil
         foreach (var typeKey in _fieldTypeData.Keys)
         {
             builder.Append("\t");
-            builder.Append($"public {_fieldTypeData[typeKey]} {typeKey};");
+
+            if (_fieldTypeData[typeKey].ToString().Contains("GameValue+"))
+                builder.Append($"public {_fieldTypeData[typeKey].ToString().Replace("+", ".")} {typeKey};");
+            else
+                builder.Append($"public {_fieldTypeData[typeKey]} {typeKey};");
+
             builder.Append("\n");
         }
 

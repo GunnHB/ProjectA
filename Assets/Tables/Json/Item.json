@@ -1,11 +1,12 @@
 {
-"Data": [
-{
-"id": 10101001,
-"name": "ITEM_WEAPON_ONEHAND_001",
-"desc": "ITEM_WEAPON_ONEHAND_DESC_001",
-"sprite": "item_weapon_onehand_001",
-"prefab": "item_weapon_onehand_001"
-}
-]
+    "Data": [
+        {
+            "id": 10101001,
+            "name": "ITEM_WEAPON_ONEHAND_001",
+            "desc": "ITEM_WEAPON_ONEHAND_DESC_001",
+            "sprite": "item_weapon_onehand_001",
+            "prefab": "item_weapon_onehand_001",
+            "type": "Weapon"
+        }
+    ]
 }

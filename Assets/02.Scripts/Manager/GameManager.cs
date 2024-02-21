@@ -27,7 +27,13 @@ public class GameManager : SingletonObject<GameManager>
     {
         base.Awake();
 
+        InitializeModel();
+    }
+
+    private void InitializeModel()
+    {
         ModelCategoryTab.Initialize();
+        ModelItem.Initialize();
     }
 
     public void SetGameMode(GameMode mode)

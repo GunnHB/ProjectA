@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
+using System.Runtime.Serialization;
 
 public static class GameValue
 {
@@ -10,12 +6,19 @@ public static class GameValue
 
     public enum ItemType
     {
+        [EnumMember(Value = "None")]
         None = -1,
+        [EnumMember(Value = "Weapon")]
         Weapon,
+        [EnumMember(Value = "Shield")]
         Sheld,
+        [EnumMember(Value = "Bow")]
         Bow,
+        [EnumMember(Value = "Armor")]
         Armor,
+        [EnumMember(Value = "Food")]
         Food,
+        [EnumMember(Value = "Etc")]
         Etc,
     }
 }
