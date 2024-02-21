@@ -4,9 +4,10 @@ using System.Collections.Generic;
 public class ModelCategoryTab
 {
 	public System.Int64 id;
-	public System.String tab_name;
+	public GameValue.ItemType type;
 	public System.String normal_sprite;
 	public System.String select_sprite;
+	public System.Int32 order;
 
 	private static List<ModelCategoryTab> modelList = new();
 	private static Dictionary<long, ModelCategoryTab> modelDic = new();

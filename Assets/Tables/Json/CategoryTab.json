@@ -1,40 +1,46 @@
 {
-    "Data": [
-        {
-            "id": 10001001,
-            "tab_name": "sword",
-            "normal_sprite": "sword_unselect",
-            "select_sprite": "sword_select"
-        },
-        {
-            "id": 10001002,
-            "tab_name": "shield",
-            "normal_sprite": "shield_unselect",
-            "select_sprite": "shield_select"
-        },
-        {
-            "id": 10001003,
-            "tab_name": "bow",
-            "normal_sprite": "bow_unselect",
-            "select_sprite": "bow_select"
-        },
-        {
-            "id": 10001004,
-            "tab_name": "armor",
-            "normal_sprite": "armor_unselect",
-            "select_sprite": "armor_select"
-        },
-        {
-            "id": 10001005,
-            "tab_name": "food",
-            "normal_sprite": "apple_unselect",
-            "select_sprite": "apple_select"
-        },
-        {
-            "id": 10001006,
-            "tab_name": "etc",
-            "normal_sprite": "etc_unselect",
-            "select_sprite": "etc_select"
-        }
-    ]
+"Data": [
+{
+"id": 10001001,
+"type": "sword",
+"normal_sprite": "sword_unselect",
+"select_sprite": "sword_select",
+"order": 1
+},
+{
+"id": 10001002,
+"type": "shield",
+"normal_sprite": "shield_unselect",
+"select_sprite": "shield_select",
+"order": 2
+},
+{
+"id": 10001003,
+"type": "bow",
+"normal_sprite": "bow_unselect",
+"select_sprite": "bow_select",
+"order": 3
+},
+{
+"id": 10001004,
+"type": "armor",
+"normal_sprite": "armor_unselect",
+"select_sprite": "armor_select",
+"order": 4
+},
+{
+"id": 10001005,
+"type": "food",
+"normal_sprite": "apple_unselect",
+"select_sprite": "apple_select",
+"order": 5
+},
+{
+"id": 10001006,
+"type": "etc",
+"normal_sprite": "etc_unselect",
+"select_sprite": "etc_select",
+"order": 6
+}
+]
 }
