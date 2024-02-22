@@ -5,6 +5,7 @@
 "name": "ITEM_WEAPON_ONEHAND_001",
 "desc": "ITEM_WEAPON_ONEHAND_DESC_001",
 "sprite": "item_weapon_onehand_001",
+"stackable": false,
 "prefab": "item_weapon_onehand_001",
 "type": "Weapon"
 },
@@ -13,6 +14,7 @@
 "name": "ITEM_WEAPON_ONEHAND_002",
 "desc": "ITEM_WEAPON_ONEHAND_DESC_002",
 "sprite": "item_weapon_onehand_002",
+"stackable": false,
 "prefab": "item_weapon_onehand_002",
 "type": "Weapon"
 }

@@ -96,7 +96,7 @@ MonoBehaviour:
   _itemImage: {fileID: 7246647406896189844}
   _equipObj: {fileID: 5667328255750765647}
   _amountText: {fileID: 7391512050349704237}
-  _frameObj: {fileID: 3840229366654589941}
+  _frameImage: {fileID: 8658157478064600934}
   _slotButton: {fileID: 3686976977932591110}
 --- !u!114 &3686976977932591110
 MonoBehaviour:

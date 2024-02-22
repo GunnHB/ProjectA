@@ -52,7 +52,8 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public void ChangeCurrentItemSlot(ItemSlot newSlot)
     {
-        _currentItemSlot.SetSelect(false);
+        if (_currentItemSlot != null)
+            _currentItemSlot.SetSelect(false);
 
         SetCurrentItemSlot(newSlot);
 

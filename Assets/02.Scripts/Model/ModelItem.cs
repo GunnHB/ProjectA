@@ -9,6 +9,7 @@ namespace ModelItem
 		public System.String name;
 		public System.String desc;
 		public System.String sprite;
+		public System.Boolean stackable;
 		public System.String prefab;
 		public GameValue.ItemType type;
     }

@@ -67,7 +67,7 @@ public class Inventory : MonoBehaviour
             if (isLastIndex && remain == 0)
                 break;
 
-            GetRowObject(index, isLastIndex && remain != 0);
+            GetRowObject(index, index == count && remain != 0);
         }
     }
 

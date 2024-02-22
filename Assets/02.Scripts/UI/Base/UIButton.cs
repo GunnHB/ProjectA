@@ -8,15 +8,15 @@ using UnityEngine.EventSystems;
 
 public class UIButton : Button, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public UnityAction EnterAction;
-    public UnityAction ExitAction;
+    private UnityAction EnterAction;
+    private UnityAction ExitAction;
 
-    public UnityAction DownAction;
-    public UnityAction UpAction;
+    private UnityAction DownAction;
+    private UnityAction UpAction;
 
-    public UnityAction BeginAction;
-    public UnityAction DragAction;
-    public UnityAction EndAction;
+    private UnityAction BeginAction;
+    private UnityAction DragAction;
+    private UnityAction EndAction;
 
     public void SetEnterAndExit(UnityAction enter = null, UnityAction exit = null)
     {

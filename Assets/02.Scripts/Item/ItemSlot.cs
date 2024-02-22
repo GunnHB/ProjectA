@@ -11,7 +11,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Image _itemImage;
     [SerializeField] private GameObject _equipObj;
     [SerializeField] private TextMeshProUGUI _amountText;
-    [SerializeField] private GameObject _frameObj;
+    [SerializeField] private Image _frameImage;
     [SerializeField] private UIButton _slotButton;
 
     private ModelItem.Data _itemData;
@@ -23,11 +23,37 @@ public class ItemSlot : MonoBehaviour
         if (itemData == null)
             return;
 
+        SetButtonAction();
+
         SetImage();
         SetEquip();
         SetAmount();
 
         SetSelect(false);
+    }
+
+    private void SetButtonAction()
+    {
+        _slotButton.onClick.AddListener(SelectAction);
+        _slotButton.SetEnterAndExit(EnterAction, ExitAction);
+    }
+
+    private void EnterAction()
+    {
+        if (ItemManager.Instance.CurrentItemSlot == this)
+            return;
+
+        ActiveFrame(true);
+
+        _frameImage.color = new Color(1f, 1f, 1f, .75f);
+    }
+
+    private void ExitAction()
+    {
+        if (ItemManager.Instance.CurrentItemSlot == this)
+            return;
+
+        ActiveFrame(false);
     }
 
     private void SetImage()
@@ -43,16 +69,34 @@ public class ItemSlot : MonoBehaviour
 
     private void SetAmount()
     {
-        // var amountDic = ItemManager.Instance.ThisInventoryData._itemAmount;
+        var amountDic = ItemManager.Instance.ThisInventoryData._itemAmount;
 
-        // if (!amountDic.ContainsKey(_itemData) || amountDic[_itemData] == 1)
-        //     _amountText.gameObject.SetActive(false);
-        // else
-        //     _amountText.text = amountDic[_itemData].ToString();
+        if (!amountDic.ContainsKey(_itemData) || amountDic[_itemData] == 1)
+            _amountText.gameObject.SetActive(false);
+        else
+        {
+            if (!_itemData.stackable)
+                _amountText.gameObject.SetActive(false);
+            else
+                _amountText.text = amountDic[_itemData].ToString();
+        }
+    }
+
+    private void ActiveFrame(bool active)
+    {
+        _frameImage.gameObject.SetActive(active);
     }
 
     public void SetSelect(bool active)
     {
-        _frameObj.SetActive(active);
+        ActiveFrame(active);
+
+        if (active)
+            _frameImage.color = new Color(1f, 1f, 1f, 1f);
+    }
+
+    private void SelectAction()
+    {
+        ItemManager.Instance.ChangeCurrentItemSlot(this);
     }
 }
