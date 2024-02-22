@@ -236,6 +236,13 @@ public class JsonUtil
                             field.SetValue(genericData, bool.Parse(fieldValue));
                         else if (fieldType == typeof(System.String))
                             field.SetValue(genericData, fieldValue.ToString().Replace("\"", string.Empty));
+                        else
+                        {
+                            var tempData = Enum.Parse(fieldType, fieldValue.ToString().Replace("\"", string.Empty));
+
+                            if (tempData != null)
+                                field.SetValue(genericData, tempData);
+                        }
 
                         // 할당했으면 foreach문 나가기
                         break;

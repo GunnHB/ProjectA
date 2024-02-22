@@ -215,8 +215,8 @@ MonoBehaviour:
     _prefabObj: {fileID: 119872066677085660, guid: b019280789c1795499bb667a97211cf9, type: 3}
     _parentObj: {fileID: 993667717658251856}
   _rowPool:
-    _prefabObj: {fileID: 0}
-    _parentObj: {fileID: 0}
+    _prefabObj: {fileID: 6480210795543567875, guid: 2fe10e9143be7e242974a23ff2ae3944, type: 3}
+    _parentObj: {fileID: 7830965272654008124}
 --- !u!1 &2253912096598416575
 GameObject:
   m_ObjectHideFlags: 0

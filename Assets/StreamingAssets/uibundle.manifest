@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3859516735
+CRC: 3977016841
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cf242d33d9284f931f9aadd35853abc2
+    Hash: c8d7a9ba1c01c04c2f25c119cc7ff9e6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 99c9a93efeb38a04ccaf52cb54960faf
+    Hash: 1ba4b466d5ebcf5429bdee954b11659e
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: cf242d33d9284f931f9aadd35853abc2
+    Hash: c8d7a9ba1c01c04c2f25c119cc7ff9e6
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -112,7 +112,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
-- Assets/03.Prefabs/UI/ItemSlot.prefab
+- Assets/03.Prefabs/UI/InventorySlot.prefab
 - Assets/03.Prefabs/UI/CategoryTab.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab

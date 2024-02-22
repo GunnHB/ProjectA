@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemManager : SingletonObject<ItemManager>
 {
@@ -11,6 +12,11 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public CategoryTab CurrentCategoryTab => _currentCategoryTab;
     public ItemSlot CurrentItemSlot => _currentItemSlot;
+
+    private InventoryData _inventoryData = null;
+    public InventoryData ThisInventoryData => _inventoryData;
+
+    public UnityAction<ModelCategoryTab.Data> TabAction;
 
     protected override void Awake()
     {
@@ -27,16 +33,16 @@ public class ItemManager : SingletonObject<ItemManager>
             CreateInventory();
     }
 
-    private static void LoadInventory()
+    private void LoadInventory()
     {
         Debug.Log("이쓰요");
     }
 
-    private static void CreateInventory()
+    private void CreateInventory()
     {
         Debug.Log("업쓰요");
 
-        var inventoryData = new InventoryData();
+        _inventoryData = new InventoryData();
     }
 
     public void SetCurrentItemSlot(ItemSlot newSlot)

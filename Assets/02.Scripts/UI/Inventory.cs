@@ -16,8 +16,15 @@ public class Inventory : MonoBehaviour
     [BoxGroup(SLOTS), SerializeField]
     private ObjectPool _rowPool;
 
+    private Dictionary<GameValue.ItemType, List<ModelItem.Data>> _inventoryDic;
+
     public void Init()
     {
+        _inventoryDic = ItemManager.Instance.ThisInventoryData._inventoryDic;
+
+        ItemManager.Instance.TabAction = null;
+        ItemManager.Instance.TabAction = InitSlots;
+
         InitCategory();
     }
 
@@ -43,8 +50,32 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void InitSlots()
+    private void InitSlots(ModelCategoryTab.Data cateData)
     {
+        if (_inventoryDic[cateData.type].Count == 0)
+            return;
 
+        int count = _inventoryDic[cateData.type].Count / GameValue._inventoryRowAmount;   // inventoryrow 개수
+        int remain = _inventoryDic[cateData.type].Count % GameValue._inventoryRowAmount;  // 슬롯의 나머지
+
+        _rowPool.ReturnAllObject();
+
+        for (int index = 0; index < count + 1; index++)
+        {
+            bool isLastIndex = index == count;
+
+            if (isLastIndex && remain == 0)
+                break;
+
+            GetRowObject(index, isLastIndex && remain != 0);
+        }
+    }
+
+    private void GetRowObject(int rowIndex, bool doRemain)
+    {
+        var rowObj = _rowPool.GetObject();
+
+        if (rowObj.TryGetComponent(out InventoryRow invenRow))
+            invenRow.Init(rowIndex, doRemain);
     }
 }

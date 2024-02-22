@@ -38,12 +38,17 @@ public class ItemSlot : MonoBehaviour
 
     private void SetEquip()
     {
-
+        _equipObj.SetActive(false);
     }
 
     private void SetAmount()
     {
+        // var amountDic = ItemManager.Instance.ThisInventoryData._itemAmount;
 
+        // if (!amountDic.ContainsKey(_itemData) || amountDic[_itemData] == 1)
+        //     _amountText.gameObject.SetActive(false);
+        // else
+        //     _amountText.text = amountDic[_itemData].ToString();
     }
 
     public void SetSelect(bool active)

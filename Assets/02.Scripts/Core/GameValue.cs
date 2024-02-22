@@ -12,6 +12,9 @@ public static class GameValue
     public static int _initFoodItemAmount = 30;
     public static int _initDefaultItemAmount = 30;
 
+    // 한 줄에 들어가는 슬롯 수
+    public static int _inventoryRowAmount = 6;
+
     public enum ItemType
     {
         [EnumMember(Value = "None")]

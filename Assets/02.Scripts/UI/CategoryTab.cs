@@ -19,7 +19,8 @@ public class CategoryTab : MonoBehaviour
     [BoxGroup(BOX_GROUP_SELECT), SerializeField]
     private Image _selectImage;
 
-    private ModelCategoryTab.Data _model = null;
+    private ModelCategoryTab.Data _data = null;
+    public ModelCategoryTab.Data ThisData => _data;
 
     private void Awake()
     {
@@ -30,9 +31,9 @@ public class CategoryTab : MonoBehaviour
 
     public void Init(ModelCategoryTab.Data model)
     {
-        _model = model;
+        _data = model;
 
-        if (_model == null)
+        if (_data == null)
             return;
 
         _normalImage.sprite = AtlasManager.Instance.InventoryAtlas.GetSprite(model.normal_sprite);
@@ -51,6 +52,8 @@ public class CategoryTab : MonoBehaviour
 
         if (!active)
             _normalImage.color = new Color(1f, 1f, 1f, .5f);
+        else
+            ItemManager.Instance.TabAction?.Invoke(_data);
     }
 
     private void SelectAction()
