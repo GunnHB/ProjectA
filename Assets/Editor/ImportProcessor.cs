@@ -61,14 +61,14 @@ public class ImportProcessor : AssetPostprocessor
         {
             // 기존 파일이 수정됨
             if (_previousExcelWriteTime[_targetAsset] != lastWriteTime)
-                JsonUtil.CreateJsonFile(_targetAsset, _targetAssetName);
+                JsonUtil.CreateJsonFileByExcel(_targetAsset, _targetAssetName);
         }
         else
         {
             _previousExcelWriteTime.Add(_targetAsset, File.GetLastWriteTime(_targetAsset));
 
             // json 파일 생성
-            JsonUtil.CreateJsonFile(_targetAsset, _targetAssetName);
+            JsonUtil.CreateJsonFileByExcel(_targetAsset, _targetAssetName);
         }
     }
     #endregion

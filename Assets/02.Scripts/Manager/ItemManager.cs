@@ -4,20 +4,65 @@ using UnityEngine;
 
 public class ItemManager : SingletonObject<ItemManager>
 {
+    private const string INVENTORY_DATA_PATH = "Assets/Tables/Json/InventoryData.json";
+
     private CategoryTab _currentCategoryTab;
+    private ItemSlot _currentItemSlot;
 
     public CategoryTab CurrentCategoryTab => _currentCategoryTab;
+    public ItemSlot CurrentItemSlot => _currentItemSlot;
 
-    public void SetCurrentCategoryTab(CategoryTab tab)
+    protected override void Awake()
     {
-        _currentCategoryTab = tab;
+        base.Awake();
+
+        InitInventoryData();
     }
 
-    public void ChangeCurrentCategoryTab(CategoryTab tab)
+    private void InitInventoryData()
+    {
+        if (JsonUtil.IsExist(INVENTORY_DATA_PATH))
+            LoadInventory();
+        else
+            CreateInventory();
+    }
+
+    private static void LoadInventory()
+    {
+        Debug.Log("이쓰요");
+    }
+
+    private static void CreateInventory()
+    {
+        Debug.Log("업쓰요");
+
+        var inventoryData = new InventoryData();
+    }
+
+    public void SetCurrentItemSlot(ItemSlot newSlot)
+    {
+        _currentItemSlot = newSlot;
+    }
+
+    public void ChangeCurrentItemSlot(ItemSlot newSlot)
+    {
+        _currentItemSlot.SetSelect(false);
+
+        SetCurrentItemSlot(newSlot);
+
+        _currentItemSlot.SetSelect(true);
+    }
+
+    public void SetCurrentCategoryTab(CategoryTab newTab)
+    {
+        _currentCategoryTab = newTab;
+    }
+
+    public void ChangeCurrentCategoryTab(CategoryTab newTab)
     {
         _currentCategoryTab.SetSelect(false);
 
-        SetCurrentCategoryTab(tab);
+        SetCurrentCategoryTab(newTab);
 
         _currentCategoryTab.SetSelect(true);
     }

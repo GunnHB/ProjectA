@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,6 @@ using System.Collections.Generic;
 
 using ExcelDataReader;
 using System.Reflection;
-using System;
-using Sirenix.Utilities;
-using UnityEngine;
 
 public class JsonUtil
 {
@@ -22,7 +20,7 @@ public class JsonUtil
     // <변수명, 타입>
     private static Dictionary<string, object> _fieldTypeData = new();
 
-    public static void CreateJsonFile(string assetPath, string assetName)
+    public static void CreateJsonFileByExcel(string assetPath, string assetName)
     {
         string jsonFile = $"{JSON_PATH}{assetName}.json";
 
@@ -32,7 +30,6 @@ public class JsonUtil
         var dataTable = reader.AsDataSet().Tables[0];   // 항상 첫번째 시트의 데이터를 사용함둥
 
         // 저장될 데이터 딕셔너리
-        // Dictionary<string, List<object>> jsonData = new();
         _jsonData.Clear();
         _fieldTypeData.Clear();
 
@@ -301,27 +298,6 @@ public class JsonUtil
         {GenerateField()}
     }}");
 
-        // builder.Append("public class Data").Append("\n");
-        // builder.Append("{");
-
-        // if (_jsonData == null || _jsonData.Count == 0 ||
-        //     _fieldTypeData == null || _fieldTypeData.Count == 0)
-        //     return string.Empty;
-
-        // foreach (var typeKey in _fieldTypeData.Keys)
-        // {
-        //     builder.Append("\t");
-
-        //     if (_fieldTypeData[typeKey].ToString().Contains("GameValue+"))
-        //         builder.Append($"public {_fieldTypeData[typeKey].ToString().Replace("+", ".")} {typeKey};");
-        //     else
-        //         builder.Append($"public {_fieldTypeData[typeKey]} {typeKey};");
-
-        //     builder.Append("\n");
-        // }
-
-        // builder.Append("}");
-
         return builder.ToString();
     }
 
@@ -339,23 +315,6 @@ public class JsonUtil
         public static List<Data> DataList => _dataList;
         public static Dictionary<long, Data> DataDic => _dataDic;
     }}");
-
-        // builder.Append("public class Model");
-        // builder.Append("\n").Append("{");
-
-        // builder.Append("\t");
-        // builder.Append("private static List<Data> _dataList = new();");
-        // builder.Append("\n");
-        // builder.Append("private static Dictionary<long, Data> _dataDic = new();");
-        // builder.Append("\n");
-
-        // builder.Append(InitializeMethod(assetName));
-        // builder.Append("\n").Append("\n");
-
-        // builder.Append("public static List<Data> DataList => _dataList;");
-        // builder.Append("\n");
-        // builder.Append("public static Dictionary<long, Data> DataDic => _dataDic;");
-        // builder.Append("\n").Append("}");
 
         return builder.ToString();
     }
@@ -391,43 +350,6 @@ public class JsonUtil
         return builder.ToString();
     }
 
-    // private static string GenerateInstance(string assetName)
-    // {
-    //     StringBuilder builder = new StringBuilder();
-
-    //     builder.Append("\n");
-    //     builder.Append("\t");
-    //     builder.Append($"private static Model{assetName} _instance;").Append("\n");
-    //     builder.Append("\t");
-    //     builder.Append($"public static Model{assetName} Instance => _instance;").Append("\n");
-    //     builder.Append("\n");
-
-    //     return builder.ToString();
-    // }
-
-    private static string GenerateCollections(string assetName)
-    {
-        StringBuilder builder = new StringBuilder();
-
-        builder.Append("\t");
-        builder.Append($"private static List<Model{assetName}> modelList = new();").Append("\n");
-        builder.Append("\t");
-        builder.Append($"private static Dictionary<long, Model{assetName}> modelDic = new();").Append("\n");
-        // builder.Append("\n");
-
-        return builder.ToString();
-    }
-
-    private static string GenerateMethod(string assetName)
-    {
-        StringBuilder builder = new StringBuilder();
-
-        builder.Append(InitializeMethod(assetName)).Append("\n");
-        builder.Append(GetModelMethod(assetName));
-
-        return builder.ToString();
-    }
-
     private static string InitializeMethod(string assetName)
     {
         string mehtodString;
@@ -448,28 +370,8 @@ public class JsonUtil
         return mehtodString;
     }
 
-    private static string GetModelMethod(string assetName)
+    public static bool IsExist(string path)
     {
-        string mehtodString;
-
-        mehtodString = $@"
-    /// <summary>
-    /// 모델 리스트 가져오기
-    /// </summary>
-    public static List<Model{assetName}> GetModelList()
-    {{
-        return modelList;
-    }}
-    
-    /// <summary>
-    /// 모델 딕셔너리 가져오기
-    /// </summary>
-    public static Dictionary<long, Model{assetName}> GetDictionary()
-    {{
-        return modelDic;
-    }}
-    ";
-
-        return mehtodString;
+        return File.Exists(path);
     }
 }

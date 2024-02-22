@@ -5,7 +5,7 @@
 "type": "sword",
 "normal_sprite": "sword_unselect",
 "select_sprite": "sword_select",
-"order": 10
+"order": 1
 },
 {
 "id": 10001002,

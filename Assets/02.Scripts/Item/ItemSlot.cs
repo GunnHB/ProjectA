@@ -12,16 +12,42 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private GameObject _equipObj;
     [SerializeField] private TextMeshProUGUI _amountText;
     [SerializeField] private GameObject _frameObj;
+    [SerializeField] private UIButton _slotButton;
 
-    private ItemData _itemData;
+    private ModelItem.Data _itemData;
 
-    public void Init(ItemData itemData)
+    public void Init(ModelItem.Data itemData)
     {
         _itemData = itemData;
 
-        if (_itemData == null)
+        if (itemData == null)
             return;
 
-        AtlasManager.Instance.GetSpriteByInventory(_itemData._itemImage);
+        SetImage();
+        SetEquip();
+        SetAmount();
+
+        SetSelect(false);
+    }
+
+    private void SetImage()
+    {
+        if (_itemData.sprite != null)
+            AtlasManager.Instance.GetSpriteByInventory(_itemData.sprite);
+    }
+
+    private void SetEquip()
+    {
+
+    }
+
+    private void SetAmount()
+    {
+
+    }
+
+    public void SetSelect(bool active)
+    {
+        _frameObj.SetActive(active);
     }
 }
