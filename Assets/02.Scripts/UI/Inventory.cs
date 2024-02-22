@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Sirenix.OdinInspector;
 
 using UnityEngine;
@@ -23,9 +23,11 @@ public class Inventory : MonoBehaviour
 
     private void InitCategory()
     {
-        for (int index = 0; index < ModelCategoryTab.Model.DataList.Count; index++)
+        var sortedList = ModelCategoryTab.Model.DataList.OrderBy(x => x.order).ToList();
+
+        for (int index = 0; index < sortedList.Count; index++)
         {
-            var item = ModelCategoryTab.Model.DataList[index];
+            var item = sortedList[index];
             var catePrefab = _categoryPool.GetObject();
 
             if (catePrefab.TryGetComponent(out CategoryTab tab))
