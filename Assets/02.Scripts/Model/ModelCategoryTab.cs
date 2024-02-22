@@ -1,43 +1,35 @@
 using System.IO;
 using System.Collections.Generic;
 
-public class ModelCategoryTab
+namespace ModelCategoryTab
 {
-	public System.Int64 id;
-	public GameValue.ItemType type;
-	public System.String normal_sprite;
-	public System.String select_sprite;
-	public System.Int32 order;
-
-	private static List<ModelCategoryTab> modelList = new();
-	private static Dictionary<long, ModelCategoryTab> modelDic = new();
-
-    /// <summary>
-    /// 초기화하기
-    /// </summary>
-    public static void Initialize()
+    public class Data
     {
-        var jsonData = File.ReadAllText("Assets/Tables/Json/CategoryTab.json");
-        JsonUtil.Deserialize(jsonData, modelList);
-
-        foreach(var item in modelList)
-            modelDic.Add(item.id, item);
+        public System.Int64 id;
+        public GameValue.ItemType type;
+        public System.String normal_sprite;
+        public System.String select_sprite;
+        public System.Int32 order;
     }
 
-    /// <summary>
-    /// 모델 리스트 가져오기
-    /// </summary>
-    public static List<ModelCategoryTab> GetModelList()
+    public class Model
     {
-        return modelList;
+        private static List<Data> _dataList = new();
+        private static Dictionary<long, Data> _dataDic = new();
+
+        /// <summary>
+        /// 초기화하기
+        /// </summary>
+        public static void Initialize()
+        {
+            var jsonData = File.ReadAllText("Assets/Tables/Json/CategoryTab.json");
+            JsonUtil.Deserialize(jsonData, _dataList);
+
+            foreach (var item in _dataList)
+                _dataDic.Add(item.id, item);
+        }
+
+        public static List<Data> DataList => _dataList;
+        public static Dictionary<long, Data> DataDic => _dataDic;
     }
-    
-    /// <summary>
-    /// 모델 딕셔너리 가져오기
-    /// </summary>
-    public static Dictionary<long, ModelCategoryTab> GetDictionary()
-    {
-        return modelDic;
-    }
-    
 }

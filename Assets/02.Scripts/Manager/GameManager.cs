@@ -32,8 +32,8 @@ public class GameManager : SingletonObject<GameManager>
 
     private void InitializeModel()
     {
-        ModelCategoryTab.Initialize();
-        ModelItem.Initialize();
+        ModelCategoryTab.Model.Initialize();
+        ModelItem.Model.Initialize();
     }
 
     public void SetGameMode(GameMode mode)

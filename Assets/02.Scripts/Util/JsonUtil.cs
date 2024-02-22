@@ -264,21 +264,16 @@ public class JsonUtil
         // for using
         builder.Append(GenerateUsing());
 
-        // for class
-        builder.Append($"public class Model{assetName}").Append("\n");
-        builder.Append("{").Append("\n");
+        // for namespace
+        builder.Append($"namespace Model{assetName}");
+        builder.Append("\n").Append("{");
 
-        // for fields
-        builder.Append(GenerateField());
+        // for data
+        builder.Append(GenerateData());
+        builder.Append("\n");
 
-        // // for instance
-        // builder.Append(GenerateInstance(assetName));
-
-        // for collecitons
-        builder.Append(GenerateCollections(assetName));
-
-        // for methods
-        builder.Append(GenerateMethod(assetName));
+        // for model
+        builder.Append(GenerateModel(assetName));
 
         builder.Append("\n").Append("}");
 
@@ -296,6 +291,75 @@ public class JsonUtil
         return builder.ToString();
     }
 
+    private static string GenerateData()
+    {
+        StringBuilder builder = new();
+
+        builder.Append(@$"
+    public class Data
+    {{
+        {GenerateField()}
+    }}");
+
+        // builder.Append("public class Data").Append("\n");
+        // builder.Append("{");
+
+        // if (_jsonData == null || _jsonData.Count == 0 ||
+        //     _fieldTypeData == null || _fieldTypeData.Count == 0)
+        //     return string.Empty;
+
+        // foreach (var typeKey in _fieldTypeData.Keys)
+        // {
+        //     builder.Append("\t");
+
+        //     if (_fieldTypeData[typeKey].ToString().Contains("GameValue+"))
+        //         builder.Append($"public {_fieldTypeData[typeKey].ToString().Replace("+", ".")} {typeKey};");
+        //     else
+        //         builder.Append($"public {_fieldTypeData[typeKey]} {typeKey};");
+
+        //     builder.Append("\n");
+        // }
+
+        // builder.Append("}");
+
+        return builder.ToString();
+    }
+
+    private static string GenerateModel(string assetName)
+    {
+        StringBuilder builder = new();
+
+        builder.Append(@$"
+    public class Model
+    {{
+        private static List<Data> _dataList = new();
+        private static Dictionary<long, Data> _dataDic = new();
+        {InitializeMethod(assetName)}
+
+        public static List<Data> DataList => _dataList;
+        public static Dictionary<long, Data> DataDic => _dataDic;
+    }}");
+
+        // builder.Append("public class Model");
+        // builder.Append("\n").Append("{");
+
+        // builder.Append("\t");
+        // builder.Append("private static List<Data> _dataList = new();");
+        // builder.Append("\n");
+        // builder.Append("private static Dictionary<long, Data> _dataDic = new();");
+        // builder.Append("\n");
+
+        // builder.Append(InitializeMethod(assetName));
+        // builder.Append("\n").Append("\n");
+
+        // builder.Append("public static List<Data> DataList => _dataList;");
+        // builder.Append("\n");
+        // builder.Append("public static Dictionary<long, Data> DataDic => _dataDic;");
+        // builder.Append("\n").Append("}");
+
+        return builder.ToString();
+    }
+
     private static string GenerateField()
     {
         StringBuilder builder = new StringBuilder();
@@ -306,34 +370,40 @@ public class JsonUtil
 
         foreach (var typeKey in _fieldTypeData.Keys)
         {
-            builder.Append("\t");
+            // builder.Append("\t");
+
+            // 왜 첫 번째만 들여쓰기가 될까
+            if (typeKey != _fieldTypeData.Keys.First())
+                builder.Append("\t").Append("\t");
 
             if (_fieldTypeData[typeKey].ToString().Contains("GameValue+"))
                 builder.Append($"public {_fieldTypeData[typeKey].ToString().Replace("+", ".")} {typeKey};");
             else
                 builder.Append($"public {_fieldTypeData[typeKey]} {typeKey};");
 
-            builder.Append("\n");
+            // 마지막 키는 줄바꿈 안함
+            if (typeKey != _fieldTypeData.Keys.Last())
+                builder.Append("\n");
         }
 
-        builder.Append("\n");
+        // builder.Append("\n");
 
         return builder.ToString();
     }
 
-    private static string GenerateInstance(string assetName)
-    {
-        StringBuilder builder = new StringBuilder();
+    // private static string GenerateInstance(string assetName)
+    // {
+    //     StringBuilder builder = new StringBuilder();
 
-        builder.Append("\n");
-        builder.Append("\t");
-        builder.Append($"private static Model{assetName} _instance;").Append("\n");
-        builder.Append("\t");
-        builder.Append($"public static Model{assetName} Instance => _instance;").Append("\n");
-        builder.Append("\n");
+    //     builder.Append("\n");
+    //     builder.Append("\t");
+    //     builder.Append($"private static Model{assetName} _instance;").Append("\n");
+    //     builder.Append("\t");
+    //     builder.Append($"public static Model{assetName} Instance => _instance;").Append("\n");
+    //     builder.Append("\n");
 
-        return builder.ToString();
-    }
+    //     return builder.ToString();
+    // }
 
     private static string GenerateCollections(string assetName)
     {
@@ -363,17 +433,17 @@ public class JsonUtil
         string mehtodString;
 
         mehtodString = $@"
-    /// <summary>
-    /// 초기화하기
-    /// </summary>
-    public static void Initialize()
-    {{
-        var jsonData = File.ReadAllText(""{JSON_PATH}{assetName}.json"");
-        JsonUtil.Deserialize(jsonData, modelList);
+        /// <summary>
+        /// 초기화하기
+        /// </summary>
+        public static void Initialize()
+        {{
+            var jsonData = File.ReadAllText(""{JSON_PATH}{assetName}.json"");
+            JsonUtil.Deserialize(jsonData, _dataList);
 
-        foreach(var item in modelList)
-            modelDic.Add(item.id, item);
-    }}";
+            foreach(var item in _dataList)
+                _dataDic.Add(item.id, item);
+        }}";
 
         return mehtodString;
     }

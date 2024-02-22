@@ -23,9 +23,9 @@ public class Inventory : MonoBehaviour
 
     private void InitCategory()
     {
-        for (int index = 0; index < ModelCategoryTab.GetModelList().Count; index++)
+        for (int index = 0; index < ModelCategoryTab.Model.DataList.Count; index++)
         {
-            var item = ModelCategoryTab.GetModelList()[index];
+            var item = ModelCategoryTab.Model.DataList[index];
             var catePrefab = _categoryPool.GetObject();
 
             if (catePrefab.TryGetComponent(out CategoryTab tab))

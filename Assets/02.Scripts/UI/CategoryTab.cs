@@ -19,7 +19,7 @@ public class CategoryTab : MonoBehaviour
     [BoxGroup(BOX_GROUP_SELECT), SerializeField]
     private Image _selectImage;
 
-    private ModelCategoryTab _model = null;
+    private ModelCategoryTab.Data _model = null;
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class CategoryTab : MonoBehaviour
         _normalButton.SetEnterAndExit(EnterAction, ExitAction);
     }
 
-    public void Init(ModelCategoryTab model)
+    public void Init(ModelCategoryTab.Data model)
     {
         _model = model;
 
