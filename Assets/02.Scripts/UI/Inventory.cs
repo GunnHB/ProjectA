@@ -76,6 +76,10 @@ public class Inventory : MonoBehaviour
         var rowObj = _rowPool.GetObject();
 
         if (rowObj.TryGetComponent(out InventoryRow invenRow))
+        {
             invenRow.Init(rowIndex, doRemain);
+
+            rowObj.transform.SetAsLastSibling();
+        }
     }
 }
