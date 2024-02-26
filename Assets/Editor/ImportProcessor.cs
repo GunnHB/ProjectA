@@ -13,7 +13,7 @@ using System.Linq;
 
 public class ImportProcessor : AssetPostprocessor
 {
-    private const string EXCEL_PATH = "Assets/Tables/Excel/";
+    private const string EXCEL_PATH = "Assets/08.Tables/Excel/";
 
     private static Dictionary<string, DateTime> _previousExcelWriteTime = new();
 

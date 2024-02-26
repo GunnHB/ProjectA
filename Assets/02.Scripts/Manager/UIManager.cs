@@ -153,9 +153,9 @@ public class UIManager : SingletonObject<UIManager>
     /// <summary>
     /// 해당 UI 닫음
     /// </summary>
-    public void CloseUI<T>() where T : UIBase
+    public void CloseUI<T>(T ui) where T : UIBase
     {
-
+        ui.Close();
     }
 
     /// <summary>
@@ -163,6 +163,13 @@ public class UIManager : SingletonObject<UIManager>
     /// </summary>
     public void CloseAllUI(Canvas canvas)
     {
+        for (int index = 0; index < canvas.transform.childCount; index++)
+        {
+            var item = canvas.transform.GetChild(index);
+            var uiItem = item.GetComponent<UIBase>();
 
+            if (item != null && uiItem != null)
+                CloseUI(uiItem);
+        }
     }
 }

@@ -54,4 +54,10 @@ public abstract class UIBase : MonoBehaviour
         if (_blurObj != null && !_needBlur)
             _blurObj.SetActive(false);
     }
+
+    public virtual void Close()
+    {
+        Debug.Log($"destroy {this.name}");
+        DestroyImmediate(this);
+    }
 }

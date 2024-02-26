@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using DG.Tweening;
 using Sirenix.OdinInspector;
 
 using TMPro;
@@ -15,6 +15,7 @@ public class UIMenuPanel : UIPanelBase
     private const string BOTTOM = "Bottom";
 
     public UnityAction _inventoryAction;
+    public UnityAction _settingAction;
 
     [BoxGroup(TOP), SerializeField]
     private TextMeshProUGUI _titleText;
@@ -32,7 +33,11 @@ public class UIMenuPanel : UIPanelBase
 
         _goldText.text = 0.ToString();
 
-        _inventoryAction = InventoryOpen;
+        _inventoryAction -= InventoryOpen;
+        _settingAction -= SettingOpen;
+
+        _inventoryAction += InventoryOpen;
+        _settingAction += SettingOpen;
     }
 
     private void InventoryOpen()
@@ -43,6 +48,11 @@ public class UIMenuPanel : UIPanelBase
 
         if (_inventory != null)
             _inventory.Init();
+    }
+
+    private void SettingOpen()
+    {
+
     }
 
     private T ActiveContent<T>() where T : MonoBehaviour

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class ItemManager : SingletonObject<ItemManager>
 {
-    private const string INVENTORY_DATA_PATH = "Assets/Tables/Json/InventoryData.json";
+    private const string INVENTORY_DATA_PATH = "Assets/08.Tables/Json/InventoryData.json";
 
     private CategoryTab _currentCategoryTab;
     private ItemSlot _currentItemSlot;

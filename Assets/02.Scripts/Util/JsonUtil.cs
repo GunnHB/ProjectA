@@ -10,7 +10,7 @@ using System.Reflection;
 
 public class JsonUtil
 {
-    private const string JSON_PATH = "Assets/Tables/Json/";
+    private const string JSON_PATH = "Assets/08.Tables/Json/";
     private const string MODEL_PATH = "Assets/02.Scripts/Model/";
 
     // 저장될 데이터 딕셔너리
