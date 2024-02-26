@@ -299,7 +299,7 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         GameManager.Instance.SetGameMode(GameManager.GameMode.UI);
-        GameManager.Instance.PauseGame(true);
+        // GameManager.Instance.PauseGame(true);
 
         var menuPanel = UIManager.Instance.OpenUI<UIMenuPanel>();
 
@@ -315,7 +315,7 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
-        GameManager.Instance.PauseGame(false);
+        // GameManager.Instance.PauseGame(false);
 
         UIManager.Instance.CloseAllUI(UIManager.Instance.PanelCanvas);
     }

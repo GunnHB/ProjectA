@@ -6,11 +6,13 @@ using DG.Tweening;
 
 public class UIPanelBase : UIBase
 {
-    protected Sequence _panelSequence;
+    protected Sequence _startSequence;
+    protected Sequence _destorySequence;
 
     public override void Init()
     {
         transform.SetParent(UIManager.Instance.PanelCanvas.transform);
+        UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().alpha = 0f;
 
         base.Init();
 
@@ -19,19 +21,37 @@ public class UIPanelBase : UIBase
 
     private void Start()
     {
+        _startSequence = DOTween.Sequence()
+                                .Append(StartSeq());
+    }
+
+    private Sequence StartSeq()
+    {
         RectTransform rect = (RectTransform)transform;
 
-        _panelSequence = DOTween.Sequence()
-        .SetAutoKill(false)
-        .OnStart(() =>
-        {
-            UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().alpha = 0f;
-            rect.localScale = new Vector3(.9f, .9f, .9f);
+        return DOTween.Sequence()
+                    .OnStart(() => { rect.localScale = new Vector3(1.1f, 1.1f, 1.1f); })
+                    .Append(rect.DOScale(1f, .1f).SetEase(Ease.InQuad))
+                    .Join(UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().DOFade(1f, .1f));
+    }
 
-            Debug.Log("되는겨 안되는겨");
-        })
-        .Append(rect.DOScale(1f, .1f).SetEase(Ease.OutQuad))
-        .Join(UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().DOFade(1f, .1f))
-        .SetDelay(.5f);
+    public override void Close()
+    {
+        _destorySequence = DOTween.Sequence()
+                                .Append(DestroySeq());
+    }
+
+    private Sequence DestroySeq()
+    {
+        RectTransform rect = (RectTransform)transform;
+
+        return DOTween.Sequence()
+                    .Append(rect.DOScale(1.1f, .1f).SetEase(Ease.OutQuad))
+                    .Join(UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().DOFade(1f, .1f))
+                    .OnComplete(() =>
+                    {
+                        UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().alpha = 1f;
+                        base.Close();
+                    });
     }
 }

@@ -57,7 +57,6 @@ public abstract class UIBase : MonoBehaviour
 
     public virtual void Close()
     {
-        Debug.Log($"destroy {this.name}");
-        DestroyImmediate(this);
+        Destroy(this.gameObject);
     }
 }
