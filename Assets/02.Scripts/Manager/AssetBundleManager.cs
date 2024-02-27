@@ -22,6 +22,7 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
         GetUIBundle();
     }
 
+    // 외부에서 요걸로 호출하면 됩니당.
     public AssetBundle GetUIBundle()
     {
         if (_uiBundle == null)

@@ -11,9 +11,11 @@ using Sirenix.OdinInspector;
 using TMPro;
 
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    private const string INVENTORY_RENDER_TEXTURE = "InventoryRenderTexture";
     private const string CATEGORY = "Category";
     private const string SLOTS = "Slots";
     private const string ITEM_DESC = "ItemDesc";
@@ -24,6 +26,8 @@ public class Inventory : MonoBehaviour
     [BoxGroup(SLOTS), SerializeField]
     private ObjectPool _rowPool;
 
+    [BoxGroup(ITEM_DESC), SerializeField]
+    private RawImage _playerRawImage;
     [BoxGroup(ITEM_DESC), SerializeField]
     private GameObject _descObj;
     [BoxGroup(ITEM_DESC), SerializeField]
@@ -47,8 +51,20 @@ public class Inventory : MonoBehaviour
 
         _tweenAnimations = _descObj.GetComponentsInChildren<DOTweenAnimation>().ToList();
 
-
         InitCategory();
+    }
+
+    private void InitRenderTexture()
+    {
+        if (_playerRawImage == null)
+            return;
+
+        var renderTexture = AssetBundleManager.Instance.GetUIBundle().LoadAsset<RenderTexture>(INVENTORY_RENDER_TEXTURE);
+
+        if (renderTexture == null)
+            return;
+
+        _playerRawImage.texture = renderTexture;
     }
 
     private void InitCategory()
@@ -78,7 +94,6 @@ public class Inventory : MonoBehaviour
         if (_inventoryDic[cateData.type].Count == 0)
             return;
 
-        // _descObj.SetActive(false);
         ItemManager.Instance.SetCurrentItemSlot(null);
         ItemManager.Instance.SlotAction?.Invoke(null);
 
@@ -120,11 +135,19 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        _descObj.SetActive(true);
-        DoTweenPlay(true);
+        if (_descObj.TryGetComponent(out CanvasGroup group))
+        {
+            if (group.alpha == 0)
+            {
+                _descObj.SetActive(true);
+                DoTweenPlay(true);
+            }
+        }
 
         _itemNameText.text = itemData.name;
         _itemDescText.text = itemData.desc;
+
+        InitRenderTexture();
     }
 
     private void DoTweenPlay(bool forward)

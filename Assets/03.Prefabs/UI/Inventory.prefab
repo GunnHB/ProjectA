@@ -541,6 +541,7 @@ MonoBehaviour:
   _rowPool:
     _prefabObj: {fileID: 6480210795543567875, guid: 2fe10e9143be7e242974a23ff2ae3944, type: 3}
     _parentObj: {fileID: 7830965272654008124}
+  _playerRawImage: {fileID: 4685138532252169949}
   _descObj: {fileID: 1148610493212728623}
   _itemNameText: {fileID: 7751233322646936117}
   _itemDescText: {fileID: 4103604622440917544}
@@ -992,7 +993,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 150, y: 0}
-  m_SizeDelta: {x: 600, y: 600}
+  m_SizeDelta: {x: 750, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3487441554737956672
 CanvasRenderer:
@@ -1022,7 +1023,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: adfbd3286d0504b478b3f4023d84eabe, type: 2}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0

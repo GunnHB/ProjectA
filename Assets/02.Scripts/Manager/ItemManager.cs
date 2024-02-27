@@ -47,6 +47,7 @@ public class ItemManager : SingletonObject<ItemManager>
 
         // test
         AddItem(ModelItem.Model.DataList[0]);
+        AddItem(ModelItem.Model.DataList[1]);
     }
 
     public void SetCurrentItemSlot(ItemSlot newSlot)
