@@ -17,6 +17,7 @@ public class ItemManager : SingletonObject<ItemManager>
     public InventoryData ThisInventoryData => _inventoryData;
 
     public UnityAction<ModelCategoryTab.Data> TabAction;
+    public UnityAction<ModelItem.Data> SlotAction;
 
     protected override void Awake()
     {
@@ -56,11 +57,18 @@ public class ItemManager : SingletonObject<ItemManager>
     public void ChangeCurrentItemSlot(ItemSlot newSlot)
     {
         if (_currentItemSlot != null)
+        {
+            if (CurrentItemSlot == newSlot)
+                return;
+
             _currentItemSlot.SetSelect(false);
+        }
 
         SetCurrentItemSlot(newSlot);
 
         _currentItemSlot.SetSelect(true);
+
+        SlotAction?.Invoke(_currentItemSlot.ItemData);
     }
 
     public void SetCurrentCategoryTab(CategoryTab newTab)
@@ -70,6 +78,9 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public void ChangeCurrentCategoryTab(CategoryTab newTab)
     {
+        if (newTab == _currentCategoryTab)
+            return;
+
         _currentCategoryTab.SetSelect(false);
 
         SetCurrentCategoryTab(newTab);

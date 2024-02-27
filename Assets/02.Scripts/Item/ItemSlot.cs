@@ -15,6 +15,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private UIButton _slotButton;
 
     private ModelItem.Data _itemData;
+    public ModelItem.Data ItemData => _itemData;
 
     public void Init(ModelItem.Data itemData)
     {

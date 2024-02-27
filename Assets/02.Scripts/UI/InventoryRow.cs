@@ -22,7 +22,10 @@ public class InventoryRow : MonoBehaviour
             var slotObj = _itemSlotPool.GetObject();
 
             if (slotObj.TryGetComponent(out ItemSlot slot))
+            {
                 slot.Init(data);
+                slotObj.transform.SetAsLastSibling();
+            }
         }
     }
 }

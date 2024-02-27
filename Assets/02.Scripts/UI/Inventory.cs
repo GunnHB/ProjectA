@@ -1,14 +1,22 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Sirenix.OdinInspector;
 
 using UnityEngine;
+using UnityEngine.Events;
+
+using Sirenix.OdinInspector;
+
+using TMPro;
+
+using DG.Tweening;
 
 public class Inventory : MonoBehaviour
 {
     private const string CATEGORY = "Category";
     private const string SLOTS = "Slots";
+    private const string ITEM_DESC = "ItemDesc";
 
     [BoxGroup(CATEGORY), SerializeField]
     private ObjectPool _categoryPool;
@@ -16,7 +24,16 @@ public class Inventory : MonoBehaviour
     [BoxGroup(SLOTS), SerializeField]
     private ObjectPool _rowPool;
 
+    [BoxGroup(ITEM_DESC), SerializeField]
+    private GameObject _descObj;
+    [BoxGroup(ITEM_DESC), SerializeField]
+    private TextMeshProUGUI _itemNameText;
+    [BoxGroup(ITEM_DESC), SerializeField]
+    private TextMeshProUGUI _itemDescText;
+
     private Dictionary<GameValue.ItemType, List<ModelItem.Data>> _inventoryDic;
+
+    private List<DOTweenAnimation> _tweenAnimations;
 
     public void Init()
     {
@@ -24,6 +41,12 @@ public class Inventory : MonoBehaviour
 
         ItemManager.Instance.TabAction = null;
         ItemManager.Instance.TabAction = InitSlots;
+
+        ItemManager.Instance.SlotAction = null;
+        ItemManager.Instance.SlotAction = SetDesc;
+
+        _tweenAnimations = _descObj.GetComponentsInChildren<DOTweenAnimation>().ToList();
+
 
         InitCategory();
     }
@@ -55,6 +78,10 @@ public class Inventory : MonoBehaviour
         if (_inventoryDic[cateData.type].Count == 0)
             return;
 
+        // _descObj.SetActive(false);
+        ItemManager.Instance.SetCurrentItemSlot(null);
+        ItemManager.Instance.SlotAction?.Invoke(null);
+
         int count = _inventoryDic[cateData.type].Count / GameValue._inventoryRowAmount;   // inventoryrow 개수
         int remain = _inventoryDic[cateData.type].Count % GameValue._inventoryRowAmount;  // 슬롯의 나머지
 
@@ -80,6 +107,34 @@ public class Inventory : MonoBehaviour
             invenRow.Init(rowIndex, doRemain);
 
             rowObj.transform.SetAsLastSibling();
+        }
+    }
+
+    private void SetDesc(ModelItem.Data itemData)
+    {
+        if (itemData == null || itemData.id == 0)
+        {
+            if (_descObj.activeInHierarchy)
+                DoTweenPlay(false);
+
+            return;
+        }
+
+        _descObj.SetActive(true);
+        DoTweenPlay(true);
+
+        _itemNameText.text = itemData.name;
+        _itemDescText.text = itemData.desc;
+    }
+
+    private void DoTweenPlay(bool forward)
+    {
+        foreach (var anim in _tweenAnimations)
+        {
+            if (forward)
+                anim.DORestart();
+            else
+                anim.DOPlayBackwards();
         }
     }
 }
