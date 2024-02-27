@@ -58,8 +58,18 @@ public class ItemSlot : MonoBehaviour
 
     private void SetImage()
     {
+        _itemImage.gameObject.SetActive(false);
+
         if (_itemData.sprite != null)
-            AtlasManager.Instance.GetSpriteByInventory(_itemData.sprite);
+        {
+            var itemSprite = AtlasManager.Instance.GetSpriteByInventory(_itemData.sprite);
+
+            if (itemSprite != null)
+            {
+                _itemImage.sprite = itemSprite;
+                _itemImage.gameObject.SetActive(true);
+            }
+        }
     }
 
     private void SetEquip()

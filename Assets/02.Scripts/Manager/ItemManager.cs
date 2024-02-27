@@ -43,6 +43,9 @@ public class ItemManager : SingletonObject<ItemManager>
         Debug.Log("업쓰요");
 
         _inventoryData = new InventoryData();
+
+        // test
+        AddItem(ModelItem.Model.DataList[0]);
     }
 
     public void SetCurrentItemSlot(ItemSlot newSlot)
@@ -72,5 +75,29 @@ public class ItemManager : SingletonObject<ItemManager>
         SetCurrentCategoryTab(newTab);
 
         _currentCategoryTab.SetSelect(true);
+    }
+
+    public void AddItem(ModelItem.Data itemData)
+    {
+        if (_inventoryData == null)
+            return;
+
+        for (int index = 0; index < _inventoryData._inventoryDic[itemData.type].Count; index++)
+        {
+            var slotData = _inventoryData._inventoryDic[itemData.type][index];
+
+            if (slotData.id == 0)
+            {
+                _inventoryData._inventoryDic[itemData.type][index] = itemData;
+                break;
+            }
+            else
+                continue;
+        }
+
+        if (_inventoryData._itemAmount.ContainsKey(itemData))
+            _inventoryData._itemAmount[itemData] += 1;
+        else
+            _inventoryData._itemAmount.Add(itemData, 1);
     }
 }
