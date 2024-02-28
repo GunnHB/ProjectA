@@ -7,6 +7,8 @@ public class ItemManager : SingletonObject<ItemManager>
 {
     private const string INVENTORY_DATA_PATH = "Assets/08.Tables/Json/InventoryData.json";
 
+    private const string RIGHT_HOLDER = "RightHolder";
+
     private CategoryTab _currentCategoryTab;
     private ItemSlot _currentItemSlot;
 
@@ -23,6 +25,59 @@ public class ItemManager : SingletonObject<ItemManager>
 
     private ItemMenu _itemMenu;
     public ItemMenu ThisItemMenu => _itemMenu;
+
+    private GameObject _rightHolder;
+    private GameObject _renderRightHolder;
+
+    public GameObject RightHolder
+    {
+        get
+        {
+            if (_rightHolder == null)
+            {
+                var player = GameObject.Find("Player");
+
+                if (player == null)
+                    return null;
+
+                foreach (var tran in player.GetComponentsInChildren<Transform>())
+                {
+                    if (tran.name == RIGHT_HOLDER)
+                    {
+                        _rightHolder = tran.gameObject;
+                        break;
+                    }
+                }
+            }
+
+            return _rightHolder;
+        }
+    }
+
+    public GameObject RenderRightHolder
+    {
+        get
+        {
+            if (_renderRightHolder == null)
+            {
+                var player = GameObject.Find("RenderTexturePlayer");
+
+                if (player == null)
+                    return null;
+
+                foreach (var tran in player.GetComponentsInChildren<Transform>())
+                {
+                    if (tran.name == RIGHT_HOLDER)
+                    {
+                        _renderRightHolder = tran.gameObject;
+                        break;
+                    }
+                }
+            }
+
+            return _renderRightHolder;
+        }
+    }
 
     protected override void Awake()
     {
@@ -121,5 +176,19 @@ public class ItemManager : SingletonObject<ItemManager>
     public void SetItemMenu(ItemMenu newMenu)
     {
         _itemMenu = newMenu;
+    }
+
+    public void ActiveWeaponObject(GameObject holder, string weaponString, bool active = true)
+    {
+        for (int index = 0; index < holder.transform.childCount; index++)
+        {
+            var item = holder.transform.GetChild(index);
+
+            if (item.name == weaponString)
+            {
+                item.gameObject.SetActive(active);
+                return;
+            }
+        }
     }
 }

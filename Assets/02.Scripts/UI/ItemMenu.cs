@@ -67,11 +67,14 @@ public class ItemMenu : UIPopupBase
 
     private void OnClickUse()
     {
-        Debug.Log($"{_targetSlot.ItemData.name} use!");
+        // Debug.Log($"{_targetSlot.ItemData.name} use!");
+
+        ItemManager.Instance.ActiveWeaponObject(ItemManager.Instance.RightHolder, _targetSlot.ItemData.prefab, true);
+        ItemManager.Instance.ActiveWeaponObject(ItemManager.Instance.RenderRightHolder, _targetSlot.ItemData.prefab, true);
     }
 
     private void OnClickDiscard()
     {
-        Debug.Log($"{_targetSlot.ItemData.name} discard!");
+        // Debug.Log($"{_targetSlot.ItemData.name} discard!");
     }
 }
