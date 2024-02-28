@@ -26,6 +26,8 @@ public class Inventory : MonoBehaviour
     private ObjectPool _categoryPool;
 
     [BoxGroup(SLOTS), SerializeField]
+    private ScrollRect _scroll;
+    [BoxGroup(SLOTS), SerializeField]
     private ObjectPool _rowPool;
 
     [BoxGroup(ITEM_DESC), SerializeField]
@@ -50,6 +52,9 @@ public class Inventory : MonoBehaviour
 
         ItemManager.Instance.SlotAction = null;
         ItemManager.Instance.SlotAction = SetDesc;
+
+        ItemManager.Instance.GoToSlotAction = null;
+        ItemManager.Instance.GoToSlotAction = GoToSelectSlot;
 
         _tweenAnimations = _descObj.GetComponentsInChildren<DOTweenAnimation>().ToList();
 
@@ -104,6 +109,10 @@ public class Inventory : MonoBehaviour
 
         ItemManager.Instance.SetCurrentItemSlot(null);
         ItemManager.Instance.SlotAction?.Invoke(null);
+
+        // 메뉴 창 닫기
+        if (ItemManager.Instance.ThisItemMenu != null)
+            UIManager.Instance.CloseUI(ItemManager.Instance.ThisItemMenu);
 
         int count = _inventoryDic[cateData.type].Count / GameValue._inventoryRowAmount;   // inventoryrow 개수
         int remain = _inventoryDic[cateData.type].Count % GameValue._inventoryRowAmount;  // 슬롯의 나머지
@@ -165,5 +174,15 @@ public class Inventory : MonoBehaviour
             else
                 anim.DOPlayBackwards();
         }
+    }
+
+    // 해당 슬롯으로 이동
+    private void GoToSelectSlot(ItemSlot slot)
+    {
+        // Debug.Log(slot.ItemData.name);
+        float scrollValue = (slot.transform as RectTransform).rect.height /
+                            _scroll.content.rect.height - (_scroll.transform as RectTransform).rect.height;
+
+        _scroll.verticalNormalizedPosition = scrollValue;
     }
 }

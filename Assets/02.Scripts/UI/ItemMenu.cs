@@ -1,24 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class ItemMenu : UIPopupBase
 {
-    [SerializeField]
+    private const string GROUP_MENU = "MenuGroup";
+
+    [BoxGroup(GROUP_MENU), SerializeField]
+    private Transform _parentTr;
+    [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _useButton;
-    [SerializeField]
+    [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _discardButton;
-    [SerializeField]
+    [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _cancelButton;
 
     private ItemSlot _targetSlot;
 
+    public override void Init()
+    {
+        base.Init();
+
+        ItemManager.Instance.SetItemMenu(this);
+    }
+
     public void InitButtons(ItemSlot slot)
     {
-        _targetSlot = slot;
+        if (_targetSlot != null && _targetSlot == slot)
+            return;
 
-        // if (_targetSlot == null || _targetSlot.ItemData == null || _targetSlot.ItemData.id == 0)
-        //     return;
+        _targetSlot = slot;
 
         SetPosition();
 
@@ -26,15 +38,40 @@ public class ItemMenu : UIPopupBase
         _discardButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
 
-        _useButton.onClick.AddListener(() => { Debug.Log($"{_targetSlot.ItemData} use!"); });
-        _discardButton.onClick.AddListener(() => { Debug.Log($"{_targetSlot.ItemData} discard!"); });
+        _useButton.onClick.AddListener(OnClickUse);
+        _discardButton.onClick.AddListener(OnClickDiscard);
         _cancelButton.onClick.AddListener(Close);
     }
 
     private void SetPosition()
     {
-        Debug.Log($"{_targetSlot.transform.position} posision");
-        Debug.Log($"{_targetSlot.transform.localPosition} localPosition");
-        Debug.Log($"{(_targetSlot.transform as RectTransform).anchoredPosition} anchoredPosition");
+        var thisRect = _parentTr as RectTransform;
+        var targetRect = _targetSlot.transform as RectTransform;
+
+        thisRect.anchorMin = Vector2.zero;
+        thisRect.anchorMax = Vector2.zero;
+        thisRect.pivot = targetRect.pivot;
+
+        // 약간은 하드코딩임
+        float modiY = targetRect.position.y > 400f ? -targetRect.rect.height : targetRect.rect.height;
+
+        thisRect.anchoredPosition = new Vector2(targetRect.position.x, targetRect.position.y + modiY);
+    }
+
+    public override void Close()
+    {
+        ItemManager.Instance.SetItemMenu(null);
+
+        base.Close();
+    }
+
+    private void OnClickUse()
+    {
+        Debug.Log($"{_targetSlot.ItemData.name} use!");
+    }
+
+    private void OnClickDiscard()
+    {
+        Debug.Log($"{_targetSlot.ItemData.name} discard!");
     }
 }

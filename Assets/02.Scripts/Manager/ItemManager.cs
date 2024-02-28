@@ -19,6 +19,11 @@ public class ItemManager : SingletonObject<ItemManager>
     public UnityAction<ModelCategoryTab.Data> TabAction;
     public UnityAction<ModelItem.Data> SlotAction;
 
+    public UnityAction<ItemSlot> GoToSlotAction;
+
+    private ItemMenu _itemMenu;
+    public ItemMenu ThisItemMenu => _itemMenu;
+
     protected override void Awake()
     {
         base.Awake();
@@ -111,5 +116,10 @@ public class ItemManager : SingletonObject<ItemManager>
             _inventoryData._itemAmount[itemData] += 1;
         else
             _inventoryData._itemAmount.Add(itemData, 1);
+    }
+
+    public void SetItemMenu(ItemMenu newMenu)
+    {
+        _itemMenu = newMenu;
     }
 }
