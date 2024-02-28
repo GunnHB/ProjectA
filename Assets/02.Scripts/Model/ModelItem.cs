@@ -6,19 +6,19 @@ namespace ModelItem
     public class Data
     {
         public System.Int64 id;
-        public System.String name;
-        public System.String desc;
-        public System.String sprite;
-        public System.Boolean stackable;
-        public System.String prefab;
-        public GameValue.ItemType type;
+		public System.String name;
+		public System.String desc;
+		public System.String sprite;
+		public System.Boolean stackable;
+		public System.String prefab;
+		public GameValue.ItemType type;
     }
 
     public class Model
     {
         private static List<Data> _dataList = new();
         private static Dictionary<long, Data> _dataDic = new();
-
+        
         /// <summary>
         /// 초기화하기
         /// </summary>
@@ -27,7 +27,7 @@ namespace ModelItem
             var jsonData = File.ReadAllText("Assets/08.Tables/Json/Item.json");
             JsonUtil.Deserialize(jsonData, _dataList);
 
-            foreach (var item in _dataList)
+            foreach(var item in _dataList)
                 _dataDic.Add(item.id, item);
         }
 

@@ -17,6 +17,15 @@
 "stackable": false,
 "prefab": "item_weapon_onehand_002",
 "type": "Weapon"
+},
+{
+"id": 10102001,
+"name": "ITEM_SHIELD_001",
+"desc": "ITEM_SHIELD_DESC_001",
+"sprite": "item_shield_001",
+"stackable": false,
+"prefab": "item_shield_001",
+"type": "Shield"
 }
 ]
 }
