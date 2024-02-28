@@ -15,7 +15,9 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private const string INVENTORY_RENDER_TEXTURE = "InventoryRenderTexture";
+    private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
+    private const string CAMERA_RENDER_TEXTURE = "RenderTextureCamera";
+
     private const string CATEGORY = "Category";
     private const string SLOTS = "Slots";
     private const string ITEM_DESC = "ItemDesc";
@@ -52,6 +54,7 @@ public class Inventory : MonoBehaviour
         _tweenAnimations = _descObj.GetComponentsInChildren<DOTweenAnimation>().ToList();
 
         InitCategory();
+        InitRenderTexture();
     }
 
     private void InitRenderTexture()
@@ -59,11 +62,13 @@ public class Inventory : MonoBehaviour
         if (_playerRawImage == null)
             return;
 
-        var renderTexture = AssetBundleManager.Instance.GetUIBundle().LoadAsset<RenderTexture>(INVENTORY_RENDER_TEXTURE);
+        var renderTexture = new RenderTexture(256, 256, 24);
+        Camera renderCam = GameObject.Find(PLAYER_RENDER_TEXTURE).transform.Find(CAMERA_RENDER_TEXTURE).GetComponent<Camera>();
 
-        if (renderTexture == null)
+        if (renderCam == null)
             return;
 
+        renderCam.targetTexture = renderTexture;
         _playerRawImage.texture = renderTexture;
     }
 
@@ -146,8 +151,6 @@ public class Inventory : MonoBehaviour
 
         _itemNameText.text = itemData.name;
         _itemDescText.text = itemData.desc;
-
-        InitRenderTexture();
     }
 
     private void DoTweenPlay(bool forward)
