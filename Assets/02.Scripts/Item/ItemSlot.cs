@@ -40,7 +40,12 @@ public class ItemSlot : MonoBehaviour
 
         _slotButton.SetRightClickAction(() =>
         {
-            var itemMenu = UIManager.Instance.OpenUI<ItemMenu>();
+            ItemMenu itemMenu;
+
+            if (UIManager.Instance.IsOpenedUI<ItemMenu>())
+                itemMenu = UIManager.Instance.GetUI<ItemMenu>();
+            else
+                itemMenu = UIManager.Instance.OpenUI<ItemMenu>();
 
             if (itemMenu != null)
                 itemMenu.InitButtons(this);

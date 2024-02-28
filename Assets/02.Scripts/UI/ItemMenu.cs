@@ -17,10 +17,14 @@ public class ItemMenu : UIPopupBase
     {
         _targetSlot = slot;
 
-        if (_targetSlot == null || _targetSlot.ItemData == null || _targetSlot.ItemData.id == 0)
-            return;
+        // if (_targetSlot == null || _targetSlot.ItemData == null || _targetSlot.ItemData.id == 0)
+        //     return;
 
         SetPosition();
+
+        _useButton.onClick.RemoveAllListeners();
+        _discardButton.onClick.RemoveAllListeners();
+        _cancelButton.onClick.RemoveAllListeners();
 
         _useButton.onClick.AddListener(() => { Debug.Log($"{_targetSlot.ItemData} use!"); });
         _discardButton.onClick.AddListener(() => { Debug.Log($"{_targetSlot.ItemData} discard!"); });
@@ -31,5 +35,6 @@ public class ItemMenu : UIPopupBase
     {
         Debug.Log($"{_targetSlot.transform.position} posision");
         Debug.Log($"{_targetSlot.transform.localPosition} localPosition");
+        Debug.Log($"{(_targetSlot.transform as RectTransform).anchoredPosition} anchoredPosition");
     }
 }
