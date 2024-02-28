@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 536664553
+CRC: 3968573078
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d311044db47ee6ae4604429aa1e003f8
+    Hash: 5805b7811da8fa676cb420c08efc9888
   TypeTreeHash:
     serializedVersion: 2
-    Hash: bebdc6b063474ff360db4922c0ff931a
+    Hash: c0f91bae71a149777362cda10d54e10f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: d311044db47ee6ae4604429aa1e003f8
+    Hash: 5805b7811da8fa676cb420c08efc9888
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -56,6 +56,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 992115d8890859f4cb9d460eebd85288, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d225cd0e677e1394c81cfe901667e2cc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6cb805e6739adf240b51511e129be243, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -126,7 +128,9 @@ Assets:
 - Assets/03.Prefabs/UI/CategoryTab.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab
+- Assets/03.Prefabs/UI/ItemMenuButton.prefab
 - Assets/03.Prefabs/UI/UICheckStateHUD.prefab
+- Assets/03.Prefabs/UI/ItemMenu.prefab
 - Assets/03.Prefabs/UI/UIMenuPanel.prefab
 Dependencies:
 - C:/Users/hb365/UnityProjects/ProjectA/Assets/StreamingAssets/materialbundle

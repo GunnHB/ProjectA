@@ -20,6 +20,8 @@ public abstract class UIBase : MonoBehaviour
     [BoxGroup("[Common]"), SerializeField]
     protected bool _needBlur;
     [BoxGroup("[Common]"), SerializeField]
+    protected bool _setAnchor;
+    [BoxGroup("[Common]"), SerializeField]
     protected UIType _uiType;
 
     private GameObject _blurObj;
@@ -37,6 +39,9 @@ public abstract class UIBase : MonoBehaviour
 
     private void SetAnchor()
     {
+        if (!_setAnchor)
+            return;
+
         var rect = this.transform as RectTransform;
 
         rect.anchorMin = new Vector2(0f, 0f);

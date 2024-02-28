@@ -37,6 +37,17 @@ public class ItemSlot : MonoBehaviour
     {
         _slotButton.onClick.AddListener(SelectAction);
         _slotButton.SetEnterAndExit(EnterAction, ExitAction);
+
+        _slotButton.SetRightClickAction(() =>
+        {
+            var itemMenu = UIManager.Instance.OpenUI<ItemMenu>();
+
+            if (itemMenu != null)
+                itemMenu.InitButtons(this);
+
+            if (_itemData != null && _itemData.id != 0)
+                SelectAction();
+        });
     }
 
     private void EnterAction()

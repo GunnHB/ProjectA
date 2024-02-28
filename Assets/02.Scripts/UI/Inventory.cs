@@ -45,11 +45,11 @@ public class Inventory : MonoBehaviour
     {
         _inventoryDic = ItemManager.Instance.ThisInventoryData._inventoryDic;
 
-        ItemManager.Instance.TabAction = null;
         ItemManager.Instance.TabAction = InitSlots;
+        ItemManager.Instance.TabAction += InitSlots;
 
-        ItemManager.Instance.SlotAction = null;
-        ItemManager.Instance.SlotAction = SetDesc;
+        ItemManager.Instance.SlotAction -= SetDesc;
+        ItemManager.Instance.SlotAction += SetDesc;
 
         _tweenAnimations = _descObj.GetComponentsInChildren<DOTweenAnimation>().ToList();
 

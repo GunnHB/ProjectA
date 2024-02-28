@@ -18,10 +18,26 @@ public class UIButton : Button, IPointerEnterHandler, IPointerExitHandler, IBegi
     private UnityAction DragAction;
     private UnityAction EndAction;
 
+    private UnityAction RightClickAction;
+
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        base.OnPointerClick(eventData);
+
+        // 우클릭 시 실행될 액션
+        if (eventData.button == PointerEventData.InputButton.Right)
+            RightClickAction?.Invoke();
+    }
+
     public void SetEnterAndExit(UnityAction enter = null, UnityAction exit = null)
     {
         EnterAction = enter;
         ExitAction = exit;
+    }
+
+    public void SetRightClickAction(UnityAction action = null)
+    {
+        RightClickAction = action;
     }
 
     public override void OnPointerEnter(PointerEventData eventData)
