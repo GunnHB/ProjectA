@@ -70,6 +70,9 @@ public class Inventory : MonoBehaviour
 
         renderCam.targetTexture = renderTexture;
         _playerRawImage.texture = renderTexture;
+
+        if (!renderCam.gameObject.activeInHierarchy)
+            renderCam.gameObject.SetActive(true);
     }
 
     private void InitCategory()
