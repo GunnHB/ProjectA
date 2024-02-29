@@ -69,6 +69,11 @@ public class ItemMenu : UIPopupBase
     {
         Debug.Log($"{_targetSlot.InvenItemData._itemData.name} use!");
 
+        // 장비 착용 시 실행
+        if (_targetSlot.InvenItemData._itemData.type != GameValue.ItemType.Food &&
+            _targetSlot.InvenItemData._itemData.type != GameValue.ItemType.Default)
+            ItemManager.Instance.ThisEquipmentData.EquipWeapon(_targetSlot.InvenItemData);
+
         UIManager.Instance.CloseUI(this);
 
         // ActiveEquipment(_targetSlot.InvenItemData._itemData.prefab, true);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public class EquipmentData
 {
@@ -28,16 +29,20 @@ public class EquipmentData
     {
         if (prevItemData != null && prevItemData._itemData.id != 0)
         {
-            // 기존에 있던 장비 빼기
             prevItemData._isEquip = false;
-            // 오브젝트 비활성화
-        }
-        else
-        {
-            newItemData._isEquip = true;
-            prevItemData = newItemData;
 
-            // 오브젝트 활성화
+            // 오브젝트 비활성화
+
+            // 슬롯 갱신
+            ItemManager.Instance.RefreshSlot(prevItemData);
         }
+
+        newItemData._isEquip = true;
+        prevItemData = newItemData;
+
+        // 오브젝트 활성화
+
+        // 슬롯 갱신
+        ItemManager.Instance.RefreshSlot(prevItemData);
     }
 }

@@ -25,6 +25,8 @@ public class InventoryRow : MonoBehaviour
             {
                 slot.Init(data);
                 slotObj.transform.SetAsLastSibling();
+
+                ItemManager.Instance.ThisInventory.AddToSlotList(slot);
             }
         }
     }

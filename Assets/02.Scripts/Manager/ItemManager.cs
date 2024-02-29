@@ -12,21 +12,28 @@ public class ItemManager : SingletonObject<ItemManager>
     private const string PLAYER = "Player";
     private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
 
+    // 현재 선택된 인벤토리 탭
     private CategoryTab _currentCategoryTab;
-    private ItemSlot _currentItemSlot;
-
     public CategoryTab CurrentCategoryTab => _currentCategoryTab;
+
+    // 현재 선택된 아이템 슬롯
+    private ItemSlot _currentItemSlot;
     public ItemSlot CurrentItemSlot => _currentItemSlot;
 
+    // 현재 인벤토리 데이터
     private InventoryData _inventoryData = null;
     public InventoryData ThisInventoryData => _inventoryData;
 
+    // 인벤토리의 ui
+    private Inventory _inventory = null;
+    public Inventory ThisInventory => _inventory;
+
+    // 현재 장착 데이터
     private EquipmentData _equipmentData = null;
     public EquipmentData ThisEquipmentData => _equipmentData;
 
     public UnityAction<ModelCategoryTab.Data> TabAction;
     public UnityAction<InventoryItemData> SlotAction;
-    public UnityAction<bool> EquipAction;
 
     // public UnityAction<ItemSlot> GoToSlotAction;
 
@@ -205,5 +212,23 @@ public class ItemManager : SingletonObject<ItemManager>
         }
 
         return null;
+    }
+
+    public void SetInventory(Inventory inventory)
+    {
+        _inventory = inventory;
+    }
+
+    public void RefreshSlot(InventoryItemData invenItemData)
+    {
+        var itemSlot = GetItemSlot(invenItemData);
+
+        if (itemSlot != null)
+            itemSlot.Refresh();
+    }
+
+    public ItemSlot GetItemSlot(InventoryItemData invenItemData)
+    {
+        return _inventory.SlotList.Where(x => x.InvenItemData == invenItemData).FirstOrDefault();
     }
 }

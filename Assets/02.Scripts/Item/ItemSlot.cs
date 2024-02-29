@@ -88,9 +88,12 @@ public class ItemSlot : MonoBehaviour
         }
     }
 
-    private void SetEquip(bool active = false)
+    private void SetEquip()
     {
-        _equipObj.SetActive(active);
+        if (_invenItemData == null || _invenItemData._itemData.id == 0)
+            _equipObj.SetActive(false);
+
+        _equipObj.SetActive(_invenItemData._isEquip);
     }
 
     private void SetAmount()
@@ -120,5 +123,11 @@ public class ItemSlot : MonoBehaviour
     private void SelectAction()
     {
         ItemManager.Instance.ChangeCurrentItemSlot(this);
+    }
+
+    public void Refresh()
+    {
+        SetEquip();
+        SetAmount();
     }
 }

@@ -74,4 +74,11 @@ public class UIMenuPanel : UIPanelBase
 
         return content;
     }
+
+    public override void Close()
+    {
+        ItemManager.Instance.SetInventory(null);
+
+        base.Close();
+    }
 }

@@ -41,16 +41,21 @@ public class Inventory : MonoBehaviour
 
     private Dictionary<GameValue.ItemType, List<InventoryItemData>> _inventoryDic;
 
+    private List<ItemSlot> _slotList = new();
+    public List<ItemSlot> SlotList => _slotList;
+
     private List<DOTweenAnimation> _tweenAnimations;
 
     public void Init()
     {
         _inventoryDic = ItemManager.Instance.ThisInventoryData._inventoryDic;
 
-        ItemManager.Instance.TabAction = null;
-        ItemManager.Instance.TabAction = InitSlots;
+        ItemManager.Instance.SetInventory(this);
 
+        ItemManager.Instance.TabAction = null;
         ItemManager.Instance.SlotAction = null;
+
+        ItemManager.Instance.TabAction = InitSlots;
         ItemManager.Instance.SlotAction = SetDesc;
 
         // ItemManager.Instance.GoToSlotAction = null;
@@ -119,6 +124,8 @@ public class Inventory : MonoBehaviour
 
         _rowPool.ReturnAllObject();
 
+        _slotList.Clear();
+
         for (int index = 0; index < count + 1; index++)
         {
             bool isLastIndex = index == count;
@@ -175,6 +182,14 @@ public class Inventory : MonoBehaviour
             else
                 anim.DOPlayBackwards();
         }
+    }
+
+    public void AddToSlotList(ItemSlot itemSlot)
+    {
+        if (_slotList.Contains(itemSlot))
+            return;
+
+        _slotList.Add(itemSlot);
     }
 
     // 해당 슬롯으로 이동
