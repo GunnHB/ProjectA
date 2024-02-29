@@ -314,10 +314,15 @@ public partial class PlayerController : MonoBehaviour
         if (GameManager.Instance.CurrGameMode == GameManager.GameMode.InGame)
             return;
 
-        GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
-        // GameManager.Instance.PauseGame(false);
+        UIManager.Instance.CloseTopUIByAllCanvas();
 
-        UIManager.Instance.CloseAllUI(UIManager.Instance.PanelCanvas);
+        if (!UIManager.Instance.IsOpenAnyUIAllCanvas())
+            GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
+
+        // GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
+        // // GameManager.Instance.PauseGame(false);
+
+        // UIManager.Instance.CloseAllUI(UIManager.Instance.PanelCanvas);
     }
     #endregion
 

@@ -18,9 +18,14 @@ public class UIManager : SingletonObject<UIManager>
     public Canvas PanelCanvas { get => GetCanvasByProperty(ref _panelCanvas, CANVAS_PANEL); }
     public Canvas PopupCanvas { get => GetCanvasByProperty(ref _popupCanvas, CANVAS_POPUP); }
 
+    private List<Canvas> _canvasList;
+
     protected override void Awake()
     {
         base.Awake();
+
+        // 우선순위가 높은 순으로 추가합시다
+        _canvasList = new List<Canvas>() { PopupCanvas, PanelCanvas, HUDCanvas };
     }
 
     /// <summary>
@@ -155,6 +160,7 @@ public class UIManager : SingletonObject<UIManager>
     /// </summary>
     public void CloseUI<T>(T ui) where T : UIBase
     {
+        ui.PrevClose();
         ui.Close();
     }
 
@@ -171,5 +177,71 @@ public class UIManager : SingletonObject<UIManager>
             if (item != null && uiItem != null)
                 CloseUI(uiItem);
         }
+    }
+
+    /// <summary>
+    /// 어느 캔버스든 ui가 열렸는지 확인 (허드 제외)
+    /// </summary>
+    /// <returns></returns>
+    public bool IsOpenAnyUIAllCanvas()
+    {
+        foreach (var canvas in _canvasList)
+        {
+            if (canvas == HUDCanvas)
+                continue;
+
+            for (int index = 0; index < canvas.transform.childCount; index++)
+            {
+                var ui = canvas.transform.GetChild(index);
+
+                if (ui == null)
+                    continue;
+
+                if (ui.TryGetComponent(out UIBase uiBase))
+                {
+                    if (!uiBase.IsClose)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 모든 캔버스를 뒤져 열린 ui를 찾아 끄기 (허드 제외) 
+    /// </summary>
+    public void CloseTopUIByAllCanvas()
+    {
+        foreach (var canvas in _canvasList)
+        {
+            if (canvas == HUDCanvas)
+                continue;
+
+            if (IsCloseTopUI(canvas))
+                return;
+        }
+    }
+
+    /// <summary>
+    /// 캔버스의 가장 상단 ui를 닫았는지 확인
+    /// </summary>
+    public bool IsCloseTopUI(Canvas canvas)
+    {
+        for (int index = 0; index < canvas.transform.childCount; index++)
+        {
+            var ui = canvas.transform.GetChild(index);
+
+            if (ui == null)
+                continue;
+
+            if (ui.TryGetComponent(out UIBase uiBase))
+            {
+                CloseUI(uiBase);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

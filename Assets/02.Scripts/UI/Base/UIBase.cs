@@ -26,6 +26,11 @@ public abstract class UIBase : MonoBehaviour
 
     private GameObject _blurObj;
 
+    // 닫힐 운명...
+    private bool _isClose = false;
+    public bool IsClose => _isClose;
+
+
     private void Awake()
     {
         Init();
@@ -58,6 +63,11 @@ public abstract class UIBase : MonoBehaviour
 
         if (_blurObj != null && !_needBlur)
             _blurObj.SetActive(false);
+    }
+
+    public void PrevClose()
+    {
+        _isClose = true;
     }
 
     public virtual void Close()
