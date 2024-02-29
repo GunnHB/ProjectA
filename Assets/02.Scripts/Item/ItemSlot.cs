@@ -14,13 +14,9 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Image _frameImage;
     [SerializeField] private UIButton _slotButton;
 
-    // private ModelItem.Data _itemData;
-    // public ModelItem.Data ItemData => _itemData;
-
     private InventoryItemData _invenItemData;
     public InventoryItemData InvenItemData => _invenItemData;
 
-    // public void Init(ModelItem.Data itemData)
     public void Init(InventoryItemData itemData)
     {
         _invenItemData = itemData;
@@ -92,9 +88,9 @@ public class ItemSlot : MonoBehaviour
         }
     }
 
-    private void SetEquip()
+    private void SetEquip(bool active = false)
     {
-        _equipObj.SetActive(false);
+        _equipObj.SetActive(active);
     }
 
     private void SetAmount()
@@ -117,7 +113,7 @@ public class ItemSlot : MonoBehaviour
         if (active)
         {
             _frameImage.color = new Color(1f, 1f, 1f, 1f);
-            ItemManager.Instance.GoToSlotAction?.Invoke(this);
+            // ItemManager.Instance.GoToSlotAction?.Invoke(this);
         }
     }
 

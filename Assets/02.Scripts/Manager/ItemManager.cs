@@ -28,7 +28,7 @@ public class ItemManager : SingletonObject<ItemManager>
     public UnityAction<InventoryItemData> SlotAction;
     public UnityAction<bool> EquipAction;
 
-    public UnityAction<ItemSlot> GoToSlotAction;
+    // public UnityAction<ItemSlot> GoToSlotAction;
 
     private ItemMenu _itemMenu;
     public ItemMenu ThisItemMenu => _itemMenu;

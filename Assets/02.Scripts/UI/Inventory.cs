@@ -53,8 +53,8 @@ public class Inventory : MonoBehaviour
         ItemManager.Instance.SlotAction = null;
         ItemManager.Instance.SlotAction = SetDesc;
 
-        ItemManager.Instance.GoToSlotAction = null;
-        ItemManager.Instance.GoToSlotAction = GoToSelectSlot;
+        // ItemManager.Instance.GoToSlotAction = null;
+        // ItemManager.Instance.GoToSlotAction = GoToSelectSlot;
 
         _tweenAnimations = _descObj.GetComponentsInChildren<DOTweenAnimation>().ToList();
 
@@ -180,10 +180,10 @@ public class Inventory : MonoBehaviour
     // 해당 슬롯으로 이동
     private void GoToSelectSlot(ItemSlot slot)
     {
-        // Debug.Log(slot.ItemData.name);
-        float scrollValue = (slot.transform as RectTransform).rect.height /
-                            _scroll.content.rect.height - (_scroll.transform as RectTransform).rect.height;
+        // // Debug.Log(slot.ItemData.name);
+        // float scrollValue = (slot.transform as RectTransform).rect.height /
+        //                     _scroll.content.rect.height - (_scroll.transform as RectTransform).rect.height;
 
-        _scroll.verticalNormalizedPosition = scrollValue;
+        // _scroll.verticalNormalizedPosition = scrollValue;
     }
 }
