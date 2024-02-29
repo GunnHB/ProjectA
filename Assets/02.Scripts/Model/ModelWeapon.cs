@@ -1,18 +1,14 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace ModelItem
+namespace ModelWeapon
 {
     public class Data
     {
         public System.Int64 id;
-		public System.String name;
-		public System.String desc;
-		public System.String sprite;
-		public System.Boolean stackable;
-		public System.String prefab;
-		public GameValue.ItemType type;
-		public System.Int64 ref_id;
+		public GameValue.WeaponType type;
+		public System.Int32 offensive_power;
+		public System.Single speed;
     }
 
     public class Model
@@ -25,7 +21,7 @@ namespace ModelItem
         /// </summary>
         public static void Initialize()
         {
-            var jsonData = File.ReadAllText("Assets/08.Tables/Json/Item.json");
+            var jsonData = File.ReadAllText("Assets/08.Tables/Json/Weapon.json");
             JsonUtil.Deserialize(jsonData, _dataList);
 
             foreach(var item in _dataList)

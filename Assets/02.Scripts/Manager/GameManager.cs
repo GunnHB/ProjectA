@@ -30,10 +30,13 @@ public class GameManager : SingletonObject<GameManager>
         InitializeModel();
     }
 
+    // 테이블 추가하면 반드시 해줘야 합니당
     private void InitializeModel()
     {
         ModelCategoryTab.Model.Initialize();
         ModelItem.Model.Initialize();
+        ModelWeapon.Model.Initialize();
+        ModelShield.Model.Initialize();
     }
 
     public void SetGameMode(GameMode mode)

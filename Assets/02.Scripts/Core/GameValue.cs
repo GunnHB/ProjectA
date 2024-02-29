@@ -32,4 +32,14 @@ public static class GameValue
         [EnumMember(Value = "Default")]
         Default,
     }
+
+    public enum WeaponType
+    {
+        [EnumMember(Value = "None")]
+        None = -1,
+        [EnumMember(Value = "OneHand")]
+        OneHand,
+        [EnumMember(Value = "TwoHand")]
+        TwoHand,
+    }
 }
