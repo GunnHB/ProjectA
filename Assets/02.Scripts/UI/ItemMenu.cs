@@ -69,12 +69,23 @@ public class ItemMenu : UIPopupBase
     {
         // Debug.Log($"{_targetSlot.ItemData.name} use!");
 
-        ItemManager.Instance.ActiveWeaponObject(ItemManager.Instance.RightHolder, _targetSlot.ItemData.prefab, true);
-        ItemManager.Instance.ActiveWeaponObject(ItemManager.Instance.RenderRightHolder, _targetSlot.ItemData.prefab, true);
+        ActiveEquipment(_targetSlot.ItemData.prefab, true);
     }
 
     private void OnClickDiscard()
     {
         // Debug.Log($"{_targetSlot.ItemData.name} discard!");
+    }
+
+    private void ActiveEquipment(string equipmentName, bool active)
+    {
+        var playersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.ItemData, true);
+        var rendersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.ItemData, false);
+
+        ItemManager.Instance.ActiveEquipment(playersHolder, equipmentName, active);
+        ItemManager.Instance.ActiveEquipment(rendersHolder, equipmentName, active);
+
+        // ItemManager.Instance.ActiveEquipment(ItemManager.Instance.RightHolder, equipmentName, active);
+        // ItemManager.Instance.ActiveEquipment(ItemManager.Instance.RenderRightHolder, equipmentName, active);
     }
 }

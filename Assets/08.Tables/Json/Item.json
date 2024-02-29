@@ -1,44 +1,44 @@
 {
-    "Data": [
-        {
-            "id": 10101001,
-            "name": "ITEM_WEAPON_ONEHAND_001",
-            "desc": "ITEM_WEAPON_ONEHAND_DESC_001",
-            "sprite": "item_weapon_onehand_001",
-            "stackable": false,
-            "prefab": "item_weapon_onehand_001",
-            "type": "Weapon",
-            "ref_id": 20101001
-        },
-        {
-            "id": 10101002,
-            "name": "ITEM_WEAPON_ONEHAND_002",
-            "desc": "ITEM_WEAPON_ONEHAND_DESC_002",
-            "sprite": "item_weapon_onehand_002",
-            "stackable": false,
-            "prefab": "item_weapon_onehand_002",
-            "type": "Weapon",
-            "ref_id": 20101002
-        },
-        {
-            "id": 10101003,
-            "name": "ITEM_WEAPON_TWOHAND_003",
-            "desc": "ITEM_WEAPON_TWOHAND_DESC_003",
-            "sprite": "item_weapon_twohand_001",
-            "stackable": false,
-            "prefab": "item_weapon_twohand_001",
-            "type": "Weapon",
-            "ref_id": 20103001
-        },
-        {
-            "id": 10102001,
-            "name": "ITEM_SHIELD_001",
-            "desc": "ITEM_SHIELD_DESC_001",
-            "sprite": "item_shield_001",
-            "stackable": false,
-            "prefab": "item_shield_001",
-            "type": "Shield",
-            "ref_id": 30101001
-        }
-    ]
+"Data": [
+{
+"id": 10101001,
+"name": "ITEM_WEAPON_ONEHAND_001",
+"desc": "ITEM_WEAPON_ONEHAND_DESC_001",
+"sprite": "item_weapon_onehand_001",
+"stackable": false,
+"prefab": "item_weapon_onehand_001",
+"type": "Weapon",
+"ref_id": 20101001
+},
+{
+"id": 10101002,
+"name": "ITEM_WEAPON_ONEHAND_002",
+"desc": "ITEM_WEAPON_ONEHAND_DESC_002",
+"sprite": "item_weapon_onehand_002",
+"stackable": false,
+"prefab": "item_weapon_onehand_002",
+"type": "Weapon",
+"ref_id": 20101002
+},
+{
+"id": 10101003,
+"name": "ITEM_WEAPON_TWOHAND_003",
+"desc": "ITEM_WEAPON_TWOHAND_DESC_003",
+"sprite": "item_weapon_twohand_001",
+"stackable": false,
+"prefab": "item_weapon_twohand_001",
+"type": "Weapon",
+"ref_id": 20102001
+},
+{
+"id": 10102001,
+"name": "ITEM_SHIELD_001",
+"desc": "ITEM_SHIELD_DESC_001",
+"sprite": "item_shield_001",
+"stackable": false,
+"prefab": "item_shield_001",
+"type": "Shield",
+"ref_id": 30101001
+}
+]
 }

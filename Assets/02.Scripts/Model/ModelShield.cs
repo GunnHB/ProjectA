@@ -7,6 +7,7 @@ namespace ModelShield
     {
         public System.Int64 id;
 		public System.Int32 defensive_power;
+		public System.String equip_holder;
     }
 
     public class Model

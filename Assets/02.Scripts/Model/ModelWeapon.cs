@@ -9,6 +9,7 @@ namespace ModelWeapon
 		public GameValue.WeaponType type;
 		public System.Int32 offensive_power;
 		public System.Single speed;
+		public System.String equip_holder;
     }
 
     public class Model

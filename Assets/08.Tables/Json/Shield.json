@@ -1,8 +1,9 @@
 {
-    "Data": [
-        {
-            "id": 30101001,
-            "defensive_power": 10
-        }
-    ]
+"Data": [
+{
+"id": 30101001,
+"defensive_power": 10,
+"equip_holder": "ShieldHolder"
+}
+]
 }

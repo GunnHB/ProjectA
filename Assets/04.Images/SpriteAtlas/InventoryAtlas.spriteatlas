@@ -102,15 +102,15 @@ SpriteAtlas:
   - shield_select
   - 01_Bow_nobg
   - mid_button
-  - item_weapon_onehand_001
-  - 05_Shield_nobg
+  - item_weapon_onehand_002
+  - item_shield_001
   - sword_select
   - slot_frame
   - 06_One_Handed_Axe_nobg
-  - 04_Mace_with_spikes_nobg
+  - item_weapon_onehand_001
   - armor_select
-  - item_weapon_onehand_002
-  - 07_Priest_Staff_nobg
+  - item_weapon_twohand_001
+  - item_weapon_onehand_003
   - sword_unselect
   - etc_select
   - slot_background
