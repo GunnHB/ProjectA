@@ -10,6 +10,7 @@ namespace ModelWeapon
 		public System.Int32 offensive_power;
 		public System.Single speed;
 		public System.String equip_holder;
+		public System.Boolean able_equip_shield;
     }
 
     public class Model

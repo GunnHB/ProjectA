@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour
     [BoxGroup(ITEM_DESC), SerializeField]
     private TextMeshProUGUI _itemDescText;
 
-    private Dictionary<GameValue.ItemType, List<ModelItem.Data>> _inventoryDic;
+    private Dictionary<GameValue.ItemType, List<InventoryItemData>> _inventoryDic;
 
     private List<DOTweenAnimation> _tweenAnimations;
 
@@ -142,9 +142,10 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void SetDesc(ModelItem.Data itemData)
+    // private void SetDesc(ModelItem.Data itemData)
+    private void SetDesc(InventoryItemData invenItemData)
     {
-        if (itemData == null || itemData.id == 0)
+        if (invenItemData == null || invenItemData._itemData.id == 0)
         {
             if (_descObj.activeInHierarchy)
                 DoTweenPlay(false);
@@ -161,8 +162,8 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        _itemNameText.text = itemData.name;
-        _itemDescText.text = itemData.desc;
+        _itemNameText.text = invenItemData._itemData.name;
+        _itemDescText.text = invenItemData._itemData.desc;
     }
 
     private void DoTweenPlay(bool forward)

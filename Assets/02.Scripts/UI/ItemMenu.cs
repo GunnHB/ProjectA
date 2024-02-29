@@ -22,6 +22,10 @@ public class ItemMenu : UIPopupBase
     {
         base.Init();
 
+        _useButton.onClick.RemoveAllListeners();
+        _discardButton.onClick.RemoveAllListeners();
+        _cancelButton.onClick.RemoveAllListeners();
+
         ItemManager.Instance.SetItemMenu(this);
     }
 
@@ -34,13 +38,9 @@ public class ItemMenu : UIPopupBase
 
         SetPosition();
 
-        _useButton.onClick.RemoveAllListeners();
-        _discardButton.onClick.RemoveAllListeners();
-        _cancelButton.onClick.RemoveAllListeners();
-
         _useButton.onClick.AddListener(OnClickUse);
         _discardButton.onClick.AddListener(OnClickDiscard);
-        _cancelButton.onClick.AddListener(Close);
+        _cancelButton.onClick.AddListener(OnClickCancel);
     }
 
     private void SetPosition()
@@ -67,25 +67,39 @@ public class ItemMenu : UIPopupBase
 
     private void OnClickUse()
     {
-        // Debug.Log($"{_targetSlot.ItemData.name} use!");
+        Debug.Log($"{_targetSlot.InvenItemData._itemData.name} use!");
 
-        ActiveEquipment(_targetSlot.ItemData.prefab, true);
+        UIManager.Instance.CloseUI(this);
+
+        // ActiveEquipment(_targetSlot.InvenItemData._itemData.prefab, true);
     }
 
     private void OnClickDiscard()
     {
-        // Debug.Log($"{_targetSlot.ItemData.name} discard!");
+        Debug.Log($"{_targetSlot.InvenItemData._itemData.name} discard!");
+
+        UIManager.Instance.CloseUI(this);
+    }
+
+    private void OnClickCancel()
+    {
+        UIManager.Instance.CloseUI(this);
     }
 
     private void ActiveEquipment(string equipmentName, bool active)
     {
-        var playersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.ItemData, true);
-        var rendersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.ItemData, false);
+        // var playersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.InvenItemData._itemData, true);
+        // var rendersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.InvenItemData._itemData, false);
 
-        ItemManager.Instance.ActiveEquipment(playersHolder, equipmentName, active);
-        ItemManager.Instance.ActiveEquipment(rendersHolder, equipmentName, active);
+        // if (playersHolder != null)
+        //     ItemManager.Instance.ActiveEquipment(playersHolder, equipmentName, active);
 
-        // ItemManager.Instance.ActiveEquipment(ItemManager.Instance.RightHolder, equipmentName, active);
-        // ItemManager.Instance.ActiveEquipment(ItemManager.Instance.RenderRightHolder, equipmentName, active);
+        // if (rendersHolder != null)
+        //     ItemManager.Instance.ActiveEquipment(rendersHolder, equipmentName, active);
+    }
+
+    private void CheckEquipment()
+    {
+
     }
 }

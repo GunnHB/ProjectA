@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,66 +21,17 @@ public class ItemManager : SingletonObject<ItemManager>
     private InventoryData _inventoryData = null;
     public InventoryData ThisInventoryData => _inventoryData;
 
+    private EquipmentData _equipmentData = null;
+    public EquipmentData ThisEquipmentData => _equipmentData;
+
     public UnityAction<ModelCategoryTab.Data> TabAction;
-    public UnityAction<ModelItem.Data> SlotAction;
+    public UnityAction<InventoryItemData> SlotAction;
+    public UnityAction<bool> EquipAction;
 
     public UnityAction<ItemSlot> GoToSlotAction;
 
     private ItemMenu _itemMenu;
     public ItemMenu ThisItemMenu => _itemMenu;
-
-    // private GameObject _rightHolder;
-    // private GameObject _renderRightHolder;
-
-    // public GameObject RightHolder
-    // {
-    //     get
-    //     {
-    //         if (_rightHolder == null)
-    //         {
-    //             var player = GameObject.Find("Player");
-
-    //             if (player == null)
-    //                 return null;
-
-    //             foreach (var tran in player.GetComponentsInChildren<Transform>())
-    //             {
-    //                 if (tran.name == RIGHT_HOLDER)
-    //                 {
-    //                     _rightHolder = tran.gameObject;
-    //                     break;
-    //                 }
-    //             }
-    //         }
-
-    //         return _rightHolder;
-    //     }
-    // }
-
-    // public GameObject RenderRightHolder
-    // {
-    //     get
-    //     {
-    //         if (_renderRightHolder == null)
-    //         {
-    //             var player = GameObject.Find("RenderTexturePlayer");
-
-    //             if (player == null)
-    //                 return null;
-
-    //             foreach (var tran in player.GetComponentsInChildren<Transform>())
-    //             {
-    //                 if (tran.name == RIGHT_HOLDER)
-    //                 {
-    //                     _renderRightHolder = tran.gameObject;
-    //                     break;
-    //                 }
-    //             }
-    //         }
-
-    //         return _renderRightHolder;
-    //     }
-    // }
 
     protected override void Awake()
     {
@@ -105,13 +57,18 @@ public class ItemManager : SingletonObject<ItemManager>
     {
         Debug.Log("업쓰요");
 
-        _inventoryData = new InventoryData();
-
         // test
-        AddItem(ModelItem.Model.DataList[0]);
-        AddItem(ModelItem.Model.DataList[1]);
-        AddItem(ModelItem.Model.DataList[2]);
-        AddItem(ModelItem.Model.DataList[3]);
+        {
+            _inventoryData = new InventoryData();
+
+            AddItem(new InventoryItemData(ModelItem.Model.DataList[0]));
+            AddItem(new InventoryItemData(ModelItem.Model.DataList[1]));
+            AddItem(new InventoryItemData(ModelItem.Model.DataList[2]));
+            AddItem(new InventoryItemData(ModelItem.Model.DataList[3]));
+            AddItem(new InventoryItemData(ModelItem.Model.DataList[0]));
+
+            _equipmentData = new EquipmentData();
+        }
     }
 
     public void SetCurrentItemSlot(ItemSlot newSlot)
@@ -133,7 +90,7 @@ public class ItemManager : SingletonObject<ItemManager>
 
         _currentItemSlot.SetSelect(true);
 
-        SlotAction?.Invoke(_currentItemSlot.ItemData);
+        SlotAction?.Invoke(_currentItemSlot.InvenItemData);
     }
 
     public void SetCurrentCategoryTab(CategoryTab newTab)
@@ -153,28 +110,34 @@ public class ItemManager : SingletonObject<ItemManager>
         _currentCategoryTab.SetSelect(true);
     }
 
-    public void AddItem(ModelItem.Data itemData)
+    // public void AddItem(ModelItem.Data itemData)
+    public void AddItem(InventoryItemData invenItemData)
     {
         if (_inventoryData == null)
             return;
 
-        for (int index = 0; index < _inventoryData._inventoryDic[itemData.type].Count; index++)
-        {
-            var slotData = _inventoryData._inventoryDic[itemData.type][index];
+        var existItem = _inventoryData._inventoryDic[invenItemData._itemData.type].Where(x => x._itemData == invenItemData._itemData).FirstOrDefault();
 
-            if (slotData.id == 0)
+        if (existItem != null && existItem._itemData != null)
+        {
+            if (existItem._itemData.stackable)
             {
-                _inventoryData._inventoryDic[itemData.type][index] = itemData;
-                break;
+                existItem._amount += invenItemData._amount;
+                return;
             }
-            else
-                continue;
         }
 
-        if (_inventoryData._itemAmount.ContainsKey(itemData))
-            _inventoryData._itemAmount[itemData] += 1;
-        else
-            _inventoryData._itemAmount.Add(itemData, 1);
+        for (int index = 0; index < _inventoryData._inventoryDic[invenItemData._itemData.type].Count; index++)
+        {
+            var slotData = _inventoryData._inventoryDic[invenItemData._itemData.type][index];
+
+            // 빈 슬롯에 추가하기
+            if (slotData._itemData == null || slotData._itemData.id == 0)
+            {
+                _inventoryData._inventoryDic[invenItemData._itemData.type][index] = invenItemData;
+                break;
+            }
+        }
     }
 
     public void SetItemMenu(ItemMenu newMenu)

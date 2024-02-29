@@ -14,12 +14,16 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Image _frameImage;
     [SerializeField] private UIButton _slotButton;
 
-    private ModelItem.Data _itemData;
-    public ModelItem.Data ItemData => _itemData;
+    // private ModelItem.Data _itemData;
+    // public ModelItem.Data ItemData => _itemData;
 
-    public void Init(ModelItem.Data itemData)
+    private InventoryItemData _invenItemData;
+    public InventoryItemData InvenItemData => _invenItemData;
+
+    // public void Init(ModelItem.Data itemData)
+    public void Init(InventoryItemData itemData)
     {
-        _itemData = itemData;
+        _invenItemData = itemData;
 
         if (itemData == null)
             return;
@@ -50,7 +54,6 @@ public class ItemSlot : MonoBehaviour
             if (itemMenu != null)
                 itemMenu.InitButtons(this);
 
-            // if (_itemData != null && _itemData.id != 0)
             SelectAction();
         });
     }
@@ -77,9 +80,9 @@ public class ItemSlot : MonoBehaviour
     {
         _itemImage.gameObject.SetActive(false);
 
-        if (_itemData.sprite != null)
+        if (_invenItemData._itemData.sprite != null)
         {
-            var itemSprite = AtlasManager.Instance.GetSpriteByInventory(_itemData.sprite);
+            var itemSprite = AtlasManager.Instance.GetSpriteByInventory(_invenItemData._itemData.sprite);
 
             if (itemSprite != null)
             {
@@ -96,17 +99,10 @@ public class ItemSlot : MonoBehaviour
 
     private void SetAmount()
     {
-        var amountDic = ItemManager.Instance.ThisInventoryData._itemAmount;
-
-        if (!amountDic.ContainsKey(_itemData) || amountDic[_itemData] == 1)
+        if (_invenItemData == null || _invenItemData._amount == 1 || !_invenItemData._itemData.stackable)
             _amountText.gameObject.SetActive(false);
         else
-        {
-            if (!_itemData.stackable)
-                _amountText.gameObject.SetActive(false);
-            else
-                _amountText.text = amountDic[_itemData].ToString();
-        }
+            _amountText.text = _invenItemData._amount.ToString();
     }
 
     private void ActiveFrame(bool active)
