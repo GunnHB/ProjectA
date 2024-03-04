@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+using TMPro;
+
 [RequireComponent(typeof(Image))]
 public class UIButton : Button, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -20,6 +22,23 @@ public class UIButton : Button, IPointerEnterHandler, IPointerExitHandler, IBegi
     private UnityAction EndAction;
 
     private UnityAction RightClickAction;
+
+    private TextMeshProUGUI _buttonText;
+    public TextMeshProUGUI ButtonText
+    {
+        get
+        {
+            if (_buttonText == null)
+            {
+                var tempText = GetComponentInChildren<TextMeshProUGUI>();
+
+                if (tempText != null)
+                    _buttonText = tempText;
+            }
+
+            return _buttonText;
+        }
+    }
 
     public override void OnPointerClick(PointerEventData eventData)
     {

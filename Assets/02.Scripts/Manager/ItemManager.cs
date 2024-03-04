@@ -93,6 +93,9 @@ public class ItemManager : SingletonObject<ItemManager>
             AddItem(new InventoryItemData(ModelItem.Model.DataList[3]));
             AddItem(new InventoryItemData(ModelItem.Model.DataList[0]));
 
+            for (int index = 0; index < 99; index++)
+                AddItem(new InventoryItemData(ModelItem.Model.DataList[9]));
+
             _equipmentData = new EquipmentData();
         }
     }
@@ -320,8 +323,8 @@ public class ItemManager : SingletonObject<ItemManager>
                             invenItemData._amount,
                             () => { ActualDiscardItem(invenItemData); });
         }
-
-        ActualDiscardItem(invenItemData);
+        else
+            ActualDiscardItem(invenItemData);
     }
 
     private void ActualDiscardItem(InventoryItemData invenItemData)

@@ -1,0 +1,28 @@
+{
+"Data": [
+{
+"id": 20101001,
+"type": "OneHand",
+"offensive_power": 10,
+"speed": 1,
+"equip_holder": "OneHandSheathHolder",
+"able_equip_shield": true
+},
+{
+"id": 20101002,
+"type": "OneHand",
+"offensive_power": 12,
+"speed": 1,
+"equip_holder": "OneHandSheathHolder",
+"able_equip_shield": true
+},
+{
+"id": 20102001,
+"type": "TwoHand",
+"offensive_power": 15,
+"speed": 0.8,
+"equip_holder": "TwoHandSheathHolder",
+"able_equip_shield": false
+}
+]
+}

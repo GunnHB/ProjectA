@@ -15,6 +15,9 @@ public class UISlideOptionPopup : UIPopupBase
     private const string GROUP_MID = "MID";
     private const string GROUP_BOT = "BOT";
 
+    private const string TEXT_CONFIRM = "Confirm";
+    private const string TEXT_CANCEL = "Cancel";
+
     [BoxGroup(GROUP_TOP), SerializeField]
     private TextMeshProUGUI _titleText;
 
@@ -23,7 +26,7 @@ public class UISlideOptionPopup : UIPopupBase
     [BoxGroup(GROUP_MID), SerializeField]
     private Slider _slider;
     [BoxGroup(GROUP_MID), SerializeField]
-    private InputField _inputField;
+    private TMP_InputField _inputField;
 
     [BoxGroup(GROUP_BOT), SerializeField]
     private UIButton _confirmButton;
@@ -36,13 +39,24 @@ public class UISlideOptionPopup : UIPopupBase
 
         _confirmButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
+
+        _slider.onValueChanged.RemoveAllListeners();
     }
 
     public void InitUI(string title, string desc, int maxValue,
-                        UnityAction confirmCallback = null, UnityAction cancelCallback = null)
+                        UnityAction confirmCallback = null, UnityAction cancelCallback = null,
+                        string confirmText = "", string cancelText = "")
     {
         _titleText.text = title;
         _descText.text = desc;
+
+        _slider.maxValue = maxValue;
+        _inputField.text = 1.ToString();
+
+        _slider.onValueChanged.AddListener(SetInputField);
+
+        _confirmButton.ButtonText.text = confirmText == string.Empty ? TEXT_CONFIRM : confirmText;
+        _cancelButton.ButtonText.text = cancelText == string.Empty ? TEXT_CANCEL : cancelText;
 
         _confirmButton.onClick.AddListener(() =>
         {
@@ -54,5 +68,10 @@ public class UISlideOptionPopup : UIPopupBase
             cancelCallback?.Invoke();
             UIManager.Instance.CloseUI(this);
         });
+    }
+
+    private void SetInputField(float sliderValue)
+    {
+        _inputField.text = sliderValue.ToString();
     }
 }

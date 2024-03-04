@@ -1,0 +1,24 @@
+{
+"Data": [
+{
+"id": 60101001,
+"target_state": "HP"
+},
+{
+"id": 60101002,
+"target_state": "Stamina"
+},
+{
+"id": 60101003,
+"target_state": "HP"
+},
+{
+"id": 60101004,
+"target_state": "HP"
+},
+{
+"id": 60101005,
+"target_state": "Stamina"
+}
+]
+}

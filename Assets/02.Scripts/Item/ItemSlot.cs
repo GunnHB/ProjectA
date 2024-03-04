@@ -98,6 +98,8 @@ public class ItemSlot : MonoBehaviour
 
     private void SetAmount()
     {
+        _amountText.gameObject.SetActive(true);
+
         if (_invenItemData == null || _invenItemData._amount == 1 || !_invenItemData._itemData.stackable)
             _amountText.gameObject.SetActive(false);
         else

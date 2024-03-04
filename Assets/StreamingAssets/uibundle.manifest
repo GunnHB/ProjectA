@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3383047133
+CRC: 1246217576
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c78ddc19240c7ff39422fb2b59282bd5
+    Hash: bb0613ebf48399dcc645ba137b0b3963
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6b8a74fad3d22004ae831b08e9657e7c
+    Hash: 8d128629b16698705290984341157ba5
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: c78ddc19240c7ff39422fb2b59282bd5
+    Hash: bb0613ebf48399dcc645ba137b0b3963
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -29,9 +29,17 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 4d0390bd8b8ffd640b34fe25065ff1df, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
@@ -58,6 +66,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 8e57643adbe0e2d459d3d6d70483556d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 4f15d7b08f8906e4994874e82560a9d4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e4e6fff3b1b78b444b61494d1d194ab8, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -94,6 +104,16 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_GlyphValueRecord
 - AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/OnChangeEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/SelectionEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/SubmitEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/TextSelectionEvent
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_InputField/TouchScreenKeyboardEvent
+- AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.VertexGradient
 - AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.PersistentCallGroup
@@ -122,13 +142,16 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
 - AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Slider/SliderEvent
+- AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
 - Assets/03.Prefabs/UI/InventorySlot.prefab
 - Assets/03.Prefabs/UI/CategoryTab.prefab
+- Assets/03.Prefabs/UI/UISlideOptionPopup.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab
-- Assets/03.Prefabs/UI/ItemMenuButton.prefab
+- Assets/03.Prefabs/UI/UIButton.prefab
 - Assets/03.Prefabs/UI/UICheckStateHUD.prefab
 - Assets/03.Prefabs/UI/ItemMenu.prefab
 - Assets/03.Prefabs/UI/UIMenuPanel.prefab
