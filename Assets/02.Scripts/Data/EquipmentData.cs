@@ -13,15 +13,15 @@ public class EquipmentData
         _itemShieldData = new InventoryItemData();
     }
 
-    public void EquipWeapon(InventoryItemData newItemData)
+    public void EquipWeapon(ItemSlot newItemSlot)
     {
-        switch (newItemData._itemData.type)
+        switch (newItemSlot.InvenItemData._itemData.type)
         {
             case GameValue.ItemType.Weapon:
-                RefreshEquipment(newItemData, ref _itemWeaponData);
+                RefreshEquipment(newItemSlot, ref _itemWeaponData);
                 break;
             case GameValue.ItemType.Shield:
-                RefreshEquipment(newItemData, ref _itemShieldData);
+                RefreshEquipment(newItemSlot, ref _itemShieldData);
                 break;
         }
     }
@@ -39,10 +39,10 @@ public class EquipmentData
         }
     }
 
-    private void RefreshEquipment(InventoryItemData newItemData, ref InventoryItemData prevItemData)
+    private void RefreshEquipment(ItemSlot newItemSlot, ref InventoryItemData prevItemData)
     {
         RemoveEquipment(ref prevItemData);                  // 해제
-        SetEquipment(newItemData, ref prevItemData);        // 장착
+        SetEquipment(newItemSlot, ref prevItemData);        // 장착
     }
 
     private void RemoveEquipment(ref InventoryItemData prevItemData)
@@ -58,17 +58,17 @@ public class EquipmentData
         ItemManager.Instance.RefreshSlot(prevItemData);
     }
 
-    private void SetEquipment(InventoryItemData newItemData, ref InventoryItemData prevItemData)
+    private void SetEquipment(ItemSlot newItemSlot, ref InventoryItemData prevItemSlot)
     {
-        if (newItemData == null || newItemData._itemData.id == 0)
+        if (newItemSlot == null || newItemSlot.InvenItemData._itemData.id == 0)
             return;
 
-        newItemData._isEquip = true;
-        prevItemData = newItemData;
+        newItemSlot.InvenItemData._isEquip = true;
+        prevItemSlot = newItemSlot.InvenItemData;
 
         // 오브젝트 활성화
 
         // 슬롯 갱신
-        ItemManager.Instance.RefreshSlot(newItemData);
+        ItemManager.Instance.RefreshSlot(newItemSlot);
     }
 }

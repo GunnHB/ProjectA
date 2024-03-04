@@ -8,7 +8,6 @@ public class ItemManager : SingletonObject<ItemManager>
 {
     private const string INVENTORY_DATA_PATH = "Assets/08.Tables/Json/InventoryData.json";
 
-    // private const string RIGHT_HOLDER = "RightHolder";
     private const string PLAYER = "Player";
     private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
 
@@ -219,12 +218,17 @@ public class ItemManager : SingletonObject<ItemManager>
         _inventory = inventory;
     }
 
+    public void RefreshSlot(ItemSlot itemSlot)
+    {
+        if (itemSlot != null)
+            itemSlot.Refresh();
+    }
+
     public void RefreshSlot(InventoryItemData invenItemData)
     {
         var itemSlot = GetItemSlot(invenItemData);
 
-        if (itemSlot != null)
-            itemSlot.Refresh();
+        RefreshSlot(itemSlot);
     }
 
     public ItemSlot GetItemSlot(InventoryItemData invenItemData)

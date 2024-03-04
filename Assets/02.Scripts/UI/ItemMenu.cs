@@ -94,9 +94,7 @@ public class ItemMenu : UIPopupBase
     {
         // 장비 착용 시 실행
         if (IsEquipment)
-            ItemManager.Instance.ThisEquipmentData.EquipWeapon(_targetSlot.InvenItemData);
-
-        // ActiveEquipment(_targetSlot.InvenItemData._itemData.prefab, true);
+            ItemManager.Instance.ThisEquipmentData.EquipWeapon(_targetSlot);
 
         UIManager.Instance.CloseUI(this);
     }
@@ -119,22 +117,5 @@ public class ItemMenu : UIPopupBase
     private void OnClickCancel()
     {
         UIManager.Instance.CloseUI(this);
-    }
-
-    private void ActiveEquipment(string equipmentName, bool active)
-    {
-        // var playersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.InvenItemData._itemData, true);
-        // var rendersHolder = ItemManager.Instance.GetHolderObj(_targetSlot.InvenItemData._itemData, false);
-
-        // if (playersHolder != null)
-        //     ItemManager.Instance.ActiveEquipment(playersHolder, equipmentName, active);
-
-        // if (rendersHolder != null)
-        //     ItemManager.Instance.ActiveEquipment(rendersHolder, equipmentName, active);
-    }
-
-    private void CheckEquipment()
-    {
-
     }
 }
