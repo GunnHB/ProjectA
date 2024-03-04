@@ -131,6 +131,7 @@ MonoBehaviour:
   _uiType: 0
   _parentTr: {fileID: 966199691879923273}
   _useButton: {fileID: 7339304097445482099}
+  _useText: {fileID: 8539296169955050119}
   _discardButton: {fileID: 6498466074548669687}
   _cancelButton: {fileID: 4438720386815379494}
 --- !u!1 &5771028322571224970
@@ -667,5 +668,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1816588ff9c689a4e9348e572adcde16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8539296169955050119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4975040438860633, guid: 23c7e7a21b3d85c4e86d958cf9c1cd64, type: 3}
+  m_PrefabInstance: {fileID: 8543328880811817438}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

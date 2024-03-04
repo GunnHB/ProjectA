@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 
 public class ItemMenu : UIPopupBase
@@ -12,11 +13,22 @@ public class ItemMenu : UIPopupBase
     [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _useButton;
     [BoxGroup(GROUP_MENU), SerializeField]
+    private TextMeshProUGUI _useText;
+    [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _discardButton;
     [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _cancelButton;
 
     private ItemSlot _targetSlot;
+
+    private bool IsEquipment
+    {
+        get
+        {
+            return _targetSlot.InvenItemData._itemData.type != GameValue.ItemType.Food &&
+                    _targetSlot.InvenItemData._itemData.type != GameValue.ItemType.Default;
+        }
+    }
 
     public override void Init()
     {
@@ -38,7 +50,20 @@ public class ItemMenu : UIPopupBase
 
         SetPosition();
 
-        _useButton.onClick.AddListener(OnClickUse);
+        if (!_targetSlot.InvenItemData._isEquip)
+        {
+            _useButton.onClick.AddListener(OnClickUse);
+
+            if (IsEquipment)
+                _useText.text = "EQUIP";
+            else
+                _useText.text = "USE";
+        }
+        else
+        {
+            _useButton.onClick.AddListener(OnClickRemove);
+            _useText.text = "REMOVE";
+        }
         _discardButton.onClick.AddListener(OnClickDiscard);
         _cancelButton.onClick.AddListener(OnClickCancel);
     }
@@ -67,16 +92,21 @@ public class ItemMenu : UIPopupBase
 
     private void OnClickUse()
     {
-        Debug.Log($"{_targetSlot.InvenItemData._itemData.name} use!");
-
         // 장비 착용 시 실행
-        if (_targetSlot.InvenItemData._itemData.type != GameValue.ItemType.Food &&
-            _targetSlot.InvenItemData._itemData.type != GameValue.ItemType.Default)
+        if (IsEquipment)
             ItemManager.Instance.ThisEquipmentData.EquipWeapon(_targetSlot.InvenItemData);
 
-        UIManager.Instance.CloseUI(this);
-
         // ActiveEquipment(_targetSlot.InvenItemData._itemData.prefab, true);
+
+        UIManager.Instance.CloseUI(this);
+    }
+
+    private void OnClickRemove()
+    {
+        // 착용한 장비 해제
+        ItemManager.Instance.ThisEquipmentData.RemoveWeapon(_targetSlot.InvenItemData);
+
+        UIManager.Instance.CloseUI(this);
     }
 
     private void OnClickDiscard()
