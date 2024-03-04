@@ -8,9 +8,6 @@ public class ItemManager : SingletonObject<ItemManager>
 {
     private const string INVENTORY_DATA_PATH = "Assets/08.Tables/Json/InventoryData.json";
 
-    private const string PLAYER = "Player";
-    private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
-
     private const string LIST_OBJECT = "ItemObjects";
 
     // 현재 선택된 인벤토리 탭
@@ -221,7 +218,7 @@ public class ItemManager : SingletonObject<ItemManager>
         if (isPlayer)
         {
             if (!_playerHolderDic.ContainsKey(holderName))
-                FindHolderObj(PLAYER, holderName, ref _playerHolderDic);
+                FindHolderObj(GameManager.Instance.PlayerObj, holderName, ref _playerHolderDic);
 
             if (_playerHolderDic.ContainsKey(holderName))
                 return _playerHolderDic[holderName];
@@ -229,7 +226,7 @@ public class ItemManager : SingletonObject<ItemManager>
         else
         {
             if (!_renderHolderDic.ContainsKey(holderName))
-                FindHolderObj(PLAYER_RENDER_TEXTURE, holderName, ref _renderHolderDic);
+                FindHolderObj(GameManager.Instance.RenderPlayerObj, holderName, ref _renderHolderDic);
 
             if (_renderHolderDic.ContainsKey(holderName))
                 return _renderHolderDic[holderName];
@@ -265,10 +262,8 @@ public class ItemManager : SingletonObject<ItemManager>
         return holderName;
     }
 
-    private void FindHolderObj(string playerObjName, string holderName, ref Dictionary<string, GameObject> holderDic)
+    private void FindHolderObj(GameObject playerObj, string holderName, ref Dictionary<string, GameObject> holderDic)
     {
-        GameObject playerObj = GameObject.Find(playerObjName);
-
         if (playerObj == null)
             return;
 
@@ -330,7 +325,7 @@ public class ItemManager : SingletonObject<ItemManager>
         else
         {
             // 버린 아이템 오브젝트 활성화
-            ItemDic[invenItemData._itemData.prefab].SetActive(true);
+            SetDiscardItemPosition(invenItemData);
 
             // 인벤토리의 아이템 데이터 지우기
             ClearItemDataInInventory(invenItemData);
@@ -339,6 +334,17 @@ public class ItemManager : SingletonObject<ItemManager>
             if (_inventory != null)
                 _inventory.RefreshInventory();
         }
+    }
+
+    private void SetDiscardItemPosition(InventoryItemData invenItemData)
+    {
+        var position = GameManager.Instance.PlayerObj.transform.localPosition + (-Vector3.up * .75f);
+        var itemObject = ItemDic[invenItemData._itemData.prefab];
+        var randomSite = Random.insideUnitCircle.normalized;
+
+        itemObject.transform.localPosition = new Vector3(randomSite.x, 0, randomSite.y) + position;
+
+        ItemDic[invenItemData._itemData.prefab].SetActive(true);
     }
 
     private void ClearItemDataInInventory(InventoryItemData invenItemData)

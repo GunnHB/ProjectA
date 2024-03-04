@@ -13,6 +13,9 @@ public class GameManager : SingletonObject<GameManager>
         UI,
     }
 
+    private const string PLAYER = "Player";
+    private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
+
     private GameMode _gameMode;
 
     private bool _gamePause = false;
@@ -22,6 +25,12 @@ public class GameManager : SingletonObject<GameManager>
 
     public UnityAction InGameModeAction;
     public UnityAction UIModeAction;
+
+    private GameObject _playerObj;
+    public GameObject PlayerObj { get { return GetObject(PLAYER, ref _playerObj); } }
+
+    private GameObject _renderPlayerObj;
+    public GameObject RenderPlayerObj { get { return GetObject(PLAYER_RENDER_TEXTURE, ref _renderPlayerObj); } }
 
     protected override void Awake()
     {
@@ -62,5 +71,18 @@ public class GameManager : SingletonObject<GameManager>
         _gamePause = doPause;
 
         Time.timeScale = _gamePause ? 0 : 1;
+    }
+
+    private GameObject GetObject(string objName, ref GameObject obj)
+    {
+        if (obj == null)
+        {
+            var tempObj = GameObject.Find(objName);
+
+            if (tempObj != null)
+                obj = tempObj;
+        }
+
+        return obj;
     }
 }
