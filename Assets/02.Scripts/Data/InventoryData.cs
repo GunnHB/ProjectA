@@ -8,15 +8,20 @@ public class InventoryItemData
 
     public InventoryItemData()
     {
-        _itemData = new ModelItem.Data();
-        _amount = 0;
-        _isEquip = false;
+        ClearData();
     }
 
     public InventoryItemData(ModelItem.Data itemData)
     {
         _itemData = itemData;
         _amount = 1;
+        _isEquip = false;
+    }
+
+    public void ClearData()
+    {
+        _itemData = new ModelItem.Data();
+        _amount = 0;
         _isEquip = false;
     }
 }

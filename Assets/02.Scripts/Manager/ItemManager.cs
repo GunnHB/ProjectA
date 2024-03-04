@@ -11,6 +11,8 @@ public class ItemManager : SingletonObject<ItemManager>
     private const string PLAYER = "Player";
     private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
 
+    private const string LIST_OBJECT = "ItemObjects";
+
     // 현재 선택된 인벤토리 탭
     private CategoryTab _currentCategoryTab;
     public CategoryTab CurrentCategoryTab => _currentCategoryTab;
@@ -39,6 +41,26 @@ public class ItemManager : SingletonObject<ItemManager>
 
     private Dictionary<string, GameObject> _playerHolderDic = new();
     private Dictionary<string, GameObject> _renderHolderDic = new();
+
+    private Dictionary<string, GameObject> _itemDic = new();
+    public Dictionary<string, GameObject> ItemDic
+    {
+        get
+        {
+            if (_itemDic == null || _itemDic.Count == 0)
+            {
+                GameObject listObj = GameObject.Find(LIST_OBJECT);
+
+                if (listObj != null)
+                {
+                    for (int index = 0; index < listObj.transform.childCount; index++)
+                        _itemDic.Add(listObj.transform.GetChild(index).name, listObj.transform.GetChild(index).gameObject);
+                }
+            }
+
+            return _itemDic;
+        }
+    }
 
     protected override void Awake()
     {
@@ -266,6 +288,9 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public void SetInventory(Inventory inventory)
     {
+        _currentCategoryTab = null;
+        _currentItemSlot = null;
+
         _inventory = inventory;
     }
 
@@ -285,5 +310,50 @@ public class ItemManager : SingletonObject<ItemManager>
     public ItemSlot GetItemSlot(InventoryItemData invenItemData)
     {
         return _inventory.SlotList.Where(x => x.InvenItemData == invenItemData).FirstOrDefault();
+    }
+
+    public void DiscardItem(InventoryItemData invenItemData)
+    {
+        if (invenItemData._amount > 1)
+            ;   // uimanager에서 수량 조절 창 띄우기
+
+        ActualDiscardItem(invenItemData);
+    }
+
+    private void ActualDiscardItem(InventoryItemData invenItemData)
+    {
+        if (!ItemDic.ContainsKey(invenItemData._itemData.prefab))
+        {
+            Debug.Log("itemList does not have this prefab! please check list");
+            return;
+        }
+        else
+        {
+            // 버린 아이템 오브젝트 활성화
+            ItemDic[invenItemData._itemData.prefab].SetActive(true);
+
+            // 인벤토리의 아이템 데이터 지우기
+            ClearItemDataInInventory(invenItemData);
+
+            // 인벤토리 슬롯 갱신
+            if (_inventory != null)
+                _inventory.RefreshInventory();
+        }
+    }
+
+    private void ClearItemDataInInventory(InventoryItemData invenItemData)
+    {
+        var invenList = _inventoryData._inventoryDic[invenItemData._itemData.type];
+
+        if (invenList.Contains(invenItemData))
+        {
+            // 장착 중인 아이템은 비활성화 시키기
+            if (invenItemData._isEquip)
+                ActiveEquipment(invenItemData, false);
+
+            var index = invenList.IndexOf(invenItemData);
+
+            invenList[index].ClearData();
+        }
     }
 }

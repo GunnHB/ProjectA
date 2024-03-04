@@ -109,7 +109,7 @@ public class ItemMenu : UIPopupBase
 
     private void OnClickDiscard()
     {
-        Debug.Log($"{_targetSlot.InvenItemData._itemData.name} discard!");
+        ItemManager.Instance.DiscardItem(_targetSlot.InvenItemData);
 
         UIManager.Instance.CloseUI(this);
     }

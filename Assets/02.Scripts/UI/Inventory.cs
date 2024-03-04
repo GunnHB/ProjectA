@@ -46,6 +46,8 @@ public class Inventory : MonoBehaviour
 
     private List<DOTweenAnimation> _tweenAnimations;
 
+    private bool _isInit = false;
+
     public void Init()
     {
         _inventoryDic = ItemManager.Instance.ThisInventoryData._inventoryDic;
@@ -85,25 +87,38 @@ public class Inventory : MonoBehaviour
             renderCam.gameObject.SetActive(true);
     }
 
-    private void InitCategory()
+    private void InitCategory(CategoryTab currentTab = null)
     {
-        var sortedList = ModelCategoryTab.Model.DataList.OrderBy(x => x.order).ToList();
-
-        for (int index = 0; index < sortedList.Count; index++)
+        if (_isInit && currentTab != null)
         {
-            var item = sortedList[index];
-            var catePrefab = _categoryPool.GetObject();
+            ItemManager.Instance.SetCurrentCategoryTab(currentTab);
+            currentTab.SetSelect(true);
 
-            if (catePrefab.TryGetComponent(out CategoryTab tab))
+            return;
+        }
+
+        if (!_isInit)
+        {
+            var sortedList = ModelCategoryTab.Model.DataList.OrderBy(x => x.order).ToList();
+
+            for (int index = 0; index < sortedList.Count; index++)
             {
-                tab.Init(item);
+                var item = sortedList[index];
+                var catePrefab = _categoryPool.GetObject();
 
-                if (index == 0)
+                if (catePrefab.TryGetComponent(out CategoryTab tab))
                 {
-                    ItemManager.Instance.SetCurrentCategoryTab(tab);
-                    tab.SetSelect(true);
+                    tab.Init(item);
+
+                    if (index == 0)
+                    {
+                        ItemManager.Instance.SetCurrentCategoryTab(tab);
+                        tab.SetSelect(true);
+                    }
                 }
             }
+
+            _isInit = true;
         }
     }
 
@@ -200,5 +215,10 @@ public class Inventory : MonoBehaviour
         //                     _scroll.content.rect.height - (_scroll.transform as RectTransform).rect.height;
 
         // _scroll.verticalNormalizedPosition = scrollValue;
+    }
+
+    public void RefreshInventory()
+    {
+        InitCategory(ItemManager.Instance.CurrentCategoryTab);
     }
 }
