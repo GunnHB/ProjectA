@@ -309,8 +309,17 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public void DiscardItem(InventoryItemData invenItemData)
     {
+        // uimanager에서 수량 조절 창 띄우기
         if (invenItemData._amount > 1)
-            ;   // uimanager에서 수량 조절 창 띄우기
+        {
+            var popup = UIManager.Instance.OpenUI<UISlideOptionPopup>();
+
+            if (popup != null)
+                popup.InitUI("NOTICE",
+                            "Please choose quantity to discard",
+                            invenItemData._amount,
+                            () => { ActualDiscardItem(invenItemData); });
+        }
 
         ActualDiscardItem(invenItemData);
     }
