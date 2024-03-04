@@ -45,10 +45,14 @@ SpriteAtlas:
     - 72f01314e44e00644a831c786d3f9b98: 21300000
     - 3e2f2354079dfa7468ce4ddc11fc31df: 21300000
     - 93050d843da78e14cbacd0e52e390d48: 21300000
+    - 7f260125f9d38434aa059e56d1b83fe7: 21300000
     - 48f22ac5d31c40b45a0c74be2057203b: 21300000
+    - 6787c0064d0187e439cd141d041fe87f: 21300000
     - 403a61560c2810249bf707f54305d4ca: 21300000
     - c18d31e6e7eb8c043b976d0aa67ad1bd: 21300000
     - 730fec37a08eb984dad7bdd88a2a7e2c: 21300000
+    - 87472ae7c00a46c48b8354b24ec27688: 21300000
+    - d5a1d1586652d7c49b9ad9388a5ba96c: 21300000
     - 153ac298e2c3c1c49b5bcd025a2447ea: 21300000
     - 71a28da84065c1441a1f2db7bc189eb0: 21300000
     - ee05dfd8e00a62f45a927675435893dc: 21300000
@@ -72,10 +76,14 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 72f01314e44e00644a831c786d3f9b98, type: 3}
   - {fileID: 21300000, guid: 3e2f2354079dfa7468ce4ddc11fc31df, type: 3}
   - {fileID: 21300000, guid: 93050d843da78e14cbacd0e52e390d48, type: 3}
+  - {fileID: 21300000, guid: 7f260125f9d38434aa059e56d1b83fe7, type: 3}
   - {fileID: 21300000, guid: 48f22ac5d31c40b45a0c74be2057203b, type: 3}
+  - {fileID: 21300000, guid: 6787c0064d0187e439cd141d041fe87f, type: 3}
   - {fileID: 21300000, guid: 403a61560c2810249bf707f54305d4ca, type: 3}
   - {fileID: 21300000, guid: c18d31e6e7eb8c043b976d0aa67ad1bd, type: 3}
   - {fileID: 21300000, guid: 730fec37a08eb984dad7bdd88a2a7e2c, type: 3}
+  - {fileID: 21300000, guid: 87472ae7c00a46c48b8354b24ec27688, type: 3}
+  - {fileID: 21300000, guid: d5a1d1586652d7c49b9ad9388a5ba96c, type: 3}
   - {fileID: 21300000, guid: 153ac298e2c3c1c49b5bcd025a2447ea, type: 3}
   - {fileID: 21300000, guid: 71a28da84065c1441a1f2db7bc189eb0, type: 3}
   - {fileID: 21300000, guid: ee05dfd8e00a62f45a927675435893dc, type: 3}
@@ -98,10 +106,14 @@ SpriteAtlas:
   - bow_unselect
   - armor_unselect
   - etc_unselect
+  - Paper_01
   - bow_select
+  - option_button
   - shield_select
   - 01_Bow_nobg
   - mid_button
+  - long_line
+  - energy_line2
   - item_weapon_onehand_002
   - item_shield_001
   - sword_select
