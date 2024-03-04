@@ -53,6 +53,7 @@ public class EquipmentData
         prevItemData._isEquip = false;
 
         // 오브젝트 비활성화
+        ItemManager.Instance.ActiveEquipment(prevItemData, false);
 
         // 슬롯 갱신
         ItemManager.Instance.RefreshSlot(prevItemData);
@@ -67,8 +68,9 @@ public class EquipmentData
         prevItemSlot = newItemSlot.InvenItemData;
 
         // 오브젝트 활성화
+        ItemManager.Instance.ActiveEquipment(prevItemSlot, true);
 
         // 슬롯 갱신
-        ItemManager.Instance.RefreshSlot(newItemSlot);
+        ItemManager.Instance.RefreshSlot(prevItemSlot);
     }
 }

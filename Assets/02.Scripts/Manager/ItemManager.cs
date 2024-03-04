@@ -34,10 +34,11 @@ public class ItemManager : SingletonObject<ItemManager>
     public UnityAction<ModelCategoryTab.Data> TabAction;
     public UnityAction<InventoryItemData> SlotAction;
 
-    // public UnityAction<ItemSlot> GoToSlotAction;
-
     private ItemMenu _itemMenu;
     public ItemMenu ThisItemMenu => _itemMenu;
+
+    private Dictionary<string, GameObject> _playerHolderDic = new();
+    private Dictionary<string, GameObject> _renderHolderDic = new();
 
     protected override void Awake()
     {
@@ -116,12 +117,12 @@ public class ItemManager : SingletonObject<ItemManager>
         _currentCategoryTab.SetSelect(true);
     }
 
-    // public void AddItem(ModelItem.Data itemData)
     public void AddItem(InventoryItemData invenItemData)
     {
         if (_inventoryData == null)
             return;
 
+        // 인벤토리에 있는 아이템인지
         var existItem = _inventoryData._inventoryDic[invenItemData._itemData.type].Where(x => x._itemData == invenItemData._itemData).FirstOrDefault();
 
         if (existItem != null && existItem._itemData != null)
@@ -165,52 +166,102 @@ public class ItemManager : SingletonObject<ItemManager>
         }
     }
 
-    public GameObject GetHolderObj(ModelItem.Data itemData, bool isPlayer)
+    public void ActiveEquipment(InventoryItemData invenItemData, bool active)
+    {
+        var playerHolder = GetHolderObj(invenItemData._itemData, true);
+        var renderHolder = GetHolderObj(invenItemData._itemData, false);
+
+        ActualActiveEquipment(playerHolder, invenItemData._itemData.prefab, active);
+        ActualActiveEquipment(renderHolder, invenItemData._itemData.prefab, active);
+    }
+
+    private void ActualActiveEquipment(GameObject holder, string equipmentName, bool active)
+    {
+        for (int index = 0; index < holder.transform.childCount; index++)
+        {
+            var item = holder.transform.GetChild(index);
+
+            if (item.name == equipmentName)
+            {
+                item.gameObject.SetActive(active);
+                return;
+            }
+        }
+    }
+
+    private GameObject GetHolderObj(ModelItem.Data itemData, bool isPlayer)
+    {
+        string holderName = GetHolderName(itemData);
+
+        if (holderName == string.Empty)
+            return null;
+
+        if (isPlayer)
+        {
+            if (!_playerHolderDic.ContainsKey(holderName))
+                FindHolderObj(PLAYER, holderName, ref _playerHolderDic);
+
+            if (_playerHolderDic.ContainsKey(holderName))
+                return _playerHolderDic[holderName];
+        }
+        else
+        {
+            if (!_renderHolderDic.ContainsKey(holderName))
+                FindHolderObj(PLAYER_RENDER_TEXTURE, holderName, ref _renderHolderDic);
+
+            if (_renderHolderDic.ContainsKey(holderName))
+                return _renderHolderDic[holderName];
+        }
+
+        return null;
+    }
+
+    private string GetHolderName(ModelItem.Data itemData)
     {
         string holderName = string.Empty;
 
-        // 홀더 이름 찾기
         switch (itemData.type)
         {
             case GameValue.ItemType.Weapon:
                 {
                     ModelWeapon.Data weaponData = ModelWeapon.Model.DataDic[itemData.ref_id];
 
-                    if (weaponData == null)
-                        return null;
-
-                    holderName = weaponData.equip_holder;
+                    if (weaponData != null)
+                        holderName = weaponData.equip_holder;
                 }
                 break;
             case GameValue.ItemType.Shield:
                 {
                     ModelShield.Data shieldData = ModelShield.Model.DataDic[itemData.ref_id];
 
-                    if (shieldData == null)
-                        return null;
-
-                    holderName = shieldData.equip_holder;
+                    if (shieldData != null)
+                        holderName = shieldData.equip_holder;
                 }
                 break;
         }
 
-        if (holderName == string.Empty)
-            return null;
+        return holderName;
+    }
 
-        // 렌더 텍스쳐에 보이는 플레이어인지 실제 조종하는 플레이어인지
-        GameObject playerObj = GameObject.Find(isPlayer ? PLAYER : PLAYER_RENDER_TEXTURE);
+    private void FindHolderObj(string playerObjName, string holderName, ref Dictionary<string, GameObject> holderDic)
+    {
+        GameObject playerObj = GameObject.Find(playerObjName);
 
         if (playerObj == null)
-            return null;
+            return;
 
-        // 홀더 이름 기반으로 오브젝트 찾기
-        foreach (var obj in playerObj.GetComponentsInChildren<Transform>())
+        foreach (var item in playerObj.GetComponentsInChildren<Transform>())
         {
-            if (obj.name == holderName)
-                return obj.gameObject;
-        }
+            if (item.name == holderName)
+            {
+                if (!holderDic.ContainsKey(holderName))
+                    holderDic.Add(holderName, item.gameObject);
+                else
+                    holderDic[holderName] = item.gameObject;
 
-        return null;
+                return;
+            }
+        }
     }
 
     public void SetInventory(Inventory inventory)
