@@ -81,8 +81,6 @@ public class ItemManager : SingletonObject<ItemManager>
 
     private void CreateInventory()
     {
-        Debug.Log("업쓰요");
-
         // test
         {
             _inventoryData = new InventoryData();
@@ -93,7 +91,7 @@ public class ItemManager : SingletonObject<ItemManager>
             AddItem(new InventoryItemData(ModelItem.Model.DataList[3]));
             AddItem(new InventoryItemData(ModelItem.Model.DataList[0]));
 
-            for (int index = 0; index < 99; index++)
+            for (int index = 0; index < 3; index++)
                 AddItem(new InventoryItemData(ModelItem.Model.DataList[9]));
 
             _equipmentData = new EquipmentData();

@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
 using TMPro;
+using System;
 
 public class UISlideOptionPopup : UIPopupBase
 {
@@ -41,6 +42,7 @@ public class UISlideOptionPopup : UIPopupBase
         _cancelButton.onClick.RemoveAllListeners();
 
         _slider.onValueChanged.RemoveAllListeners();
+        _inputField.onValueChanged.RemoveAllListeners();
     }
 
     public void InitUI(string title, string desc, int maxValue,
@@ -50,10 +52,11 @@ public class UISlideOptionPopup : UIPopupBase
         _titleText.text = title;
         _descText.text = desc;
 
+        _slider.onValueChanged.AddListener(SetInputField);
+        _inputField.onValueChanged.AddListener(SetSliderValue);
+
         _slider.maxValue = maxValue;
         _inputField.text = 1.ToString();
-
-        _slider.onValueChanged.AddListener(SetInputField);
 
         _confirmButton.ButtonText.text = confirmText == string.Empty ? TEXT_CONFIRM : confirmText;
         _cancelButton.ButtonText.text = cancelText == string.Empty ? TEXT_CANCEL : cancelText;
@@ -68,6 +71,21 @@ public class UISlideOptionPopup : UIPopupBase
             cancelCallback?.Invoke();
             UIManager.Instance.CloseUI(this);
         });
+    }
+
+    private void SetSliderValue(string inputValue)
+    {
+        if (inputValue == string.Empty)
+            inputValue = 0.ToString();
+
+        int parseValue = int.Parse(inputValue);
+
+        if (parseValue > _slider.maxValue)
+            parseValue = (int)_slider.maxValue;
+        else if (parseValue < 0)
+            parseValue = 0;
+
+        _slider.value = parseValue;
     }
 
     private void SetInputField(float sliderValue)
