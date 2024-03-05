@@ -24,6 +24,11 @@ public class InventoryItemData
         _amount = 0;
         _isEquip = false;
     }
+
+    public bool IsEmpty()
+    {
+        return _itemData == null || _itemData.id == 0;
+    }
 }
 
 public class InventoryData

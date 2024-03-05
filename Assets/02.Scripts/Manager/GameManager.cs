@@ -23,6 +23,8 @@ public class GameManager : SingletonObject<GameManager>
     private const string PLAYER = "Player";
     private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
 
+    private const string LAYER_MASK_ITEM = "Item";
+
     private GameMode _gameMode;
     public GameMode CurrGameMode => _gameMode;
 
@@ -37,10 +39,22 @@ public class GameManager : SingletonObject<GameManager>
     public UnityAction UIModeAction;
 
     private GameObject _playerObj;
-    public GameObject PlayerObj { get { return GetObject(PLAYER, ref _playerObj); } }
+    public GameObject PlayerObj { get { return GetGameObject(PLAYER, ref _playerObj); } }
 
     private GameObject _renderPlayerObj;
-    public GameObject RenderPlayerObj { get { return GetObject(PLAYER_RENDER_TEXTURE, ref _renderPlayerObj); } }
+    public GameObject RenderPlayerObj { get { return GetGameObject(PLAYER_RENDER_TEXTURE, ref _renderPlayerObj); } }
+
+    private LayerMask _itemMask;
+    public LayerMask ItemMask
+    {
+        get
+        {
+            if (_itemMask == 0)
+                _itemMask = LayerMask.NameToLayer(LAYER_MASK_ITEM);
+
+            return _itemMask;
+        }
+    }
 
     protected override void Awake()
     {
@@ -81,6 +95,19 @@ public class GameManager : SingletonObject<GameManager>
         _gamePause = doPause;
 
         Time.timeScale = _gamePause ? 0 : 1;
+    }
+
+    public GameObject GetGameObject(string objgName, ref GameObject obj)
+    {
+        if (obj == null)
+        {
+            var tempObj = GameObject.Find(objgName);
+
+            if (tempObj != null)
+                obj = tempObj;
+        }
+
+        return obj;
     }
 
     public T GetObject<T>(string objName, ref T obj) where T : Object

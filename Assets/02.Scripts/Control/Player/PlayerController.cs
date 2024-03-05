@@ -108,12 +108,26 @@ public partial class PlayerController : MonoBehaviour
     private void Update()
     {
         _stateMachine.DoOperatorUpdate();
+
+        FindDropItemObject();
     }
 
     private void FixedUpdate()
     {
         _movement.MovementUpdate();
         _movement.GravityUpdate();
+    }
+
+    private void FindDropItemObject()
+    {
+        // [1 << layermask] 요 형태로 해야 인식함
+        var colliders = Physics.OverlapSphere(transform.localPosition, .3f, 1 << GameManager.Instance.ItemMask);
+
+        foreach (var collider in colliders)
+        {
+            if (collider.TryGetComponent(out DropItemObject dropItem))
+                Debug.Log(dropItem);        // 아이템 습득 ui가 떠야함
+        }
     }
 
     public void SetMovementSpeed(float speed)

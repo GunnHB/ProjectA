@@ -64,7 +64,7 @@ public class ItemManager : SingletonObject<ItemManager>
     public void InitInGameScene()
     {
         if (_dropItem == null)
-            ThisDropItem._dropItemPool.Initialize(10);
+            ThisDropItem.GetObjectPool().Initialize(10);
     }
 
     private void InitInventoryData()
@@ -187,13 +187,33 @@ public class ItemManager : SingletonObject<ItemManager>
         }
     }
 
+    public void DrawWeapon()
+    {
+        var weaponData = _equipmentData._itemWeaponData;
+
+        if (weaponData.IsEmpty())
+            return;
+
+        var playerHolder = GetHolderObj(weaponData._itemData, isPlayer: true, isSheath: false);
+        var renderHolder = GetHolderObj(weaponData._itemData, isPlayer: false, isSheath: false);
+
+        if (playerHolder != null)
+            ActualActiveEquipment(playerHolder, weaponData._itemData.prefab, true);
+
+        if (renderHolder != null)
+            ActualActiveEquipment(renderHolder, weaponData._itemData.prefab, true);
+    }
+
     public void ActiveEquipment(InventoryItemData invenItemData, bool active)
     {
-        var playerHolder = GetHolderObj(invenItemData._itemData, true);
-        var renderHolder = GetHolderObj(invenItemData._itemData, false);
+        var playerHolder = GetHolderObj(invenItemData._itemData, isPlayer: true);
+        var renderHolder = GetHolderObj(invenItemData._itemData, isPlayer: false);
 
-        ActualActiveEquipment(playerHolder, invenItemData._itemData.prefab, active);
-        ActualActiveEquipment(renderHolder, invenItemData._itemData.prefab, active);
+        if (playerHolder != null)
+            ActualActiveEquipment(playerHolder, invenItemData._itemData.prefab, active);
+
+        if (renderHolder != null)
+            ActualActiveEquipment(renderHolder, invenItemData._itemData.prefab, active);
     }
 
     private void ActualActiveEquipment(GameObject holder, string equipmentName, bool active)
@@ -210,9 +230,9 @@ public class ItemManager : SingletonObject<ItemManager>
         }
     }
 
-    private GameObject GetHolderObj(ModelItem.Data itemData, bool isPlayer)
+    private GameObject GetHolderObj(ModelItem.Data itemData, bool isPlayer, bool isSheath = true)
     {
-        string holderName = GetHolderName(itemData);
+        string holderName = GetHolderName(itemData, isSheath);
 
         if (holderName == string.Empty)
             return null;
@@ -237,7 +257,7 @@ public class ItemManager : SingletonObject<ItemManager>
         return null;
     }
 
-    private string GetHolderName(ModelItem.Data itemData)
+    private string GetHolderName(ModelItem.Data itemData, bool isSheath)
     {
         string holderName = string.Empty;
 
@@ -248,7 +268,7 @@ public class ItemManager : SingletonObject<ItemManager>
                     ModelWeapon.Data weaponData = ModelWeapon.Model.DataDic[itemData.ref_id];
 
                     if (weaponData != null)
-                        holderName = weaponData.equip_holder;
+                        holderName = isSheath ? weaponData.equip_holder : weaponData.hand_holder;
                 }
                 break;
             case GameValue.ItemType.Shield:
@@ -256,7 +276,7 @@ public class ItemManager : SingletonObject<ItemManager>
                     ModelShield.Data shieldData = ModelShield.Model.DataDic[itemData.ref_id];
 
                     if (shieldData != null)
-                        holderName = shieldData.equip_holder;
+                        holderName = isSheath ? shieldData.equip_holder : shieldData.hand_holder;
                 }
                 break;
         }
@@ -285,8 +305,22 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public void SetInventory(Inventory inventory)
     {
+        // 버린 아이템이 있다면 주변에 오브젝트 활성화
+        if (inventory == null)
+        {
+            if (_currDropItemObject != null)
+            {
+                var gameObj = _currDropItemObject.gameObject;
+                gameObj.transform.localPosition = DropItemPosition();
+
+                gameObj.SetActive(true);
+            }
+        }
+
+        // 초기화
         _currentCategoryTab = null;
         _currentItemSlot = null;
+        _currDropItemObject = null;
 
         _inventory = inventory;
     }
@@ -328,9 +362,12 @@ public class ItemManager : SingletonObject<ItemManager>
 
     private void AddToDropItemCollection(InventoryItemData invenItemData, int dropAmount = 1)
     {
+        if (dropAmount == 0)
+            return;
+
         if (_currDropItemObject == null)
         {
-            var temp = _dropItem._dropItemPool.GetObject(false);
+            var temp = _dropItem.GetObjectPool().GetObject(false);
 
             if (temp == null)
                 return;
@@ -372,6 +409,13 @@ public class ItemManager : SingletonObject<ItemManager>
         //     if (_inventory != null)
         //         _inventory.RefreshInventory();
         // }
+    }
+
+    private Vector3 DropItemPosition()
+    {
+        var randomSite = Random.insideUnitCircle.normalized;
+
+        return GameManager.Instance.PlayerObj.transform.localPosition + new Vector3(randomSite.x, 0f, randomSite.y);
     }
 
     private void SetDropItemPosition(InventoryItemData invenItemData)

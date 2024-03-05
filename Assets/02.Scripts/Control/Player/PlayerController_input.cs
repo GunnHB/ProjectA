@@ -247,19 +247,19 @@ public partial class PlayerController : MonoBehaviour
     #region Draw / Sheath weapon
     private void StartDrawWeaponInput(InputAction.CallbackContext context)
     {
-        // if (_equipment.DoAction)
-        //     return;
+        if (_equipment.DoAction)
+            return;
 
-        // if (_playerMode == PlayerMode.Combat)
-        // {
-        //     SheathWeaponAction?.Invoke();
-        //     _playerMode = PlayerMode.Normal;
-        // }
-        // else
-        // {
-        //     DrawWeaponAction?.Invoke();
-        //     _playerMode = PlayerMode.Combat;
-        // }
+        if (_playerMode == PlayerMode.Combat)
+        {
+            SheathWeaponAction?.Invoke();
+            _playerMode = PlayerMode.Normal;
+        }
+        else
+        {
+            DrawWeaponAction?.Invoke();
+            _playerMode = PlayerMode.Combat;
+        }
     }
     #endregion
 
@@ -299,7 +299,6 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         GameManager.Instance.SetGameMode(GameManager.GameMode.UI);
-        // GameManager.Instance.PauseGame(true);
 
         var menuPanel = UIManager.Instance.OpenUI<UIMenuPanel>();
 
@@ -318,11 +317,6 @@ public partial class PlayerController : MonoBehaviour
 
         if (!UIManager.Instance.IsOpenAnyUIAllCanvas())
             GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
-
-        // GameManager.Instance.SetGameMode(GameManager.GameMode.InGame);
-        // // GameManager.Instance.PauseGame(false);
-
-        // UIManager.Instance.CloseAllUI(UIManager.Instance.PanelCanvas);
     }
     #endregion
 

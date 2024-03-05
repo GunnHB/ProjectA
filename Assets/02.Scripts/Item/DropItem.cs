@@ -4,5 +4,11 @@ using UnityEngine;
 
 public class DropItem : MonoBehaviour
 {
-    public ObjectPool _dropItemPool;
+    [SerializeField]
+    private ObjectPool _dropItemPool;
+
+    public ObjectPool GetObjectPool()
+    {
+        return _dropItemPool;
+    }
 }
