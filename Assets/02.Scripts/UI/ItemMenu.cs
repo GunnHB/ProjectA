@@ -15,7 +15,7 @@ public class ItemMenu : UIPopupBase
     [BoxGroup(GROUP_MENU), SerializeField]
     private TextMeshProUGUI _useText;
     [BoxGroup(GROUP_MENU), SerializeField]
-    private UIButton _discardButton;
+    private UIButton _dropButton;
     [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _cancelButton;
 
@@ -35,7 +35,7 @@ public class ItemMenu : UIPopupBase
         base.Init();
 
         _useButton.onClick.RemoveAllListeners();
-        _discardButton.onClick.RemoveAllListeners();
+        _dropButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
 
         ItemManager.Instance.SetItemMenu(this);
@@ -64,7 +64,8 @@ public class ItemMenu : UIPopupBase
             _useButton.onClick.AddListener(OnClickRemove);
             _useText.text = "REMOVE";
         }
-        _discardButton.onClick.AddListener(OnClickDiscard);
+
+        _dropButton.onClick.AddListener(OnClickDrop);
         _cancelButton.onClick.AddListener(OnClickCancel);
     }
 
@@ -107,7 +108,7 @@ public class ItemMenu : UIPopupBase
         UIManager.Instance.CloseUI(this);
     }
 
-    private void OnClickDiscard()
+    private void OnClickDrop()
     {
         ItemManager.Instance.DropItem(_targetSlot.InvenItemData);
 
