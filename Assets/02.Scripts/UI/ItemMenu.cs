@@ -13,8 +13,6 @@ public class ItemMenu : UIPopupBase
     [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _useButton;
     [BoxGroup(GROUP_MENU), SerializeField]
-    private TextMeshProUGUI _useText;
-    [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _dropButton;
     [BoxGroup(GROUP_MENU), SerializeField]
     private UIButton _cancelButton;
@@ -55,18 +53,20 @@ public class ItemMenu : UIPopupBase
             _useButton.onClick.AddListener(OnClickUse);
 
             if (IsEquipment)
-                _useText.text = "EQUIP";
+                _useButton.ButtonText.text = "EQUIP";
             else
-                _useText.text = "USE";
+                _useButton.ButtonText.text = "USE";
         }
         else
         {
             _useButton.onClick.AddListener(OnClickRemove);
-            _useText.text = "REMOVE";
+            _useButton.ButtonText.text = "REMOVE";
         }
 
         _dropButton.onClick.AddListener(OnClickDrop);
         _cancelButton.onClick.AddListener(OnClickCancel);
+
+        _dropButton.ButtonText.text = "DROP";
     }
 
     private void SetPosition()

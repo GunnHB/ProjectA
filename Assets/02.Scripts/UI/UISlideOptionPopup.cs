@@ -46,7 +46,7 @@ public class UISlideOptionPopup : UIPopupBase
     }
 
     public void InitUI(string title, string desc, int maxValue,
-                        UnityAction confirmCallback = null, UnityAction cancelCallback = null,
+                        UnityAction<int> confirmCallback = null, UnityAction cancelCallback = null,
                         string confirmText = "", string cancelText = "")
     {
         _titleText.text = title;
@@ -63,7 +63,7 @@ public class UISlideOptionPopup : UIPopupBase
 
         _confirmButton.onClick.AddListener(() =>
         {
-            confirmCallback?.Invoke();
+            confirmCallback?.Invoke(int.Parse(_inputField.text));
             UIManager.Instance.CloseUI(this);
         });
         _cancelButton.onClick.AddListener(() =>

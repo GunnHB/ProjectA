@@ -11,6 +11,12 @@ public class ObjectPool
 
     private Queue<GameObject> _poolQueue = new();
 
+    public void Initialize(int count)
+    {
+        for (int index = 0; index < count; index++)
+            CreateNewObject();
+    }
+
     public GameObject CreateNewObject()
     {
         GameObject tempObj = GameObject.Instantiate(_prefabObj);
@@ -23,7 +29,7 @@ public class ObjectPool
         return tempObj;
     }
 
-    public GameObject GetObject()
+    public GameObject GetObject(bool active = true)
     {
         GameObject tempObj;
 
@@ -32,7 +38,7 @@ public class ObjectPool
         else
             tempObj = CreateNewObject();
 
-        tempObj.SetActive(true);
+        tempObj.SetActive(active);
 
         return tempObj;
     }

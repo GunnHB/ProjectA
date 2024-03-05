@@ -8,7 +8,7 @@ public class ItemManager : SingletonObject<ItemManager>
 {
     private const string INVENTORY_DATA_PATH = "Assets/08.Tables/Json/InventoryData.json";
 
-    private const string LIST_OBJECT = "ItemObjects";
+    private const string DROP_ITEM_PARENT = "DropItemParent";
 
     // 현재 선택된 인벤토리 탭
     private CategoryTab _currentCategoryTab;
@@ -32,6 +32,7 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public UnityAction<ModelCategoryTab.Data> TabAction;
     public UnityAction<InventoryItemData> SlotAction;
+    public UnityAction DropItemAction;
 
     private ItemMenu _itemMenu;
     public ItemMenu ThisItemMenu => _itemMenu;
@@ -39,31 +40,31 @@ public class ItemManager : SingletonObject<ItemManager>
     private Dictionary<string, GameObject> _playerHolderDic = new();
     private Dictionary<string, GameObject> _renderHolderDic = new();
 
-    private Dictionary<string, GameObject> _itemDic = new();
-    public Dictionary<string, GameObject> ItemDic
-    {
-        get
-        {
-            if (_itemDic == null || _itemDic.Count == 0)
-            {
-                GameObject listObj = GameObject.Find(LIST_OBJECT);
+    private DropItem _dropItem;
+    public DropItem ThisDropItem { get { return GameManager.Instance.GetObject(DROP_ITEM_PARENT, ref _dropItem); } }
 
-                if (listObj != null)
-                {
-                    for (int index = 0; index < listObj.transform.childCount; index++)
-                        _itemDic.Add(listObj.transform.GetChild(index).name, listObj.transform.GetChild(index).gameObject);
-                }
-            }
-
-            return _itemDic;
-        }
-    }
+    // 현재 버린 아이템들
+    private DropItemObject _currDropItemObject;
 
     protected override void Awake()
     {
         base.Awake();
 
         InitInventoryData();
+    }
+
+    private void Start()
+    {
+        InitInGameScene();
+    }
+
+    /// <summary>
+    /// InGame 씬으로 넘어갔을 때 호출
+    /// </summary>
+    public void InitInGameScene()
+    {
+        if (_dropItem == null)
+            ThisDropItem._dropItemPool.Initialize(10);
     }
 
     private void InitInventoryData()
@@ -319,42 +320,69 @@ public class ItemManager : SingletonObject<ItemManager>
                 popup.InitUI("NOTICE",
                             "Please choose quantity to drop",
                             invenItemData._amount,
-                            () => { ActualDropItem(invenItemData); });
+                            (int amount) => { AddToDropItemCollection(invenItemData, amount); });
         }
         else
-            ActualDropItem(invenItemData);
+            AddToDropItemCollection(invenItemData);
     }
 
-    private void ActualDropItem(InventoryItemData invenItemData)
+    private void AddToDropItemCollection(InventoryItemData invenItemData, int dropAmount = 1)
     {
-        if (!ItemDic.ContainsKey(invenItemData._itemData.prefab))
+        if (_currDropItemObject == null)
         {
-            Debug.Log("itemList does not have this prefab! please check list");
-            return;
-        }
-        else
-        {
-            // 버린 아이템 오브젝트 활성화
-            SetDropItemPosition(invenItemData);
+            var temp = _dropItem._dropItemPool.GetObject(false);
 
-            // 인벤토리의 아이템 데이터 지우기
+            if (temp == null)
+                return;
+
+            var dropObj = temp.GetComponent<DropItemObject>();
+
+            if (dropObj == null)
+                return;
+
+            _currDropItemObject = dropObj;
+        }
+
+        _currDropItemObject.AddData(invenItemData._itemData, invenItemData._amount);
+
+        invenItemData._amount -= dropAmount;
+
+        // 남은 아이템의 수가 0이면 인벤토리 아이템 데이터 지우기
+        if (invenItemData._amount < 1)
             ClearItemDataInInventory(invenItemData);
 
-            // 인벤토리 슬롯 갱신
-            if (_inventory != null)
-                _inventory.RefreshInventory();
-        }
+        // 인벤토리 슬롯 갱신
+        if (_inventory != null)
+            _inventory.RefreshInventory();
+
+        // if (!ItemDic.ContainsKey(invenItemData._itemData.prefab))
+        // {
+        //     Debug.Log("itemList does not have this prefab! please check list");
+        //     return;
+        // }
+        // else
+        // {
+        //     // 버린 아이템 오브젝트 활성화
+        //     SetDropItemPosition(invenItemData);
+
+        //     // 인벤토리의 아이템 데이터 지우기
+        //     ClearItemDataInInventory(invenItemData);
+
+        //     // 인벤토리 슬롯 갱신
+        //     if (_inventory != null)
+        //         _inventory.RefreshInventory();
+        // }
     }
 
     private void SetDropItemPosition(InventoryItemData invenItemData)
     {
-        var position = GameManager.Instance.PlayerObj.transform.localPosition + (-Vector3.up * .75f);
-        var itemObject = ItemDic[invenItemData._itemData.prefab];
-        var randomSite = Random.insideUnitCircle.normalized;
+        // var position = GameManager.Instance.PlayerObj.transform.localPosition + (-Vector3.up * .75f);
+        // var itemObject = ItemDic[invenItemData._itemData.prefab];
+        // var randomSite = Random.insideUnitCircle.normalized;
 
-        itemObject.transform.localPosition = new Vector3(randomSite.x, 0, randomSite.y) + position;
+        // itemObject.transform.localPosition = new Vector3(randomSite.x, 0, randomSite.y) + position;
 
-        ItemDic[invenItemData._itemData.prefab].SetActive(true);
+        // ItemDic[invenItemData._itemData.prefab].SetActive(true);
     }
 
     private void ClearItemDataInInventory(InventoryItemData invenItemData)

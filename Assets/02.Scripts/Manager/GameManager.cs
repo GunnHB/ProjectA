@@ -13,14 +13,24 @@ public class GameManager : SingletonObject<GameManager>
         UI,
     }
 
+    public enum GameScene
+    {
+        None = -1,
+        Start,
+        InGame,
+    }
+
     private const string PLAYER = "Player";
     private const string PLAYER_RENDER_TEXTURE = "RenderTexturePlayer";
 
     private GameMode _gameMode;
+    public GameMode CurrGameMode => _gameMode;
+
+    private GameScene _gameScene;
+    public GameScene CurrentGameScene => _gameScene;
 
     private bool _gamePause = false;
 
-    public GameMode CurrGameMode => _gameMode;
     public bool GamePause => _gamePause;
 
     public UnityAction InGameModeAction;
@@ -73,14 +83,21 @@ public class GameManager : SingletonObject<GameManager>
         Time.timeScale = _gamePause ? 0 : 1;
     }
 
-    private GameObject GetObject(string objName, ref GameObject obj)
+    public T GetObject<T>(string objName, ref T obj) where T : Object
     {
         if (obj == null)
         {
             var tempObj = GameObject.Find(objName);
 
-            if (tempObj != null)
-                obj = tempObj;
+            if (tempObj == null)
+                return null;
+
+            var generic = tempObj.GetComponent<T>();
+
+            if (generic == null)
+                return null;
+
+            obj = generic;
         }
 
         return obj;
