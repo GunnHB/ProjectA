@@ -420,7 +420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 58138135082076639, guid: 23c7e7a21b3d85c4e86d958cf9c1cd64, type: 3}
       propertyPath: m_Name
-      value: DiscardButton
+      value: DropdButton
       objectReference: {fileID: 0}
     - target: {fileID: 1390049237790701485, guid: 23c7e7a21b3d85c4e86d958cf9c1cd64, type: 3}
       propertyPath: m_TargetGraphic

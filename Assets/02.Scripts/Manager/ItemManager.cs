@@ -308,7 +308,7 @@ public class ItemManager : SingletonObject<ItemManager>
         return _inventory.SlotList.Where(x => x.InvenItemData == invenItemData).FirstOrDefault();
     }
 
-    public void DiscardItem(InventoryItemData invenItemData)
+    public void DropItem(InventoryItemData invenItemData)
     {
         // uimanager에서 수량 조절 창 띄우기
         if (invenItemData._amount > 1)
@@ -317,15 +317,15 @@ public class ItemManager : SingletonObject<ItemManager>
 
             if (popup != null)
                 popup.InitUI("NOTICE",
-                            "Please choose quantity to discard",
+                            "Please choose quantity to drop",
                             invenItemData._amount,
-                            () => { ActualDiscardItem(invenItemData); });
+                            () => { ActualDropItem(invenItemData); });
         }
         else
-            ActualDiscardItem(invenItemData);
+            ActualDropItem(invenItemData);
     }
 
-    private void ActualDiscardItem(InventoryItemData invenItemData)
+    private void ActualDropItem(InventoryItemData invenItemData)
     {
         if (!ItemDic.ContainsKey(invenItemData._itemData.prefab))
         {
@@ -335,7 +335,7 @@ public class ItemManager : SingletonObject<ItemManager>
         else
         {
             // 버린 아이템 오브젝트 활성화
-            SetDiscardItemPosition(invenItemData);
+            SetDropItemPosition(invenItemData);
 
             // 인벤토리의 아이템 데이터 지우기
             ClearItemDataInInventory(invenItemData);
@@ -346,7 +346,7 @@ public class ItemManager : SingletonObject<ItemManager>
         }
     }
 
-    private void SetDiscardItemPosition(InventoryItemData invenItemData)
+    private void SetDropItemPosition(InventoryItemData invenItemData)
     {
         var position = GameManager.Instance.PlayerObj.transform.localPosition + (-Vector3.up * .75f);
         var itemObject = ItemDic[invenItemData._itemData.prefab];
