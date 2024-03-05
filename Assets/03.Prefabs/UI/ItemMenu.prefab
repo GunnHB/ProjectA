@@ -132,7 +132,7 @@ MonoBehaviour:
   _parentTr: {fileID: 966199691879923273}
   _useButton: {fileID: 7339304097445482099}
   _useText: {fileID: 8539296169955050119}
-  _discardButton: {fileID: 6498466074548669687}
+  _dropButton: {fileID: 6498466074548669687}
   _cancelButton: {fileID: 4438720386815379494}
 --- !u!1 &5771028322571224970
 GameObject:
