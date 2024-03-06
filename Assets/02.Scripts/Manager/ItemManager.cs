@@ -173,49 +173,102 @@ public class ItemManager : SingletonObject<ItemManager>
         _itemMenu = newMenu;
     }
 
-    public void ActiveEquipment(GameObject holder, string weaponString, bool active = true)
-    {
-        for (int index = 0; index < holder.transform.childCount; index++)
-        {
-            var item = holder.transform.GetChild(index);
+    // public void ActiveEquipment(GameObject holder, string weaponString, bool active = true)
+    // {
+    //     for (int index = 0; index < holder.transform.childCount; index++)
+    //     {
+    //         var item = holder.transform.GetChild(index);
 
-            if (item.name == weaponString)
+    //         if (item.name == weaponString)
+    //         {
+    //             item.gameObject.SetActive(active);
+    //             return;
+    //         }
+    //     }
+    // }
+
+    public void DrawWeapon()
+    {
+        var weaponItemData = _equipmentData._itemWeaponData;                                    // 무기의 아이템 데이터
+        var shieldItemData = _equipmentData._itemShieldData;                                    // 방패의 아이템 데이터
+
+        // 무기 아이템 데이터가 없으면 리턴
+        if (weaponItemData.IsEmpty())
+            return;
+
+        var weaponData = ModelWeapon.Model.DataDic[weaponItemData._itemData.ref_id];            // 무기 데이터
+
+        // 손에 있는건 켜고 보관함에 있는건 끄기
+        ActiveEquipment(weaponItemData._itemData, isSheath: false, isActive: true);
+        ActiveEquipment(weaponItemData._itemData, isSheath: true, isActive: false);
+
+        if (!shieldItemData.IsEmpty())
+        {
+            // 방패와 함께 장착할 수 있는 무기라면
+            if (weaponData.able_equip_shield)
             {
-                item.gameObject.SetActive(active);
-                return;
+                ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: true);
+                ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: false);
+            }
+            else
+            {
+                // 손에 있는건 끄고 보관함에 있는건 켜기
+                ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: true);
+                ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
             }
         }
     }
 
-    public void DrawWeapon()
+    public void SheathWeapon()
     {
-        var weaponData = _equipmentData._itemWeaponData;
+        var weaponItemData = _equipmentData._itemWeaponData;
+        var shieldItemData = _equipmentData._itemShieldData;
 
-        if (weaponData.IsEmpty())
+        if (weaponItemData.IsEmpty())
             return;
 
-        var playerHolder = GetHolderObj(weaponData._itemData, isPlayer: true, isSheath: false);
-        var renderHolder = GetHolderObj(weaponData._itemData, isPlayer: false, isSheath: false);
+        var weaponData = ModelWeapon.Model.DataDic[weaponItemData._itemData.ref_id];
 
-        if (playerHolder != null)
-            ActualActiveEquipment(playerHolder, weaponData._itemData.prefab, true);
+        // 보관함에 있는건 켜고 손에 있는건 끄기
+        ActiveEquipment(weaponItemData._itemData, isSheath: true, isActive: true);
+        ActiveEquipment(weaponItemData._itemData, isSheath: false, isActive: false);
 
-        if (renderHolder != null)
-            ActualActiveEquipment(renderHolder, weaponData._itemData.prefab, true);
+        if (!shieldItemData.IsEmpty())
+        {
+            if (weaponData.able_equip_shield)
+            {
+                ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: true);
+                ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: false);
+            }
+
+            ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: true);
+            ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
+        }
     }
 
-    public void ActiveEquipment(InventoryItemData invenItemData, bool active)
-    {
-        var playerHolder = GetHolderObj(invenItemData._itemData, isPlayer: true);
-        var renderHolder = GetHolderObj(invenItemData._itemData, isPlayer: false);
+    // public void ActiveEquipmentInHandHolder()
+    // {
 
-        if (playerHolder != null)
-            ActualActiveEquipment(playerHolder, invenItemData._itemData.prefab, active);
+    // }
 
-        if (renderHolder != null)
-            ActualActiveEquipment(renderHolder, invenItemData._itemData.prefab, active);
-    }
+    // public void ActiveEquipmentInSheathHolder(InventoryItemData invenItemData, bool active)
+    // {
+    //     var playerHolder = GetHolderObj(invenItemData._itemData, isPlayer: true);
+    //     var renderHolder = GetHolderObj(invenItemData._itemData, isPlayer: false);
 
+    //     if (playerHolder != null)
+    //         ActualActiveEquipment(playerHolder, invenItemData._itemData.prefab, active);
+
+    //     if (renderHolder != null)
+    //         ActualActiveEquipment(renderHolder, invenItemData._itemData.prefab, active);
+    // }
+
+    /// <summary>
+    /// 아이템 활성화시키기
+    /// </summary>
+    /// <param name="holder"></param>
+    /// <param name="equipmentName"></param>
+    /// <param name="active"></param>
     private void ActualActiveEquipment(GameObject holder, string equipmentName, bool active)
     {
         for (int index = 0; index < holder.transform.childCount; index++)
@@ -230,6 +283,31 @@ public class ItemManager : SingletonObject<ItemManager>
         }
     }
 
+    /// <summary>
+    /// 아이템 활성화
+    /// </summary>
+    /// <param name="itemData"></param>
+    /// <param name="isSheath"></param>
+    /// <param name="isActive"></param>
+    public void ActiveEquipment(ModelItem.Data itemData, bool isSheath, bool isActive)
+    {
+        var playerHolder = GetHolderObj(itemData, isPlayer: true, isSheath);
+        var renderHolder = GetHolderObj(itemData, isPlayer: false, isSheath);
+
+        if (playerHolder != null)
+            ActualActiveEquipment(playerHolder, itemData.prefab, isActive);
+
+        if (renderHolder != null)
+            ActualActiveEquipment(renderHolder, itemData.prefab, isActive);
+    }
+
+    /// <summary>
+    /// 아이템의 고유 홀더 오브젝트 찾기
+    /// </summary>
+    /// <param name="itemData">활성화할 아이템 데이터</param>
+    /// <param name="isPlayer">실제 플레이어? / 렌더 텍스쳐의 플레이어?</param>
+    /// <param name="isSheath">SheathHolder? / HandHolder?</param>
+    /// <returns></returns>
     private GameObject GetHolderObj(ModelItem.Data itemData, bool isPlayer, bool isSheath = true)
     {
         string holderName = GetHolderName(itemData, isSheath);
@@ -257,6 +335,12 @@ public class ItemManager : SingletonObject<ItemManager>
         return null;
     }
 
+    /// <summary>
+    /// 홀더의 이름 찾기 (string을 기반으로 오브젝트를 찾습니다.)
+    /// </summary>
+    /// <param name="itemData"></param>
+    /// <param name="isSheath"></param>
+    /// <returns></returns>
     private string GetHolderName(ModelItem.Data itemData, bool isSheath)
     {
         string holderName = string.Empty;
@@ -284,6 +368,12 @@ public class ItemManager : SingletonObject<ItemManager>
         return holderName;
     }
 
+    /// <summary>
+    /// 홀더 찾기
+    /// </summary>
+    /// <param name="playerObj"></param>
+    /// <param name="holderName"></param>
+    /// <param name="holderDic"></param>
     private void FindHolderObj(GameObject playerObj, string holderName, ref Dictionary<string, GameObject> holderDic)
     {
         if (playerObj == null)
@@ -391,24 +481,6 @@ public class ItemManager : SingletonObject<ItemManager>
         // 인벤토리 슬롯 갱신
         if (_inventory != null)
             _inventory.RefreshInventory();
-
-        // if (!ItemDic.ContainsKey(invenItemData._itemData.prefab))
-        // {
-        //     Debug.Log("itemList does not have this prefab! please check list");
-        //     return;
-        // }
-        // else
-        // {
-        //     // 버린 아이템 오브젝트 활성화
-        //     SetDropItemPosition(invenItemData);
-
-        //     // 인벤토리의 아이템 데이터 지우기
-        //     ClearItemDataInInventory(invenItemData);
-
-        //     // 인벤토리 슬롯 갱신
-        //     if (_inventory != null)
-        //         _inventory.RefreshInventory();
-        // }
     }
 
     private Vector3 DropItemPosition()
@@ -418,26 +490,16 @@ public class ItemManager : SingletonObject<ItemManager>
         return GameManager.Instance.PlayerObj.transform.localPosition + new Vector3(randomSite.x, 0f, randomSite.y);
     }
 
-    private void SetDropItemPosition(InventoryItemData invenItemData)
-    {
-        // var position = GameManager.Instance.PlayerObj.transform.localPosition + (-Vector3.up * .75f);
-        // var itemObject = ItemDic[invenItemData._itemData.prefab];
-        // var randomSite = Random.insideUnitCircle.normalized;
-
-        // itemObject.transform.localPosition = new Vector3(randomSite.x, 0, randomSite.y) + position;
-
-        // ItemDic[invenItemData._itemData.prefab].SetActive(true);
-    }
-
     private void ClearItemDataInInventory(InventoryItemData invenItemData)
     {
         var invenList = _inventoryData._inventoryDic[invenItemData._itemData.type];
 
         if (invenList.Contains(invenItemData))
         {
-            // 장착 중인 아이템은 비활성화 시키기
+            // 장착 중인 아이템은 비활성화 시키기 (sheathHolder)
             if (invenItemData._isEquip)
-                ActiveEquipment(invenItemData, false);
+                ActiveEquipment(invenItemData._itemData, isSheath: true, isActive: false);
+            // ActiveEquipmentInSheathHolder(invenItemData, false);
 
             var index = invenList.IndexOf(invenItemData);
 

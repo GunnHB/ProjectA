@@ -14,7 +14,7 @@ public class Equipment : MonoBehaviour
 
     public void SheathWeapon()
     {
-
+        ItemManager.Instance.SheathWeapon();
     }
 
     public void StartAction()

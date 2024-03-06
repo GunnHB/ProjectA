@@ -53,24 +53,30 @@ public class EquipmentData
         prevItemData._isEquip = false;
 
         // 오브젝트 비활성화
-        ItemManager.Instance.ActiveEquipment(prevItemData, false);
+        // ItemManager.Instance.ActiveEquipmentInSheathHolder(prevItemData, false);
+
+        // sheathHolder의 오브젝트 비활성화
+        ItemManager.Instance.ActiveEquipment(prevItemData._itemData, isSheath: true, isActive: false);
 
         // 슬롯 갱신
         ItemManager.Instance.RefreshSlot(prevItemData);
     }
 
-    private void SetEquipment(ItemSlot newItemSlot, ref InventoryItemData prevItemSlot)
+    private void SetEquipment(ItemSlot newItemSlot, ref InventoryItemData prevItemData)
     {
         if (newItemSlot == null || newItemSlot.InvenItemData._itemData.id == 0)
             return;
 
         newItemSlot.InvenItemData._isEquip = true;
-        prevItemSlot = newItemSlot.InvenItemData;
+        prevItemData = newItemSlot.InvenItemData;
 
         // 오브젝트 활성화
-        ItemManager.Instance.ActiveEquipment(prevItemSlot, true);
+        // ItemManager.Instance.ActiveEquipmentInSheathHolder(prevItemSlot, true);
+
+        // sheathHolder의 오브젝트 비활성화
+        ItemManager.Instance.ActiveEquipment(prevItemData._itemData, isSheath: true, isActive: true);
 
         // 슬롯 갱신
-        ItemManager.Instance.RefreshSlot(prevItemSlot);
+        ItemManager.Instance.RefreshSlot(prevItemData);
     }
 }

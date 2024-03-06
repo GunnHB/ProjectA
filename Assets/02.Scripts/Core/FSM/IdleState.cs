@@ -18,12 +18,18 @@ namespace FSM
 
             player.DrawWeaponAction = () =>
             {
+                if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+                    return;
+
                 SetTriggerAnimation(player.ThisAnimData.AnimParamDrawWeapon);
                 StartAnimation(_player.ThisAnimData.AnimParamCombatMode);
             };
 
             player.SheathWeaponAction = () =>
             {
+                if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+                    return;
+
                 SetTriggerAnimation(player.ThisAnimData.AnimParamSheathWeapon);
                 StopAnimation(_player.ThisAnimData.AnimParamCombatMode);
             };
