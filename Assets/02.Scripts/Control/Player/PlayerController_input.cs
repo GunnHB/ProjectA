@@ -250,29 +250,34 @@ public partial class PlayerController : MonoBehaviour
         if (_equipment.DoAction)
             return;
 
-        if (_playerMode == PlayerMode.Combat)
-        {
+        if (_equipment.IsDraw)
             SheathWeaponAction?.Invoke();
-            _playerMode = PlayerMode.Normal;
-        }
         else
-        {
             DrawWeaponAction?.Invoke();
-            _playerMode = PlayerMode.Combat;
-        }
+
+        // if (_playerMode == PlayerMode.Combat)
+        // {
+        //     SheathWeaponAction?.Invoke();
+        //     _playerMode = PlayerMode.Normal;
+        // }
+        // else
+        // {
+        //     DrawWeaponAction?.Invoke();
+        //     _playerMode = PlayerMode.Combat;
+        // }
     }
     #endregion
 
     #region Attack
     private void StartAttackInput(InputAction.CallbackContext context)
     {
-        if (_playerMode != PlayerMode.Combat)
-            return;
+        // if (_playerMode != PlayerMode.Combat)
+        //     return;
 
-        if (_stateMachine.IsCurrentState(_attackState))
-            _doCombo = true;
-        else
-            _stateMachine.SetState(_attackState);
+        // if (_stateMachine.IsCurrentState(_attackState))
+        //     _doCombo = true;
+        // else
+        //     _stateMachine.SetState(_attackState);
     }
     #endregion
 

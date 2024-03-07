@@ -16,12 +16,12 @@ public partial class PlayerController : MonoBehaviour
     private const string PLAYER_ACTION_MAP = "PlayerActionMap";
     private const string UI_ACTION_MAP = "UIActionMap";
 
-    public enum PlayerMode
-    {
-        None = -1,
-        Normal,         // 일반 모드
-        Combat,         // 전투 모드
-    }
+    // public enum PlayerMode
+    // {
+    //     None = -1,
+    //     Normal,         // 일반 모드
+    //     Combat,         // 전투 모드
+    // }
 
     // State machine
     private StateMachine _stateMachine;
@@ -46,7 +46,7 @@ public partial class PlayerController : MonoBehaviour
     // combo attack
     private bool _doCombo;
 
-    private PlayerMode _playerMode;
+    // private PlayerMode _playerMode;
 
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
@@ -64,7 +64,7 @@ public partial class PlayerController : MonoBehaviour
     public bool ReadyToSprint => _readyToSprint;
     public bool DoCombo => _doCombo;
 
-    public PlayerMode ThisPlayerMode => _playerMode;
+    // public PlayerMode ThisPlayerMode => _playerMode;
 
     // 공중에 있는 상태
     public bool IsOnAir
@@ -94,7 +94,7 @@ public partial class PlayerController : MonoBehaviour
 
         _animData.Initialize();
 
-        _playerMode = PlayerMode.Normal;
+        // _playerMode = PlayerMode.Normal;
 
         RegistStateDictionary();
 

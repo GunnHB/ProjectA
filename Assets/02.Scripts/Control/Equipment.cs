@@ -7,13 +7,19 @@ public class Equipment : MonoBehaviour
     private bool _doAction = false;
     public bool DoAction => _doAction;
 
+    // 무기 든 상태인지
+    private bool _isDraw = false;
+    public bool IsDraw => _isDraw;
+
     public void DrawWeapon()
     {
+        _isDraw = true;
         ItemManager.Instance.DrawWeapon();
     }
 
     public void SheathWeapon()
     {
+        _isDraw = false;
         ItemManager.Instance.SheathWeapon();
     }
 
