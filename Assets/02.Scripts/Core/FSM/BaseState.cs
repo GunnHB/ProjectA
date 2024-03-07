@@ -96,5 +96,10 @@ namespace FSM
         {
             return _player.ThisAnimator.GetCurrentAnimatorStateInfo(layerIndex).speed;
         }
+
+        protected void CrossFadeInFixedUpdate(int animHash)
+        {
+            _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f);
+        }
     }
 }

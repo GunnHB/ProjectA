@@ -24,6 +24,9 @@ public class CharacterAnimData
     public int AnimParamLanding { get; private set; }
     public int AnimParamBlendLocomotion { get; private set; }
 
+    protected bool _isInit = false;
+    public bool IsInit => _isInit;
+
     /// <summary>
     /// 애니 해시 초기화
     /// </summary>
@@ -36,5 +39,7 @@ public class CharacterAnimData
         AnimParamFalling = Animator.StringToHash(_animParamFalling);
         AnimParamLanding = Animator.StringToHash(_animParamLanding);
         AnimParamBlendLocomotion = Animator.StringToHash(_animParamBlendLocomotion);
+
+        _isInit = true;
     }
 }

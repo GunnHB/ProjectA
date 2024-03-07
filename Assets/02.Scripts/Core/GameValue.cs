@@ -42,4 +42,11 @@ public static class GameValue
         [EnumMember(Value = "TwoHand")]
         TwoHand,
     }
+
+    public enum AttakcType
+    {
+        None = -1,
+        OneHand,
+        TwoHand,
+    }
 }

@@ -271,6 +271,9 @@ public partial class PlayerController : MonoBehaviour
     #region Attack
     private void StartAttackInput(InputAction.CallbackContext context)
     {
+        if (CanAttack)
+            _stateMachine.SetState(_attackState);
+
         // if (_playerMode != PlayerMode.Combat)
         //     return;
 

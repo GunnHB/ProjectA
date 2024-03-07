@@ -29,6 +29,7 @@ public partial class PlayerController : MonoBehaviour
     // Components
     private Movement _movement;
     private Equipment _equipment;
+    private Attack _attack;
     private PlayerInput _playerInput;
     private Animator _animator;
 
@@ -44,13 +45,16 @@ public partial class PlayerController : MonoBehaviour
     private float _jumpForce = 1f;
 
     // combo attack
+    private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
+    // private int _attackIndex;
 
     // private PlayerMode _playerMode;
 
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
-    public UnityAction AttackAction;
+    // public UnityAction AttackAction;
+    public UnityAction<AttackData> AttackAction;
 
     // Properties
     public Animator ThisAnimator => _animator;
@@ -62,9 +66,23 @@ public partial class PlayerController : MonoBehaviour
     public bool IsGrounded => _movement.IsGrounded;
     public bool IsPeak => _movement.IsPeak;
     public bool ReadyToSprint => _readyToSprint;
+
     public bool DoCombo => _doCombo;
+    public bool IsAttacking => _isAttacking;
+    // public int AttackIndex => _attackIndex;
 
     // public PlayerMode ThisPlayerMode => _playerMode;
+
+    // 일반적인 움직임의 상태 (대기, 걷기, 달리기...)
+    public bool IsNormalState
+    {
+        get
+        {
+            return _stateMachine.IsCurrentState(_idleState) ||
+                    _stateMachine.IsCurrentState(_walkState) ||
+                    _stateMachine.IsCurrentState(_sprintState);
+        }
+    }
 
     // 공중에 있는 상태
     public bool IsOnAir
@@ -80,6 +98,12 @@ public partial class PlayerController : MonoBehaviour
     // 웅크린 상태
     public bool IsCrouching => _stateMachine.IsCurrentState(_crouchState);
 
+    // 공격이 가능한 상태
+    public bool CanAttack
+    {
+        get { return _equipment.IsDraw && (IsNormalState || IsCrouching); }
+    }
+
     private void Awake()
     {
         SetPlayerInput();
@@ -89,12 +113,15 @@ public partial class PlayerController : MonoBehaviour
     {
         _movement = GetComponent<Movement>();
         _equipment = GetComponent<Equipment>();
+        _attack = GetComponent<Attack>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
 
         _animData.Initialize();
 
         // _playerMode = PlayerMode.Normal;
+        SetAttackData();
+        SetIsAttacking(false);
 
         RegistStateDictionary();
 
@@ -161,5 +188,33 @@ public partial class PlayerController : MonoBehaviour
         _playerInput.SwitchCurrentActionMap(UI_ACTION_MAP);
 
         _action.UIActionMap.Enable();
+    }
+
+    public void SetIsAttacking(bool isActive = true)
+    {
+        _isAttacking = isActive;
+    }
+
+    private void SetAttackData()
+    {
+        var onehandDataList = new List<AttackData>();
+
+        if (_animData.IsInit)
+        {
+            onehandDataList = new List<AttackData>()
+            {
+                new AttackData(){_attackAnimHash = _animData.AnimParamAttack01},
+            };
+        }
+
+        _attack.RegistData(GameValue.AttakcType.OneHand, onehandDataList);
+    }
+
+    public void GetAttackDataList()
+    {
+        if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+            return;
+
+
     }
 }
