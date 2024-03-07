@@ -280,6 +280,14 @@ public partial class PlayerController : MonoBehaviour
         _attackIndex++;
 
         (_attackState as AttackState).SetCurrAttackData(GetAttackDataList()[_attackIndex]);
+
+        if (_isAttacking)
+        {
+            _doCombo = true;
+            Debug.Log(_attackIndex);
+            return;
+        }
+
         _stateMachine.SetState(_attackState);
     }
     #endregion

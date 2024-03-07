@@ -1,6 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using FSM;
 
 using UnityEngine;
@@ -12,7 +13,10 @@ public class AttackState : BaseState
     // private float _animLength;
     // private float _actualPlayTime;
 
+    private const string TAG_ATTACK = "AttackTag";
     private AttackData _currAttackData;
+
+    private float _prevFrameTime = 0f;
 
     public AttackState(PlayerController player) : base(player)
     {
@@ -26,39 +30,48 @@ public class AttackState : BaseState
         _player.SetIsAttacking(true);
         _player.AttackAction?.Invoke(_currAttackData);
 
-        // SetTriggerAnimation(_player.ThisAnimData.AnimParamAttack);
-
-        // _animSpeed = GetCurrentClipSpeed(0);
-        // _animLength = GetCurrentClipLength(0);
-
-        // _currTime = 0f;
-        // _actualPlayTime = _animLength / _animSpeed;
+        // Debug.Log(_player.AttackIndex);
     }
 
     public override void OperateUpdate()
     {
         base.OperateUpdate();
 
-        // _currTime += Time.deltaTime;
+        float normalizedTime = GetNormalizedTimeByTag(TAG_ATTACK);
 
-        // if (_player.DoCombo)
-        // {
-        //     _stateMachine.SetState(this);
-        //     _player.SetDoCombo(false);
-        // }
-        // else if (_currTime >= _actualPlayTime)
-        //     SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, .01f);
+        if (normalizedTime > _prevFrameTime && normalizedTime < 1f)
+        {
+            if (_player.DoCombo)
+                TryComboAttack(normalizedTime);
+        }
+        else
+        {
+            // back to locomotion
+
+            if (_player.DoCombo)
+                _player.SetDoCombo(false);
+
+            _player.ResetAttackIndex();         // 여기서 걸림
+        }
     }
 
     public override void OperateExit()
     {
         base.OperateExit();
 
-        _player.SetIsAttacking(false);
+        if (!_player.DoCombo)
+            _player.SetIsAttacking(false);
+    }
 
-        // _currTime = 0f;
-        // _animSpeed = 0f;
-        // _animLength = 0f;
+    private void TryComboAttack(float normalizedTime)
+    {
+        if (_player.GetAttackDataList().Last() == _currAttackData)
+            return;
+
+        if (normalizedTime < _currAttackData._comboAttackTime)
+            return;
+
+        _stateMachine.SetState(this, true);
     }
 
     public void SetCurrAttackData(AttackData newData)

@@ -100,7 +100,7 @@ public partial class PlayerController : MonoBehaviour
     // 공격이 가능한 상태
     public bool CanAttack
     {
-        get { return /* _equipment.IsDraw && */ (IsNormalState || IsCrouching); }
+        get { return /* _equipment.IsDraw && */  (IsNormalState || IsCrouching || _isAttacking); }
     }
 
     private void Awake()
@@ -201,10 +201,30 @@ public partial class PlayerController : MonoBehaviour
         {
             onehandDataList = new List<AttackData>()
             {
-                new AttackData(){_attackAnimHash = _animData.AnimParamAttack01},
-                new AttackData(){_attackAnimHash = _animData.AnimParamAttack02},
-                new AttackData(){_attackAnimHash = _animData.AnimParamAttack03},
-                new AttackData(){_attackAnimHash = _animData.AnimParamAttack04},
+                new AttackData()
+                {
+                    _attackAnimHash = _animData.AnimParamAttack01,
+                    _transitionDuration = .1f,
+                    _comboAttackTime = .5f,
+                },
+                new AttackData()
+                {
+                    _attackAnimHash = _animData.AnimParamAttack02,
+                    _transitionDuration = .1f,
+                    _comboAttackTime = .5f,
+                },
+                new AttackData()
+                {
+                    _attackAnimHash = _animData.AnimParamAttack03,
+                    _transitionDuration = .1f,
+                    _comboAttackTime = .5f,
+                },
+                new AttackData()
+                {
+                    _attackAnimHash = _animData.AnimParamAttack04,
+                    _transitionDuration = .2f,
+                    _comboAttackTime = .5f,
+                },
             };
         }
 
@@ -222,6 +242,11 @@ public partial class PlayerController : MonoBehaviour
             return null;
 
         return _attack.AttackDic[weaponData.type];
+    }
+
+    public void ResetAttackIndex()
+    {
+        _attackIndex = -1;
     }
 
     public void ClearActions()

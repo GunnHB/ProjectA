@@ -38,7 +38,7 @@ namespace FSM
 
             player.AttackAction += (AttackData attackData) =>
             {
-                CrossFadeInFixedUpdate(attackData._attackAnimHash);
+                CrossFadeInFixedUpdate(attackData._attackAnimHash, attackData._transitionDuration);
             };
         }
 

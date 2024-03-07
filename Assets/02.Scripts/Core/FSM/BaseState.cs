@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FSM
@@ -97,9 +97,32 @@ namespace FSM
             return _player.ThisAnimator.GetCurrentAnimatorStateInfo(layerIndex).speed;
         }
 
-        protected void CrossFadeInFixedUpdate(int animHash)
+        protected void CrossFadeInFixedUpdate(int animHash, float transitionDuration = .1f)
         {
-            _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f);
+            _player.ThisAnimator.CrossFadeInFixedTime(animHash, transitionDuration);
+        }
+
+        protected float GetNormalizedTimeByTag(string tagName)
+        {
+            var currentInfo = GetCurrentAnimatorStateInfo();
+            var nextInfo = GetNextAniomatorStateInfo();
+
+            if (_player.ThisAnimator.IsInTransition(0) && nextInfo.IsTag(tagName))
+                return nextInfo.normalizedTime;
+            else if (!_player.ThisAnimator.IsInTransition(0) && currentInfo.IsTag(tagName))
+                return currentInfo.normalizedTime;
+
+            return 0f;
+        }
+
+        protected AnimatorStateInfo GetCurrentAnimatorStateInfo()
+        {
+            return _player.ThisAnimator.GetCurrentAnimatorStateInfo(0);
+        }
+
+        protected AnimatorStateInfo GetNextAniomatorStateInfo()
+        {
+            return _player.ThisAnimator.GetNextAnimatorStateInfo(0);
         }
     }
 }

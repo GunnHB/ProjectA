@@ -6,6 +6,8 @@ using UnityEngine;
 public class AttackData
 {
     public int _attackAnimHash;
+    public float _transitionDuration;
+    public float _comboAttackTime;
 }
 
 public class Attack : MonoBehaviour
