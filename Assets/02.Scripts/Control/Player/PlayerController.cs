@@ -47,13 +47,12 @@ public partial class PlayerController : MonoBehaviour
     // combo attack
     private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
-    // private int _attackIndex;
+    private int _attackIndex = -1;
 
     // private PlayerMode _playerMode;
 
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
-    // public UnityAction AttackAction;
     public UnityAction<AttackData> AttackAction;
 
     // Properties
@@ -69,7 +68,7 @@ public partial class PlayerController : MonoBehaviour
 
     public bool DoCombo => _doCombo;
     public bool IsAttacking => _isAttacking;
-    // public int AttackIndex => _attackIndex;
+    public int AttackIndex => _attackIndex;
 
     // public PlayerMode ThisPlayerMode => _playerMode;
 
@@ -101,7 +100,7 @@ public partial class PlayerController : MonoBehaviour
     // 공격이 가능한 상태
     public bool CanAttack
     {
-        get { return _equipment.IsDraw && (IsNormalState || IsCrouching); }
+        get { return /* _equipment.IsDraw && */ (IsNormalState || IsCrouching); }
     }
 
     private void Awake()
@@ -119,7 +118,6 @@ public partial class PlayerController : MonoBehaviour
 
         _animData.Initialize();
 
-        // _playerMode = PlayerMode.Normal;
         SetAttackData();
         SetIsAttacking(false);
 
@@ -204,17 +202,32 @@ public partial class PlayerController : MonoBehaviour
             onehandDataList = new List<AttackData>()
             {
                 new AttackData(){_attackAnimHash = _animData.AnimParamAttack01},
+                new AttackData(){_attackAnimHash = _animData.AnimParamAttack02},
+                new AttackData(){_attackAnimHash = _animData.AnimParamAttack03},
+                new AttackData(){_attackAnimHash = _animData.AnimParamAttack04},
             };
         }
 
-        _attack.RegistData(GameValue.AttakcType.OneHand, onehandDataList);
+        _attack.RegistData(GameValue.WeaponType.OneHand, onehandDataList);
     }
 
-    public void GetAttackDataList()
+    public List<AttackData> GetAttackDataList()
     {
         if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
-            return;
+            return null;
 
+        var weaponData = ModelWeapon.Model.DataDic[ItemManager.Instance.ThisEquipmentData._itemWeaponData._itemData.ref_id];
 
+        if (weaponData == null)
+            return null;
+
+        return _attack.AttackDic[weaponData.type];
+    }
+
+    public void ClearActions()
+    {
+        DrawWeaponAction = null;
+        SheathWeaponAction = null;
+        AttackAction = null;
     }
 }

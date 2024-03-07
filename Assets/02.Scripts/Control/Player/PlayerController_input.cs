@@ -271,16 +271,16 @@ public partial class PlayerController : MonoBehaviour
     #region Attack
     private void StartAttackInput(InputAction.CallbackContext context)
     {
-        if (CanAttack)
-            _stateMachine.SetState(_attackState);
+        if (!CanAttack || GetAttackDataList() == null)
+            return;
 
-        // if (_playerMode != PlayerMode.Combat)
-        //     return;
+        if (_attackIndex >= GetAttackDataList().Count - 1)
+            _attackIndex = -1;
 
-        // if (_stateMachine.IsCurrentState(_attackState))
-        //     _doCombo = true;
-        // else
-        //     _stateMachine.SetState(_attackState);
+        _attackIndex++;
+
+        (_attackState as AttackState).SetCurrAttackData(GetAttackDataList()[_attackIndex]);
+        _stateMachine.SetState(_attackState);
     }
     #endregion
 

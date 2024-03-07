@@ -10,10 +10,12 @@ public class AttackData
 
 public class Attack : MonoBehaviour
 {
-    private Dictionary<GameValue.AttakcType, List<AttackData>> _attackDic;
-    public Dictionary<GameValue.AttakcType, List<AttackData>> AttackDic => _attackDic;
+    // 무기 타입에 따라 공격 애니가 다르도록 설정
+    // 나중에 문제 생기면 AttackType으로 따로 빼자...
+    private Dictionary<GameValue.WeaponType, List<AttackData>> _attackDic = new();
+    public Dictionary<GameValue.WeaponType, List<AttackData>> AttackDic => _attackDic;
 
-    public void RegistData(GameValue.AttakcType attackType, List<AttackData> attackDataList)
+    public void RegistData(GameValue.WeaponType attackType, List<AttackData> attackDataList)
     {
         if (!_attackDic.ContainsKey(attackType))
             _attackDic.Add(attackType, attackDataList);
