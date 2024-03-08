@@ -257,9 +257,9 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         if (_equipment.IsDraw)
-            DrawWeaponAction?.Invoke();
-        else
             SheathWeaponAction?.Invoke();
+        else
+            DrawWeaponAction?.Invoke();
     }
     #endregion
 
@@ -275,41 +275,22 @@ public partial class PlayerController : MonoBehaviour
         _attackIndex++;
 
         AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
-
-        // if (!CanAttack || GetAttackDataList() == null)
-        //     return;
-
-        // if (_attackIndex >= GetAttackDataList().Count - 1)
-        //     _attackIndex = -1;
-
-        // _attackIndex++;
-
-        // (_attackState as AttackState).SetCurrAttackData(GetAttackDataList()[_attackIndex]);
-
-        // if (_isAttacking)
-        // {
-        //     _doCombo = true;
-        //     // Debug.Log(_attackIndex);
-        //     return;
-        // }
-
-        // _stateMachine.SetState(_attackState);
     }
     #endregion
 
     #region Zoom
     private void PerformZoomInInput(InputAction.CallbackContext context)
     {
-        var zoomValue = context.ReadValue<float>();
+        // var zoomValue = context.ReadValue<float>();
 
-        Debug.Log("IN " + zoomValue);
+        // Debug.Log("IN " + zoomValue);
     }
 
     private void PerformZoomOutInput(InputAction.CallbackContext context)
     {
-        var zoomValue = context.ReadValue<float>();
+        // var zoomValue = context.ReadValue<float>();
 
-        Debug.Log("OUT " + zoomValue);
+        // Debug.Log("OUT " + zoomValue);
     }
     #endregion
 

@@ -206,25 +206,25 @@ public partial class PlayerController : MonoBehaviour
                 {
                     _attackAnimHash = _animData.AnimNameAttack01,
                     _transitionDuration = .1f,
-                    _comboAttackTime = .25f,
+                    _comboAttackTime = .5f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack02,
                     _transitionDuration = .1f,
-                    _comboAttackTime = .25f,
+                    _comboAttackTime = .5f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack03,
                     _transitionDuration = .1f,
-                    _comboAttackTime = .25f,
+                    _comboAttackTime = .5f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack04,
-                    _transitionDuration = .2f,
-                    _comboAttackTime = .25f,
+                    _transitionDuration = .1f,
+                    _comboAttackTime = .5f,
                 },
             };
         }

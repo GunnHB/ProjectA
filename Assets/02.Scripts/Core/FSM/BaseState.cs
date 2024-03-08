@@ -102,27 +102,45 @@ namespace FSM
             _player.ThisAnimator.CrossFadeInFixedTime(animHash, transitionDuration);
         }
 
-        protected float GetNormalizedTimeByTag(string tagName)
+        protected float GetNormalizedTimeByTag(string tagName, int layerIndex = 0)
         {
             var currentInfo = GetCurrentAnimatorStateInfo();
             var nextInfo = GetNextAniomatorStateInfo();
 
-            if (_player.ThisAnimator.IsInTransition(0) && nextInfo.IsTag(tagName))
+            if (_player.ThisAnimator.IsInTransition(layerIndex) && nextInfo.IsTag(tagName))
                 return nextInfo.normalizedTime;
-            else if (!_player.ThisAnimator.IsInTransition(0) && currentInfo.IsTag(tagName))
+            else if (!_player.ThisAnimator.IsInTransition(layerIndex) && currentInfo.IsTag(tagName))
                 return currentInfo.normalizedTime;
 
             return 0f;
         }
 
-        protected AnimatorStateInfo GetCurrentAnimatorStateInfo()
+        protected AnimatorStateInfo GetCurrentAnimatorStateInfo(int layerIndex = 0)
         {
-            return _player.ThisAnimator.GetCurrentAnimatorStateInfo(0);
+            return _player.ThisAnimator.GetCurrentAnimatorStateInfo(layerIndex);
         }
 
-        protected AnimatorStateInfo GetNextAniomatorStateInfo()
+        protected AnimatorStateInfo GetNextAniomatorStateInfo(int layerIndex = 0)
         {
-            return _player.ThisAnimator.GetNextAnimatorStateInfo(0);
+            return _player.ThisAnimator.GetNextAnimatorStateInfo(layerIndex);
+        }
+
+        protected void SetWeaponType(ref GameValue.WeaponType type)
+        {
+            if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+                return;
+
+            var itemData = ItemManager.Instance.ThisEquipmentData._itemWeaponData._itemData;
+
+            if (itemData == null)
+                return;
+
+            var weaponData = ModelWeapon.Model.DataDic[itemData.ref_id];
+
+            if (weaponData == null)
+                return;
+
+            type = weaponData.type;
         }
     }
 }

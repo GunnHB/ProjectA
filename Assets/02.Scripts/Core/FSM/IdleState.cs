@@ -15,33 +15,6 @@ namespace FSM
         {
             if (player == null)
                 return;
-
-            // player.ClearActions();
-
-            // player.DrawWeaponAction += () =>
-            // {
-            //     if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
-            //         return;
-
-            //     // SetTriggerAnimation(player.ThisAnimData.AnimParamDrawWeapon);
-            //     // StartAnimation(_player.ThisAnimData.AnimParamCombatMode);
-
-            //     CrossFadeInFixedUpdate(_player.ThisAnimData.AnimNameOneHandDraw01);
-            // };
-
-            // player.SheathWeaponAction += () =>
-            // {
-            //     if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
-            //         return;
-
-            //     // SetTriggerAnimation(player.ThisAnimData.AnimParamSheathWeapon);
-            //     // StopAnimation(_player.ThisAnimData.AnimParamCombatMode);
-            // };
-
-            // player.AttackAction += (AttackData attackData) =>
-            // {
-            //     CrossFadeInFixedUpdate(attackData._attackAnimHash, attackData._transitionDuration);
-            // };
         }
 
         public override void OperateEnter()

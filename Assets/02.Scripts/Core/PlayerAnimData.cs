@@ -10,13 +10,13 @@ public class PlayerAnimData : CharacterAnimData
     private string _animParamBlendCrouch = "Float_Crouch";
     private string _animParamAttackIndex = "Int_AttackIndex";
 
-    private string _animNameLocomotion = "BlendTree_Locomotion";
+    private string _animNameLocomotion = "Locomotion";
+    private string _animNameDefault = "Default";
 
-    private string _animNameOneHandLocomotion = "OneHandLocomotion";
-    private string _animNameOneHandDraw01 = "OneHandDraw01";
-    private string _animNameOneHandDraw02 = "OneHandDraw02";
-    private string _animNameOneHandSheath01 = "OneHandSheath01";
-    private string _animNameOneHandSheath02 = "OneHandSheath02";
+    private string _animNameOneHandDraw01 = "Draw01";
+    private string _animNameOneHandDraw02 = "Draw02";
+    private string _animNameOneHandSheath01 = "Sheath01";
+    private string _animNameOneHandSheath02 = "Sheath02";
 
     private string _animNameAttack01 = "Attack01";
     private string _animNameAttack02 = "Attack02";
@@ -30,12 +30,12 @@ public class PlayerAnimData : CharacterAnimData
     public int AnimParamAttackIndex { get; private set; }
 
     public int AnimNameLocomotion { get; private set; }
+    public int AnimNameDefault { get; private set; }
 
-    public int AnimNameOneHandLocomotion { get; private set; }
-    public int AnimNameOneHandDraw01 { get; private set; }
-    public int AnimNameOneHandDraw02 { get; private set; }
-    public int AnimNameOneHandSheath01 { get; private set; }
-    public int AnimNameOneHandSheath02 { get; private set; }
+    public int AnimNameDraw01 { get; private set; }
+    public int AnimNameDraw02 { get; private set; }
+    public int AnimNameSheath01 { get; private set; }
+    public int AnimNameSheath02 { get; private set; }
 
     public int AnimNameAttack01 { get; private set; }
     public int AnimNameAttack02 { get; private set; }
@@ -51,12 +51,12 @@ public class PlayerAnimData : CharacterAnimData
         AnimParamAttackIndex = Animator.StringToHash(_animParamAttackIndex);
 
         AnimNameLocomotion = Animator.StringToHash(_animNameLocomotion);
+        AnimNameDefault = Animator.StringToHash(_animNameDefault);
 
-        AnimNameOneHandLocomotion = Animator.StringToHash(_animNameOneHandLocomotion);
-        AnimNameOneHandDraw01 = Animator.StringToHash(_animNameOneHandDraw01);
-        AnimNameOneHandDraw02 = Animator.StringToHash(_animNameOneHandDraw02);
-        AnimNameOneHandSheath01 = Animator.StringToHash(_animNameOneHandSheath01);
-        AnimNameOneHandSheath02 = Animator.StringToHash(_animNameOneHandSheath02);
+        AnimNameDraw01 = Animator.StringToHash(_animNameOneHandDraw01);
+        AnimNameDraw02 = Animator.StringToHash(_animNameOneHandDraw02);
+        AnimNameSheath01 = Animator.StringToHash(_animNameOneHandSheath01);
+        AnimNameSheath02 = Animator.StringToHash(_animNameOneHandSheath02);
 
         AnimNameAttack01 = Animator.StringToHash(_animNameAttack01);
         AnimNameAttack02 = Animator.StringToHash(_animNameAttack02);
