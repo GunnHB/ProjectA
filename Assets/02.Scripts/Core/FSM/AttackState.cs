@@ -8,15 +8,11 @@ using UnityEngine;
 
 public class AttackState : BaseState
 {
-    // private float _currTime;
-    // private float _animSpeed;
-    // private float _animLength;
-    // private float _actualPlayTime;
-
     private const string TAG_ATTACK = "AttackTag";
     private AttackData _currAttackData;
 
-    private float _prevFrameTime = 0f;
+    private float _prevFrameTime;
+    private bool _startAttackAnim = false;
 
     public AttackState(PlayerController player) : base(player)
     {
@@ -27,10 +23,10 @@ public class AttackState : BaseState
     {
         base.OperateEnter();
 
-        _player.SetIsAttacking(true);
-        _player.AttackAction?.Invoke(_currAttackData);
+        InitDatas();
 
-        // Debug.Log(_player.AttackIndex);
+        _player.SetIsAttacking(true);
+        CrossFadeInFixedUpdate(_currAttackData._attackAnimHash, _currAttackData._transitionDuration);
     }
 
     public override void OperateUpdate()
@@ -41,26 +37,35 @@ public class AttackState : BaseState
 
         if (normalizedTime > _prevFrameTime && normalizedTime < 1f)
         {
+            if (!_startAttackAnim)
+                _startAttackAnim = true;
+
             if (_player.DoCombo)
                 TryComboAttack(normalizedTime);
         }
-        else
+        else if (_startAttackAnim)
         {
             // back to locomotion
+            _stateMachine.SetState(_player.ThisIdleState);
 
             if (_player.DoCombo)
                 _player.SetDoCombo(false);
 
             _player.ResetAttackIndex();         // 여기서 걸림
+            // _startAttackAnim = false;
         }
+
+        _prevFrameTime = normalizedTime;
     }
 
     public override void OperateExit()
     {
         base.OperateExit();
 
-        if (!_player.DoCombo)
-            _player.SetIsAttacking(false);
+        _startAttackAnim = false;
+        // if (!_player.DoCombo)
+        _player.SetDoCombo(false);
+        _player.SetIsAttacking(false);
     }
 
     private void TryComboAttack(float normalizedTime)
@@ -77,5 +82,11 @@ public class AttackState : BaseState
     public void SetCurrAttackData(AttackData newData)
     {
         _currAttackData = newData;
+    }
+
+    private void InitDatas()
+    {
+        _prevFrameTime = 0f;
+        _startAttackAnim = false;
     }
 }

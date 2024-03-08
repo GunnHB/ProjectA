@@ -16,35 +16,40 @@ namespace FSM
             if (player == null)
                 return;
 
-            player.ClearActions();
+            // player.ClearActions();
 
-            player.DrawWeaponAction += () =>
-            {
-                if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
-                    return;
+            // player.DrawWeaponAction += () =>
+            // {
+            //     if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+            //         return;
 
-                SetTriggerAnimation(player.ThisAnimData.AnimParamDrawWeapon);
-                StartAnimation(_player.ThisAnimData.AnimParamCombatMode);
-            };
+            //     // SetTriggerAnimation(player.ThisAnimData.AnimParamDrawWeapon);
+            //     // StartAnimation(_player.ThisAnimData.AnimParamCombatMode);
 
-            player.SheathWeaponAction += () =>
-            {
-                if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
-                    return;
+            //     CrossFadeInFixedUpdate(_player.ThisAnimData.AnimNameOneHandDraw01);
+            // };
 
-                SetTriggerAnimation(player.ThisAnimData.AnimParamSheathWeapon);
-                StopAnimation(_player.ThisAnimData.AnimParamCombatMode);
-            };
+            // player.SheathWeaponAction += () =>
+            // {
+            //     if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+            //         return;
 
-            player.AttackAction += (AttackData attackData) =>
-            {
-                CrossFadeInFixedUpdate(attackData._attackAnimHash, attackData._transitionDuration);
-            };
+            //     // SetTriggerAnimation(player.ThisAnimData.AnimParamSheathWeapon);
+            //     // StopAnimation(_player.ThisAnimData.AnimParamCombatMode);
+            // };
+
+            // player.AttackAction += (AttackData attackData) =>
+            // {
+            //     CrossFadeInFixedUpdate(attackData._attackAnimHash, attackData._transitionDuration);
+            // };
         }
 
         public override void OperateEnter()
         {
             base.OperateEnter();
+
+            if (GetPreviousState(_player.ThisAttackState))
+                CrossFadeInFixedUpdate(_player.ThisAnimData.AnimNameLocomotion);
 
             if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisSprintState))
             {

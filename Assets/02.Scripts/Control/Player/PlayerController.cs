@@ -122,6 +122,7 @@ public partial class PlayerController : MonoBehaviour
         SetIsAttacking(false);
 
         RegistStateDictionary();
+        // RegistStateAction();
 
         GameManager.Instance.InGameModeAction -= InGameModeAction;
         GameManager.Instance.UIModeAction -= UIModeAction;
@@ -203,27 +204,27 @@ public partial class PlayerController : MonoBehaviour
             {
                 new AttackData()
                 {
-                    _attackAnimHash = _animData.AnimParamAttack01,
+                    _attackAnimHash = _animData.AnimNameAttack01,
                     _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _comboAttackTime = .25f,
                 },
                 new AttackData()
                 {
-                    _attackAnimHash = _animData.AnimParamAttack02,
+                    _attackAnimHash = _animData.AnimNameAttack02,
                     _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _comboAttackTime = .25f,
                 },
                 new AttackData()
                 {
-                    _attackAnimHash = _animData.AnimParamAttack03,
+                    _attackAnimHash = _animData.AnimNameAttack03,
                     _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _comboAttackTime = .25f,
                 },
                 new AttackData()
                 {
-                    _attackAnimHash = _animData.AnimParamAttack04,
+                    _attackAnimHash = _animData.AnimNameAttack04,
                     _transitionDuration = .2f,
-                    _comboAttackTime = .5f,
+                    _comboAttackTime = .25f,
                 },
             };
         }

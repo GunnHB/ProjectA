@@ -38,6 +38,8 @@ public static class GameValue
         [EnumMember(Value = "None")]
         None = -1,
         [EnumMember(Value = "OneHand")]
+        NoWeapon,
+        [EnumMember(Value = "OneHand")]
         OneHand,
         [EnumMember(Value = "TwoHand")]
         TwoHand,

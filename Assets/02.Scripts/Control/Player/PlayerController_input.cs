@@ -58,44 +58,50 @@ public partial class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        RegistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
-        RegistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+        RegistInputAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
+        RegistInputAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
 
-        RegistAction(_jumpInput, StartJumpInput);
+        RegistInputAction(_jumpInput, StartJumpInput);
 
-        RegistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+        RegistInputAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
 
-        RegistAction(_drawWeaponInput, StartDrawWeaponInput);
-        RegistAction(_attackInput, StartAttackInput);
+        RegistInputAction(_drawWeaponInput, StartDrawWeaponInput);
+        RegistInputAction(_attackInput, StartAttackInput);
 
-        RegistAction(_zoomInInput, null, PerformZoomInInput, null);
-        RegistAction(_zoomOutInput, null, PerformZoomOutInput, null);
+        RegistInputAction(_zoomInInput, null, PerformZoomInInput, null);
+        RegistInputAction(_zoomOutInput, null, PerformZoomOutInput, null);
 
-        RegistAction(_inventoryInput, StartInventoryInput);
+        RegistInputAction(_inventoryInput, StartInventoryInput);
 
-        RegistAction(_escapeInput, StartEscapeInput);
-        RegistAction(_settingInput, StartSettingInput);
+        RegistInputAction(_escapeInput, StartEscapeInput);
+        RegistInputAction(_settingInput, StartSettingInput);
+
+        // StateActions
+        RegistStateAction();
     }
 
     private void OnDisable()
     {
-        UnregistAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
-        UnregistAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+        UnregistInputAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
+        UnregistInputAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
 
-        UnregistAction(_jumpInput, StartJumpInput);
+        UnregistInputAction(_jumpInput, StartJumpInput);
 
-        UnregistAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+        UnregistInputAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
 
-        UnregistAction(_drawWeaponInput, StartDrawWeaponInput);
-        UnregistAction(_attackInput, StartAttackInput);
+        UnregistInputAction(_drawWeaponInput, StartDrawWeaponInput);
+        UnregistInputAction(_attackInput, StartAttackInput);
 
-        UnregistAction(_zoomInInput, null, PerformZoomInInput, null);
-        UnregistAction(_zoomOutInput, null, PerformZoomOutInput, null);
+        UnregistInputAction(_zoomInInput, null, PerformZoomInInput, null);
+        UnregistInputAction(_zoomOutInput, null, PerformZoomOutInput, null);
 
-        UnregistAction(_inventoryInput, StartInventoryInput);
+        UnregistInputAction(_inventoryInput, StartInventoryInput);
 
-        UnregistAction(_escapeInput, StartEscapeInput);
-        UnregistAction(_settingInput, StartSettingInput);
+        UnregistInputAction(_escapeInput, StartEscapeInput);
+        UnregistInputAction(_settingInput, StartSettingInput);
+
+        // StateActions
+        UnRegistStateAction();
     }
 
     #region InputSystem
@@ -106,7 +112,7 @@ public partial class PlayerController : MonoBehaviour
     /// <param name="startCallback"></param>
     /// <param name="performCallback"></param>
     /// <param name="cancelCallback"></param>
-    private void RegistAction(InputAction inputAction,
+    private void RegistInputAction(InputAction inputAction,
                               Action<InputAction.CallbackContext> startCallback = null,
                               Action<InputAction.CallbackContext> performCallback = null,
                               Action<InputAction.CallbackContext> cancelCallback = null)
@@ -136,7 +142,7 @@ public partial class PlayerController : MonoBehaviour
     /// <param name="startCallback"></param>
     /// <param name="performCallback"></param>
     /// <param name="cancelCallback"></param>
-    private void UnregistAction(InputAction inputAction,
+    private void UnregistInputAction(InputAction inputAction,
                               Action<InputAction.CallbackContext> startCallback = null,
                               Action<InputAction.CallbackContext> performCallback = null,
                               Action<InputAction.CallbackContext> cancelCallback = null)
@@ -251,20 +257,9 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         if (_equipment.IsDraw)
-            SheathWeaponAction?.Invoke();
-        else
             DrawWeaponAction?.Invoke();
-
-        // if (_playerMode == PlayerMode.Combat)
-        // {
-        //     SheathWeaponAction?.Invoke();
-        //     _playerMode = PlayerMode.Normal;
-        // }
-        // else
-        // {
-        //     DrawWeaponAction?.Invoke();
-        //     _playerMode = PlayerMode.Combat;
-        // }
+        else
+            SheathWeaponAction?.Invoke();
     }
     #endregion
 
@@ -275,20 +270,30 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         if (_attackIndex >= GetAttackDataList().Count - 1)
-            _attackIndex = -1;
+            ResetAttackIndex();
 
         _attackIndex++;
 
-        (_attackState as AttackState).SetCurrAttackData(GetAttackDataList()[_attackIndex]);
+        AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
 
-        if (_isAttacking)
-        {
-            _doCombo = true;
-            Debug.Log(_attackIndex);
-            return;
-        }
+        // if (!CanAttack || GetAttackDataList() == null)
+        //     return;
 
-        _stateMachine.SetState(_attackState);
+        // if (_attackIndex >= GetAttackDataList().Count - 1)
+        //     _attackIndex = -1;
+
+        // _attackIndex++;
+
+        // (_attackState as AttackState).SetCurrAttackData(GetAttackDataList()[_attackIndex]);
+
+        // if (_isAttacking)
+        // {
+        //     _doCombo = true;
+        //     // Debug.Log(_attackIndex);
+        //     return;
+        // }
+
+        // _stateMachine.SetState(_attackState);
     }
     #endregion
 

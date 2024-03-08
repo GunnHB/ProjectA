@@ -23,6 +23,9 @@ public partial class PlayerController : MonoBehaviour
 
     private IState _deathState;
 
+    private IState _drawState;
+    private IState _sheathState;
+
     private IState _attackState;
 
     // Properties
@@ -38,6 +41,9 @@ public partial class PlayerController : MonoBehaviour
     public IState ThisCrouchState => _crouchState;
 
     public IState ThisDeathState => _deathState;
+
+    public IState ThisDrawState => _drawState;
+    public IState ThisSheathState => _sheathState;
 
     public IState ThisAttackState => _attackState;
 
@@ -63,10 +69,43 @@ public partial class PlayerController : MonoBehaviour
 
         _deathState = new DeathState(this);
 
+        _drawState = new DrawState(this);
+        _sheathState = new SheathState(this);
+
         _attackState = new AttackState(this);
 
         // Idle을 첫 상태로 세팅
         _stateMachine = new StateMachine(_idleState);
     }
     #endregion
+
+    private void RegistStateAction()
+    {
+        DrawWeaponAction += OnDraw;
+        SheathWeaponAction += OnSheath;
+        AttackAction += OnAttack;
+    }
+
+    private void UnRegistStateAction()
+    {
+        DrawWeaponAction -= OnDraw;
+        SheathWeaponAction -= OnSheath;
+        AttackAction -= OnAttack;
+    }
+
+    private void OnDraw()
+    {
+        _stateMachine.SetState(_drawState);
+    }
+
+    private void OnSheath()
+    {
+        _stateMachine.SetState(_sheathState);
+    }
+
+    private void OnAttack(AttackData attackData)
+    {
+        (_attackState as AttackState).SetCurrAttackData(attackData);
+        _stateMachine.SetState(_attackState);
+    }
 }
