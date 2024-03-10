@@ -167,60 +167,45 @@ public partial class PlayerController : MonoBehaviour
         var inputValue = context.ReadValue<Vector2>();
         _moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
 
+        // 방향 세팅
         _movement.SetDirection(_moveDirection);
 
         if (IsOnAir || IsCrouching)
             return;
 
-        // 상태 세팅
         if (_readyToSprint)
-            _stateMachine.SetState(_sprintState);
+            SprintAction?.Invoke(_readyToSprint);
         else
-            _stateMachine.SetState(_walkState);
+            WalkAction?.Invoke();
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
     {
-        // 상태 세팅
         _moveDirection = Vector3.zero;
         _movement.SetDirection(_moveDirection);
 
         // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
         if (!IsOnAir && !IsCrouching)
-            _stateMachine.SetState(_idleState);
+            IdleAction?.Invoke();
     }
     #endregion
 
     #region Sprint
     private void PerformSprintInput(InputAction.CallbackContext context)
     {
-        _readyToSprint = true;
-
-        if (IsOnAir)
-            return;
-
-        // 상태 세팅
-        if (_moveDirection != Vector3.zero)
-            _stateMachine.SetState(_sprintState);
+        SprintAction?.Invoke(true);
     }
 
     private void CancelSprintInput(InputAction.CallbackContext context)
     {
-        _readyToSprint = false;
-
-        if (IsOnAir)
-            return;
-
-        // 상태 세팅
-        if (_moveDirection != Vector3.zero)
-            _stateMachine.SetState(_walkState);
+        SprintAction?.Invoke(false);
     }
     #endregion
 
     #region Jump
     private void StartJumpInput(InputAction.CallbackContext context)
     {
-        _stateMachine.SetState(_jumpState);
+        JumpAction?.Invoke();
     }
     #endregion
 
@@ -229,7 +214,7 @@ public partial class PlayerController : MonoBehaviour
     {
         // 공중에 있는 상태에서는 웅크리기 불가
         if (!IsOnAir)
-            _stateMachine.SetState(_crouchState);
+            CrouchAction?.Invoke();
     }
 
     private void CancelCrouchInput(InputAction.CallbackContext context)

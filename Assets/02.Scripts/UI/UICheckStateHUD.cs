@@ -36,6 +36,12 @@ public class UICheckStateHUD : UIHUDBase
             case CrouchState:
                 _stateText.text = "CrouchState";
                 break;
+            case DrawState:
+                _stateText.text = "DrawState";
+                break;
+            case SheathState:
+                _stateText.text = "SheathState";
+                break;
             case AttackState:
                 _stateText.text = "AttackState";
                 break;

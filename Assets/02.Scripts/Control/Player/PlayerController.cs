@@ -50,21 +50,32 @@ public partial class PlayerController : MonoBehaviour
     private int _attackIndex = -1;
 
     // private PlayerMode _playerMode;
+    public UnityAction IdleAction;
+    public UnityAction WalkAction;
+    public UnityAction<bool> SprintAction;
+
+    public UnityAction JumpAction;
+    public UnityAction FallingAction;
+    public UnityAction LandingAction;
+
+    public UnityAction CrouchAction;
 
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
+
     public UnityAction<AttackData> AttackAction;
 
     // Properties
     public Animator ThisAnimator => _animator;
     public PlayerAnimData ThisAnimData => _animData;
     public StateMachine ThisStateMachine => _stateMachine;
-    public Vector3 ThisMoveDirection => _moveDirection;
+    // public Vector3 ThisMoveDirection => _moveDirection;
     public float ThisMoveSpeed => _moveSpeed;
 
-    public bool IsGrounded => _movement.IsGrounded;
-    public bool IsPeak => _movement.IsPeak;
-    public bool ReadyToSprint => _readyToSprint;
+    public bool IsMoving => _moveDirection != Vector3.zero;         // 이동 중인지
+    public bool IsGrounded => _movement.IsGrounded;                 // 땅에 발이 닿았는지
+    public bool IsPeak => _movement.IsPeak;                         // 최고 높이를 찍었는지
+    public bool ReadyToSprint => _readyToSprint;                    // 달리기 입력이 들어갔는지
 
     public bool DoCombo => _doCombo;
     public bool IsAttacking => _isAttacking;
@@ -122,7 +133,6 @@ public partial class PlayerController : MonoBehaviour
         SetIsAttacking(false);
 
         RegistStateDictionary();
-        // RegistStateAction();
 
         GameManager.Instance.InGameModeAction -= InGameModeAction;
         GameManager.Instance.UIModeAction -= UIModeAction;

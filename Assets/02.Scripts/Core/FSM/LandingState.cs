@@ -22,7 +22,7 @@ public class LandingState : BaseState
     {
         base.OperateUpdate();
 
-        if (_player.ThisMoveDirection == Vector3.zero)
+        if (!_player.IsMoving)
             _stateMachine.SetState(_player.ThisIdleState);
         else
         {

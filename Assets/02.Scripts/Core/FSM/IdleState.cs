@@ -43,10 +43,11 @@ namespace FSM
             if (_isStopped)
             {
                 _currBlendValue = Mathf.SmoothDamp(_currBlendValue, 0, ref _smoothVelocity, _smoothTime);
+                float fixedValue = (float)Math.Round(_currBlendValue, 2);
 
-                SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, (float)Math.Round(_currBlendValue, 2));
+                SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, fixedValue);
 
-                if (Mathf.Approximately((float)Math.Round(_currBlendValue, 2), 0))
+                if (Mathf.Approximately(fixedValue, 0))
                 {
                     _currBlendValue = 0f;
                     _isStopped = false;

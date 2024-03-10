@@ -25,7 +25,7 @@ public class CrouchState : BaseState
     {
         base.OperateUpdate();
 
-        if (_player.ThisMoveDirection != Vector3.zero)
+        if (_player.IsMoving)
             _dampTarget = _maxBlendValue;
         else
             _dampTarget = 0f;

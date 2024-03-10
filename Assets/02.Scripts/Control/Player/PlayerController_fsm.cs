@@ -81,16 +81,66 @@ public partial class PlayerController : MonoBehaviour
 
     private void RegistStateAction()
     {
+        IdleAction += OnIdle;
+        WalkAction += OnWalk;
+        SprintAction += OnSprint;
+
         DrawWeaponAction += OnDraw;
         SheathWeaponAction += OnSheath;
+
         AttackAction += OnAttack;
     }
 
     private void UnRegistStateAction()
     {
+        IdleAction -= OnIdle;
+        WalkAction -= OnWalk;
+        SprintAction -= OnSprint;
+
+        JumpAction += OnJump;
+        FallingAction += OnFalling;
+
         DrawWeaponAction -= OnDraw;
         SheathWeaponAction -= OnSheath;
+
         AttackAction -= OnAttack;
+    }
+
+    private void OnIdle()
+    {
+        _stateMachine.SetState(_idleState);
+    }
+
+    private void OnWalk()
+    {
+        _stateMachine.SetState(_walkState);
+    }
+
+    private void OnSprint(bool readyToSprint)
+    {
+        _readyToSprint = readyToSprint;
+
+        if (IsOnAir)
+            return;
+
+        // 상태 세팅
+        if (_moveDirection != Vector3.zero)
+        {
+            if (readyToSprint)
+                _stateMachine.SetState(_sprintState);
+            else
+                WalkAction?.Invoke();
+        }
+    }
+
+    private void OnJump()
+    {
+
+    }
+
+    private void OnFalling()
+    {
+
     }
 
     private void OnDraw()

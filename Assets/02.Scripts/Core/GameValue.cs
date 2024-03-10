@@ -15,6 +15,12 @@ public static class GameValue
     // 한 줄에 들어가는 슬롯 수
     public static int _inventoryRowAmount = 6;
 
+    public const string ANIM_LAYER_ONEHAND = "OneHand";
+    public const string ANIM_LAYER_ONEHAND_UPPER = "OneHand_upper";
+
+    public const string ANIM_LAYER_TOWHAND = "TwoHand";
+    public const string ANIM_LAYER_TOWHAND_UPPER = "TwoHand_upper";
+
     public enum ItemType
     {
         [EnumMember(Value = "None")]

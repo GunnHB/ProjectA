@@ -17,7 +17,7 @@ public class JumpState : BaseState
     {
         base.OperateEnter();
 
-        StartAnimation(_player.ThisAnimData.AnimParamJump);
+        // StartAnimation(_player.ThisAnimData.AnimParamJump);
 
         _player.DoJump();
     }
