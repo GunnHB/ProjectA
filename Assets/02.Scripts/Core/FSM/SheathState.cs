@@ -38,15 +38,7 @@ public class SheathState : BaseState
     {
         base.OperateUpdate();
 
-        var currentInfo = GetCurrentAnimatorStateInfo(_layerIndex);
-        var nextInfo = GetNextAniomatorStateInfo(_layerIndex);
-
-        float normalizedTime = float.MinValue;
-
-        if (_player.ThisAnimator.IsInTransition(_layerIndex) && nextInfo.IsTag(TAG_SHEATH))
-            normalizedTime = nextInfo.normalizedTime;
-        else if (!_player.ThisAnimator.IsInTransition(_layerIndex) && currentInfo.IsTag(TAG_SHEATH))
-            normalizedTime = currentInfo.normalizedTime;
+        float normalizedTime = GetNormalizedTimeByTag(TAG_SHEATH, _layerIndex);
 
         if (normalizedTime >= _exitTime)
         {

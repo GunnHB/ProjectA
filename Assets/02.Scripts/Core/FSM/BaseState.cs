@@ -100,8 +100,8 @@ namespace FSM
 
         protected float GetNormalizedTimeByTag(string tagName, int layerIndex = 0)
         {
-            var currentInfo = GetCurrentAnimatorStateInfo();
-            var nextInfo = GetNextAniomatorStateInfo();
+            var currentInfo = GetCurrentAnimatorStateInfo(layerIndex);
+            var nextInfo = GetNextAniomatorStateInfo(layerIndex);
 
             if (_player.ThisAnimator.IsInTransition(layerIndex) && nextInfo.IsTag(tagName))
                 return nextInfo.normalizedTime;

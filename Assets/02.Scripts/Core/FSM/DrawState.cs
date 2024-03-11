@@ -38,15 +38,7 @@ public class DrawState : BaseState
     {
         base.OperateUpdate();
 
-        float normalizedTime = float.MinValue;
-
-        var currentInfo = GetCurrentAnimatorStateInfo(_layerIndex);
-        var nextInfo = GetNextAniomatorStateInfo(_layerIndex);
-
-        if (_player.ThisAnimator.IsInTransition(_layerIndex) && nextInfo.IsTag(TAG_DRAW))
-            normalizedTime = nextInfo.normalizedTime;
-        else if (!_player.ThisAnimator.IsInTransition(_layerIndex) && currentInfo.IsTag(TAG_DRAW))
-            normalizedTime = currentInfo.normalizedTime;
+        float normalizedTime = GetNormalizedTimeByTag(TAG_DRAW, _layerIndex);
 
         if (normalizedTime >= _exitTime)
         {
