@@ -44,6 +44,18 @@ public class GameManager : SingletonObject<GameManager>
     private GameObject _renderPlayerObj;
     public GameObject RenderPlayerObj { get { return GetGameObject(PLAYER_RENDER_TEXTURE, ref _renderPlayerObj); } }
 
+    private LayerMask _playerMask;
+    public LayerMask PlayerMask
+    {
+        get
+        {
+            if (_playerMask == 0)
+                _playerMask = LayerMask.NameToLayer(PLAYER);
+
+            return _playerMask;
+        }
+    }
+
     private LayerMask _itemMask;
     public LayerMask ItemMask
     {

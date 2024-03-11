@@ -26,9 +26,15 @@ public class ItemManager : SingletonObject<ItemManager>
     private Inventory _inventory = null;
     public Inventory ThisInventory => _inventory;
 
+    // private EquipmentData _equipmentData = null;
+    // public EquipmentData ThisEquipmentData => _equipmentData;
+
     // 현재 장착 데이터
-    private EquipmentData _equipmentData = null;
-    public EquipmentData ThisEquipmentData => _equipmentData;
+    private EquipmentData _equipWeaponData = null;
+    public EquipmentData EquipWeaponData => _equipWeaponData;
+
+    private EquipmentData _equipShieldData = null;
+    public EquipmentData EquipShieldData => _equipShieldData;
 
     public UnityAction<ModelCategoryTab.Data> TabAction;
     public UnityAction<InventoryItemData> SlotAction;
@@ -95,7 +101,9 @@ public class ItemManager : SingletonObject<ItemManager>
             for (int index = 0; index < 3; index++)
                 AddItem(new InventoryItemData(ModelItem.Model.DataList[9]));
 
-            _equipmentData = new EquipmentData();
+            // _equipmentData = new EquipmentData();
+            _equipWeaponData = new EquipmentData();
+            _equipShieldData = new EquipmentData();
         }
     }
 
@@ -173,24 +181,10 @@ public class ItemManager : SingletonObject<ItemManager>
         _itemMenu = newMenu;
     }
 
-    // public void ActiveEquipment(GameObject holder, string weaponString, bool active = true)
-    // {
-    //     for (int index = 0; index < holder.transform.childCount; index++)
-    //     {
-    //         var item = holder.transform.GetChild(index);
-
-    //         if (item.name == weaponString)
-    //         {
-    //             item.gameObject.SetActive(active);
-    //             return;
-    //         }
-    //     }
-    // }
-
     public void DrawWeapon()
     {
-        var weaponItemData = _equipmentData._itemWeaponData;                                    // 무기의 아이템 데이터
-        var shieldItemData = _equipmentData._itemShieldData;                                    // 방패의 아이템 데이터
+        var weaponItemData = _equipWeaponData._invenItemData;
+        var shieldItemData = _equipShieldData._invenItemData;
 
         // 무기 아이템 데이터가 없으면 리턴
         if (weaponItemData.IsEmpty())
@@ -221,8 +215,8 @@ public class ItemManager : SingletonObject<ItemManager>
 
     public void SheathWeapon()
     {
-        var weaponItemData = _equipmentData._itemWeaponData;
-        var shieldItemData = _equipmentData._itemShieldData;
+        var weaponItemData = _equipWeaponData._invenItemData;
+        var shieldItemData = _equipShieldData._invenItemData;
 
         if (weaponItemData.IsEmpty())
             return;
@@ -245,23 +239,6 @@ public class ItemManager : SingletonObject<ItemManager>
             ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
         }
     }
-
-    // public void ActiveEquipmentInHandHolder()
-    // {
-
-    // }
-
-    // public void ActiveEquipmentInSheathHolder(InventoryItemData invenItemData, bool active)
-    // {
-    //     var playerHolder = GetHolderObj(invenItemData._itemData, isPlayer: true);
-    //     var renderHolder = GetHolderObj(invenItemData._itemData, isPlayer: false);
-
-    //     if (playerHolder != null)
-    //         ActualActiveEquipment(playerHolder, invenItemData._itemData.prefab, active);
-
-    //     if (renderHolder != null)
-    //         ActualActiveEquipment(renderHolder, invenItemData._itemData.prefab, active);
-    // }
 
     /// <summary>
     /// 아이템 활성화시키기
@@ -499,11 +476,116 @@ public class ItemManager : SingletonObject<ItemManager>
             // 장착 중인 아이템은 비활성화 시키기 (sheathHolder)
             if (invenItemData._isEquip)
                 ActiveEquipment(invenItemData._itemData, isSheath: true, isActive: false);
-            // ActiveEquipmentInSheathHolder(invenItemData, false);
 
             var index = invenList.IndexOf(invenItemData);
 
             invenList[index].ClearData();
         }
     }
+
+    public void EquipWeaon(ItemSlot newSlot)
+    {
+        switch (newSlot.InvenItemData._itemData.type)
+        {
+            case GameValue.ItemType.Weapon:
+                RefreshEquipment(newSlot, ref _equipWeaponData);
+                break;
+            case GameValue.ItemType.Shield:
+                RefreshEquipment(newSlot, ref _equipShieldData);
+                break;
+        }
+    }
+
+    public void RemoveWeapon(InventoryItemData itemData)
+    {
+        switch (itemData._itemData.type)
+        {
+            case GameValue.ItemType.Weapon:
+                RemoveEquipment(ref _equipWeaponData);
+                break;
+            case GameValue.ItemType.Shield:
+                RemoveEquipment(ref _equipShieldData);
+                break;
+        }
+    }
+
+    private void RefreshEquipment(ItemSlot newSlot, ref EquipmentData equipmentData)
+    {
+        RemoveEquipment(ref equipmentData);                  // 해제
+        SetEquipment(newSlot, ref equipmentData);            // 장착
+    }
+
+    private void RemoveEquipment(ref EquipmentData equipmentData)
+    {
+        if (equipmentData._invenItemData.IsEmpty())
+        {
+            equipmentData.ClearData();
+            return;
+        }
+
+        equipmentData._invenItemData._isEquip = false;
+
+        ActiveEquipment(equipmentData._invenItemData._itemData, isSheath: true, isActive: false);
+
+        RefreshSlot(equipmentData._invenItemData);
+    }
+
+    private void SetEquipment(ItemSlot newSlot, ref EquipmentData equipmentData)
+    {
+        newSlot.InvenItemData._isEquip = true;
+        equipmentData._invenItemData = newSlot.InvenItemData;
+
+        ActiveEquipment(equipmentData._invenItemData._itemData, isSheath: true, isActive: true);
+
+        RefreshSlot(equipmentData._invenItemData);
+    }
+
+    // private void SetPrefab(EquipmentData equipmentData)
+    // {
+    //     switch (equipmentData._invenItemData._itemData.type)
+    //     {
+    //         case GameValue.ItemType.Weapon:
+    //             {
+    //                 var weaponData = ModelWeapon.Model.DataDic[equipmentData._invenItemData._itemData.ref_id];
+
+    //                 if (weaponData == null)
+    //                     return;
+
+    //                 for (int index = 0; index < _playerHolderDic[weaponData.hand_holder].transform.childCount; index++)
+    //                 {
+    //                     var item = _playerHolderDic[weaponData.hand_holder].transform.GetChild(index);
+
+    //                     if (item.gameObject.activeInHierarchy)
+    //                     {
+    //                         equipmentData._itemPrefab = item.gameObject;
+    //                         return;
+    //                     }
+    //                 }
+
+    //                 equipmentData._itemPrefab = null;
+    //             }
+    //             break;
+    //         case GameValue.ItemType.Shield:
+    //             {
+    //                 var shieldData = ModelShield.Model.DataDic[equipmentData._invenItemData._itemData.ref_id];
+
+    //                 if (shieldData == null)
+    //                     return;
+
+    //                 for (int index = 0; index < _playerHolderDic[shieldData.hand_holder].transform.childCount; index++)
+    //                 {
+    //                     var item = _playerHolderDic[shieldData.hand_holder].transform.GetChild(index);
+
+    //                     if (item.gameObject.activeInHierarchy)
+    //                     {
+    //                         equipmentData._itemPrefab = item.gameObject;
+    //                         return;
+    //                     }
+    //                 }
+
+    //                 equipmentData._itemPrefab = null;
+    //             }
+    //             break;
+    //     }
+    // }
 }

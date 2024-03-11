@@ -125,10 +125,10 @@ namespace FSM
 
         protected void SetWeaponType()
         {
-            if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+            if (ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
                 return;
 
-            var itemData = ItemManager.Instance.ThisEquipmentData._itemWeaponData._itemData;
+            var itemData = ItemManager.Instance.EquipWeaponData._invenItemData._itemData;
 
             if (itemData == null)
                 return;

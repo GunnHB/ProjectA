@@ -240,7 +240,7 @@ public partial class PlayerController : MonoBehaviour
     private void StartDrawWeaponInput(InputAction.CallbackContext context)
     {
         // 꺼내는 중 (넣는 중) || 무기 안들고 있음
-        if (_equipment.DoAction || ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+        if (_equipment.DoAction || ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
             return;
 
         if (_equipment.IsDraw)

@@ -95,7 +95,7 @@ public class ItemMenu : UIPopupBase
     {
         // 장비 착용 시 실행
         if (IsEquipment)
-            ItemManager.Instance.ThisEquipmentData.EquipWeapon(_targetSlot);
+            ItemManager.Instance.EquipWeaon(_targetSlot);
 
         UIManager.Instance.CloseUI(this);
     }
@@ -103,7 +103,7 @@ public class ItemMenu : UIPopupBase
     private void OnClickRemove()
     {
         // 착용한 장비 해제
-        ItemManager.Instance.ThisEquipmentData.RemoveWeapon(_targetSlot.InvenItemData);
+        ItemManager.Instance.RemoveWeapon(_targetSlot.InvenItemData);
 
         UIManager.Instance.CloseUI(this);
     }

@@ -41,7 +41,7 @@ public partial class PlayerController : MonoBehaviour
     private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
     private int _attackIndex = -1;
-    private Queue<AttackData> _attackQueue = new();                  // 공격 데이터 큐 (콤보 공격용)
+    private Queue<AttackData> _attackQueue = new();     // 공격 데이터 큐 (콤보 공격용)
 
     public UnityAction IdleAction;
     public UnityAction WalkAction;
@@ -207,22 +207,22 @@ public partial class PlayerController : MonoBehaviour
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack01,
-                    _transitionDuration = 0f,
+                    _transitionDuration = .1f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack02,
-                    _transitionDuration = 0f,
+                    _transitionDuration = .1f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack03,
-                    _transitionDuration = 0f,
+                    _transitionDuration = .1f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack04,
-                    _transitionDuration = .5f,
+                    _transitionDuration = .2f,
                 },
             };
         }
@@ -232,10 +232,10 @@ public partial class PlayerController : MonoBehaviour
 
     public List<AttackData> GetAttackDataList()
     {
-        if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
+        if (ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
             return null;
 
-        var weaponData = ModelWeapon.Model.DataDic[ItemManager.Instance.ThisEquipmentData._itemWeaponData._itemData.ref_id];
+        var weaponData = ModelWeapon.Model.DataDic[ItemManager.Instance.EquipWeaponData._invenItemData._itemData.ref_id];
 
         if (weaponData == null)
             return null;

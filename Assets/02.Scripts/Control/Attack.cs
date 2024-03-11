@@ -23,4 +23,18 @@ public class Attack : MonoBehaviour
         else
             _attackDic[attackType].AddRange(attackDataList);
     }
+
+    // animation events
+    public void StartCheckHitCollider()
+    {
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab == null)
+            return;
+    }
+
+    // animation events
+    public void EndCheckHitCollider()
+    {
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab == null)
+            return;
+    }
 }
