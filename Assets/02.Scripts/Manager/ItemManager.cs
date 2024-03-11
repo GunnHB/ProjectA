@@ -196,6 +196,8 @@ public class ItemManager : SingletonObject<ItemManager>
         ActiveEquipment(weaponItemData._itemData, isSheath: false, isActive: true);
         ActiveEquipment(weaponItemData._itemData, isSheath: true, isActive: false);
 
+        _equipWeaponData._isInHand = true;
+
         if (!shieldItemData.IsEmpty())
         {
             // 방패와 함께 장착할 수 있는 무기라면
@@ -203,12 +205,16 @@ public class ItemManager : SingletonObject<ItemManager>
             {
                 ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: true);
                 ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: false);
+
+                _equipShieldData._isInHand = true;
             }
             else
             {
                 // 손에 있는건 끄고 보관함에 있는건 켜기
                 ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: true);
                 ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
+
+                _equipShieldData._isInHand = false;
             }
         }
     }
@@ -227,16 +233,22 @@ public class ItemManager : SingletonObject<ItemManager>
         ActiveEquipment(weaponItemData._itemData, isSheath: true, isActive: true);
         ActiveEquipment(weaponItemData._itemData, isSheath: false, isActive: false);
 
+        _equipWeaponData._isInHand = false;
+
         if (!shieldItemData.IsEmpty())
         {
             if (weaponData.able_equip_shield)
             {
                 ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: true);
                 ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: false);
+
+                _equipShieldData._isInHand = true;
             }
 
             ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: true);
             ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
+
+            _equipShieldData._isInHand = false;
         }
     }
 
@@ -260,6 +272,20 @@ public class ItemManager : SingletonObject<ItemManager>
         }
     }
 
+    public void ActiveEquipmentByEquipmentData(EquipmentData equipmentData, bool isSheath, bool isActive)
+    {
+        var itemData = equipmentData._invenItemData._itemData;
+
+        var playerHolder = GetHolderObj(itemData, isPlayer: true, isSheath);
+        var renderHolder = GetHolderObj(itemData, isPlayer: false, isSheath);
+
+        if (playerHolder != null)
+            ActualActiveEquipment(playerHolder, itemData.prefab, isActive);
+
+        if (renderHolder != null)
+            ActualActiveEquipment(renderHolder, itemData.prefab, isActive);
+    }
+
     /// <summary>
     /// 아이템 활성화
     /// </summary>
@@ -276,6 +302,8 @@ public class ItemManager : SingletonObject<ItemManager>
 
         if (renderHolder != null)
             ActualActiveEquipment(renderHolder, itemData.prefab, isActive);
+
+        // GetItemPrefab(playerHolder);
     }
 
     /// <summary>
@@ -538,54 +566,56 @@ public class ItemManager : SingletonObject<ItemManager>
         ActiveEquipment(equipmentData._invenItemData._itemData, isSheath: true, isActive: true);
 
         RefreshSlot(equipmentData._invenItemData);
+
+        SetPrefab(equipmentData);
     }
 
-    // private void SetPrefab(EquipmentData equipmentData)
-    // {
-    //     switch (equipmentData._invenItemData._itemData.type)
-    //     {
-    //         case GameValue.ItemType.Weapon:
-    //             {
-    //                 var weaponData = ModelWeapon.Model.DataDic[equipmentData._invenItemData._itemData.ref_id];
+    private void SetPrefab(EquipmentData equipmentData)
+    {
+        switch (equipmentData._invenItemData._itemData.type)
+        {
+            case GameValue.ItemType.Weapon:
+                {
+                    var weaponData = ModelWeapon.Model.DataDic[equipmentData._invenItemData._itemData.ref_id];
 
-    //                 if (weaponData == null)
-    //                     return;
+                    if (weaponData == null)
+                        return;
 
-    //                 for (int index = 0; index < _playerHolderDic[weaponData.hand_holder].transform.childCount; index++)
-    //                 {
-    //                     var item = _playerHolderDic[weaponData.hand_holder].transform.GetChild(index);
+                    for (int index = 0; index < _playerHolderDic[weaponData.hand_holder].transform.childCount; index++)
+                    {
+                        var item = _playerHolderDic[weaponData.hand_holder].transform.GetChild(index);
 
-    //                     if (item.gameObject.activeInHierarchy)
-    //                     {
-    //                         equipmentData._itemPrefab = item.gameObject;
-    //                         return;
-    //                     }
-    //                 }
+                        if (item.gameObject.activeInHierarchy)
+                        {
+                            equipmentData._itemPrefab = item.gameObject;
+                            return;
+                        }
+                    }
 
-    //                 equipmentData._itemPrefab = null;
-    //             }
-    //             break;
-    //         case GameValue.ItemType.Shield:
-    //             {
-    //                 var shieldData = ModelShield.Model.DataDic[equipmentData._invenItemData._itemData.ref_id];
+                    equipmentData._itemPrefab = null;
+                }
+                break;
+            case GameValue.ItemType.Shield:
+                {
+                    var shieldData = ModelShield.Model.DataDic[equipmentData._invenItemData._itemData.ref_id];
 
-    //                 if (shieldData == null)
-    //                     return;
+                    if (shieldData == null)
+                        return;
 
-    //                 for (int index = 0; index < _playerHolderDic[shieldData.hand_holder].transform.childCount; index++)
-    //                 {
-    //                     var item = _playerHolderDic[shieldData.hand_holder].transform.GetChild(index);
+                    for (int index = 0; index < _playerHolderDic[shieldData.hand_holder].transform.childCount; index++)
+                    {
+                        var item = _playerHolderDic[shieldData.hand_holder].transform.GetChild(index);
 
-    //                     if (item.gameObject.activeInHierarchy)
-    //                     {
-    //                         equipmentData._itemPrefab = item.gameObject;
-    //                         return;
-    //                     }
-    //                 }
+                        if (item.gameObject.activeInHierarchy)
+                        {
+                            equipmentData._itemPrefab = item.gameObject;
+                            return;
+                        }
+                    }
 
-    //                 equipmentData._itemPrefab = null;
-    //             }
-    //             break;
-    //     }
-    // }
+                    equipmentData._itemPrefab = null;
+                }
+                break;
+        }
+    }
 }

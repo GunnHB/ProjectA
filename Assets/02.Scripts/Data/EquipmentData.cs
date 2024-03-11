@@ -8,6 +8,7 @@ public class EquipmentData
 {
     public InventoryItemData _invenItemData;
     public GameObject _itemPrefab;
+    public bool _isInHand;
 
     public EquipmentData()
     {
@@ -18,5 +19,6 @@ public class EquipmentData
     {
         _invenItemData = new InventoryItemData();
         _itemPrefab = null;
+        _isInHand = false;
     }
 }
