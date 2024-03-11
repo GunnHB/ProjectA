@@ -111,7 +111,7 @@ public partial class PlayerController : MonoBehaviour
     // 공격이 가능한 상태
     public bool CanAttack
     {
-        get { return /* _equipment.IsDraw && */  (IsNormalState || IsCrouching || _isAttacking); }
+        get { return _equipment.IsDraw && (IsNormalState || IsCrouching || _isAttacking); }
     }
 
     private void Awake()

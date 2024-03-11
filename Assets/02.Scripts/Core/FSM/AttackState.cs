@@ -1,18 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using FSM;
 
-using UnityEngine;
+using FSM;
 
 public class AttackState : BaseState
 {
-    private const string TAG_ATTACK = "AttackTag";
+    private const string TAG_ATTACK = "Tag_Attack";
     private AttackData _currAttackData;
 
-    private float _prevFrameTime;
-    private bool _startAttackAnim = false;
+    private int _layerIndex = 0;
+    private float _exitTime = 1f;
 
     public AttackState(PlayerController player) : base(player)
     {
@@ -23,46 +19,54 @@ public class AttackState : BaseState
     {
         base.OperateEnter();
 
-        InitDatas();
+        // InitDatas();
+
+        _layerIndex = GetLayerIndex();
 
         _player.SetIsAttacking(true);
-        CrossFadeInFixedUpdate(_currAttackData._attackAnimHash, _currAttackData._transitionDuration);
+        _player.ThisAnimator.CrossFadeInFixedTime(_currAttackData._attackAnimHash, _currAttackData._transitionDuration, _layerIndex);
     }
 
     public override void OperateUpdate()
     {
         base.OperateUpdate();
 
-        float normalizedTime = GetNormalizedTimeByTag(TAG_ATTACK);
+        float normalizedTime = GetNormalizedTimeByTag(TAG_ATTACK, _layerIndex);
 
-        if (normalizedTime > _prevFrameTime && normalizedTime < 1f)
+        if (normalizedTime > _exitTime)
         {
-            if (!_startAttackAnim)
-                _startAttackAnim = true;
+            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
 
-            if (_player.DoCombo)
-                TryComboAttack(normalizedTime);
-        }
-        else if (_startAttackAnim)
-        {
-            // back to locomotion
-            _stateMachine.SetState(_player.ThisIdleState);
-
-            if (_player.DoCombo)
-                _player.SetDoCombo(false);
-
-            _player.ResetAttackIndex();         // 여기서 걸림
-            // _startAttackAnim = false;
+            _player.IdleAction?.Invoke();
         }
 
-        _prevFrameTime = normalizedTime;
+        // if (normalizedTime > _prevFrameTime && normalizedTime < _exitTime)
+        // {
+        //     if (!_startAttackAnim)
+        //         _startAttackAnim = true;
+
+        //     if (_player.DoCombo)
+        //         TryComboAttack(normalizedTime);
+        // }
+        // else if (_startAttackAnim)
+        // {
+        //     // back to locomotion
+        //     _stateMachine.SetState(_player.ThisIdleState);
+
+        //     if (_player.DoCombo)
+        //         _player.SetDoCombo(false);
+
+        //     _player.ResetAttackIndex();         // 여기서 걸림
+        //     // _startAttackAnim = false;
+        // }
+
+        // _prevFrameTime = normalizedTime;
     }
 
     public override void OperateExit()
     {
         base.OperateExit();
 
-        _startAttackAnim = false;
         // if (!_player.DoCombo)
         _player.SetDoCombo(false);
         _player.SetIsAttacking(false);
@@ -82,11 +86,5 @@ public class AttackState : BaseState
     public void SetCurrAttackData(AttackData newData)
     {
         _currAttackData = newData;
-    }
-
-    private void InitDatas()
-    {
-        _prevFrameTime = 0f;
-        _startAttackAnim = false;
     }
 }
