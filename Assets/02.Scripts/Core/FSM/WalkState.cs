@@ -15,10 +15,15 @@ namespace FSM
         {
             base.OperateEnter();
 
-            if (GetPreviousState(_player.ThisSprintState) || GetPreviousState(_player.ThisLandingState))
+            // if (GetPreviousState(_player.ThisSprintState) || GetPreviousState(_player.ThisLandingState))
+            //     _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
+            // else
+            //     _currLengthOfVector = 0;
+
+            if (_player.IsMoving)
                 _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
             else
-                _currLengthOfVector = 0;
+                _currLengthOfVector = 0f;
 
             _dampTarget = 1f;
         }
