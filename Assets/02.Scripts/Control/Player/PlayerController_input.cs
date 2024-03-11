@@ -238,7 +238,8 @@ public partial class PlayerController : MonoBehaviour
     #region Draw / Sheath weapon
     private void StartDrawWeaponInput(InputAction.CallbackContext context)
     {
-        if (_equipment.DoAction)
+        // 꺼내는 중 (넣는 중) || 무기 안들고 있음
+        if (_equipment.DoAction || ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
             return;
 
         if (_equipment.IsDraw)
