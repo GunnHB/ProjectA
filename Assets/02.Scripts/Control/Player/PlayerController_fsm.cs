@@ -156,6 +156,6 @@ public partial class PlayerController : MonoBehaviour
     private void OnAttack(AttackData attackData)
     {
         (_attackState as AttackState).SetCurrAttackData(attackData);
-        _stateMachine.SetState(_attackState);
+        _stateMachine.SetState(_attackState, true);
     }
 }

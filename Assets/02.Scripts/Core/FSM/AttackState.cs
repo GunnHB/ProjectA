@@ -1,6 +1,7 @@
 using System.Linq;
 
 using FSM;
+using UnityEngine;
 
 public class AttackState : BaseState
 {
@@ -8,7 +9,7 @@ public class AttackState : BaseState
     private AttackData _currAttackData;
 
     private int _layerIndex = 0;
-    private float _exitTime = 1f;
+    private float _exitTime = .75f;
 
     public AttackState(PlayerController player) : base(player)
     {
@@ -18,8 +19,6 @@ public class AttackState : BaseState
     public override void OperateEnter()
     {
         base.OperateEnter();
-
-        // InitDatas();
 
         _layerIndex = GetLayerIndex();
 
@@ -35,9 +34,15 @@ public class AttackState : BaseState
 
         if (normalizedTime > _exitTime)
         {
-            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
+            if (_player.AttackQueue.Count > 0)
+                _player.AttackAction?.Invoke(_player.AttackQueue.Dequeue());
+            else
+            {
+                _player.ResetAttackIndex();
 
-            _player.IdleAction?.Invoke();
+                _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
+                _player.IdleAction?.Invoke();
+            }
         }
 
         // if (normalizedTime > _prevFrameTime && normalizedTime < _exitTime)
@@ -68,20 +73,20 @@ public class AttackState : BaseState
         base.OperateExit();
 
         // if (!_player.DoCombo)
-        _player.SetDoCombo(false);
+        // _player.SetDoCombo(false);
         _player.SetIsAttacking(false);
     }
 
-    private void TryComboAttack(float normalizedTime)
-    {
-        if (_player.GetAttackDataList().Last() == _currAttackData)
-            return;
+    // private void TryComboAttack(float normalizedTime)
+    // {
+    //     if (_player.GetAttackDataList().Last() == _currAttackData)
+    //         return;
 
-        if (normalizedTime < _currAttackData._comboAttackTime)
-            return;
+    //     if (normalizedTime < _currAttackData._comboAttackTime)
+    //         return;
 
-        _stateMachine.SetState(this, true);
-    }
+    //     _stateMachine.SetState(this, true);
+    // }
 
     public void SetCurrAttackData(AttackData newData)
     {

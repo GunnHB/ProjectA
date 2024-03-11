@@ -16,13 +16,6 @@ public partial class PlayerController : MonoBehaviour
     private const string PLAYER_ACTION_MAP = "PlayerActionMap";
     private const string UI_ACTION_MAP = "UIActionMap";
 
-    // public enum PlayerMode
-    // {
-    //     None = -1,
-    //     Normal,         // 일반 모드
-    //     Combat,         // 전투 모드
-    // }
-
     // State machine
     private StateMachine _stateMachine;
 
@@ -48,8 +41,8 @@ public partial class PlayerController : MonoBehaviour
     private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
     private int _attackIndex = -1;
+    private Queue<AttackData> _attackQueue = new();                  // 공격 데이터 큐 (콤보 공격용)
 
-    // private PlayerMode _playerMode;
     public UnityAction IdleAction;
     public UnityAction WalkAction;
     public UnityAction<bool> SprintAction;
@@ -69,7 +62,6 @@ public partial class PlayerController : MonoBehaviour
     public Animator ThisAnimator => _animator;
     public PlayerAnimData ThisAnimData => _animData;
     public StateMachine ThisStateMachine => _stateMachine;
-    // public Vector3 ThisMoveDirection => _moveDirection;
     public float ThisMoveSpeed => _moveSpeed;
 
     public bool IsMoving => _moveDirection != Vector3.zero;         // 이동 중인지
@@ -81,7 +73,7 @@ public partial class PlayerController : MonoBehaviour
     public bool IsAttacking => _isAttacking;
     public int AttackIndex => _attackIndex;
 
-    // public PlayerMode ThisPlayerMode => _playerMode;
+    public Queue<AttackData> AttackQueue => _attackQueue;
 
     // 일반적인 움직임의 상태 (대기, 걷기, 달리기...)
     public bool IsNormalState
@@ -215,26 +207,22 @@ public partial class PlayerController : MonoBehaviour
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack01,
-                    _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _transitionDuration = 0f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack02,
-                    _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _transitionDuration = 0f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack03,
-                    _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _transitionDuration = 0f,
                 },
                 new AttackData()
                 {
                     _attackAnimHash = _animData.AnimNameAttack04,
-                    _transitionDuration = .1f,
-                    _comboAttackTime = .5f,
+                    _transitionDuration = .5f,
                 },
             };
         }

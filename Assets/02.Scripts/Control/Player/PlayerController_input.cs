@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using FSM;
+using System.Linq;
 
 public partial class PlayerController : MonoBehaviour
 {
@@ -255,10 +256,19 @@ public partial class PlayerController : MonoBehaviour
         if (!CanAttack || GetAttackDataList() == null)
             return;
 
+        if (_attackQueue.Count > 0 && _attackQueue.Last() == GetAttackDataList().Last())
+            return;
+
         if (_attackIndex >= GetAttackDataList().Count - 1)
             ResetAttackIndex();
 
         _attackIndex++;
+
+        if (_isAttacking)
+        {
+            _attackQueue.Enqueue(GetAttackDataList()[_attackIndex]);
+            return;
+        }
 
         AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
     }
