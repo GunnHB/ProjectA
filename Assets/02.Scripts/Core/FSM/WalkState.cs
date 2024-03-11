@@ -15,10 +15,11 @@ namespace FSM
         {
             base.OperateEnter();
 
-            // if (GetPreviousState(_player.ThisSprintState) || GetPreviousState(_player.ThisLandingState))
-            //     _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
-            // else
-            //     _currLengthOfVector = 0;
+            if (_player.ReadyToSprint)
+            {
+                _player.SprintAction?.Invoke(true);
+                return;
+            }
 
             if (_player.IsMoving)
                 _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
