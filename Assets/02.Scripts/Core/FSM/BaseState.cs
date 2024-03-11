@@ -12,6 +12,8 @@ namespace FSM
         protected float _smoothTime = .15f;
         protected float _dampTarget;
 
+        protected GameValue.WeaponType _weaponType;
+
         private UICheckStateHUD _stateHud;
 
         public BaseState(PlayerController player)
@@ -121,7 +123,7 @@ namespace FSM
             return _player.ThisAnimator.GetNextAnimatorStateInfo(layerIndex);
         }
 
-        protected void SetWeaponType(ref GameValue.WeaponType type)
+        protected void SetWeaponType()
         {
             if (ItemManager.Instance.ThisEquipmentData._itemWeaponData.IsEmpty())
                 return;
@@ -136,14 +138,16 @@ namespace FSM
             if (weaponData == null)
                 return;
 
-            type = weaponData.type;
+            _weaponType = weaponData.type;
         }
 
-        protected int GetLayerIndex(GameValue.WeaponType type, bool _animDone)
+        protected int GetLayerIndex(bool _animDone)
         {
+            SetWeaponType();
+
             string layerName = string.Empty;
 
-            switch (type)
+            switch (_weaponType)
             {
                 case GameValue.WeaponType.OneHand:
                     {
@@ -159,6 +163,29 @@ namespace FSM
                             layerName = GameValue.ANIM_LAYER_TOWHAND;
                         else
                             layerName = _player.IsMoving ? GameValue.ANIM_LAYER_TOWHAND_UPPER : GameValue.ANIM_LAYER_TOWHAND;
+                    }
+                    break;
+            }
+
+            return _player.ThisAnimator.GetLayerIndex(layerName);
+        }
+
+        protected int GetLayerIndex()
+        {
+            SetWeaponType();
+
+            string layerName = string.Empty;
+
+            switch (_weaponType)
+            {
+                case GameValue.WeaponType.OneHand:
+                    {
+                        layerName = GameValue.ANIM_LAYER_ONEHAND;
+                    }
+                    break;
+                case GameValue.WeaponType.TwoHand:
+                    {
+                        layerName = GameValue.ANIM_LAYER_TOWHAND;
                     }
                     break;
             }

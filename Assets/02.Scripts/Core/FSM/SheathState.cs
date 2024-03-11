@@ -8,7 +8,7 @@ public class SheathState : BaseState
 {
     private const string TAG_SHEATH = "Tag_Sheath";
 
-    private GameValue.WeaponType _currentType = GameValue.WeaponType.None;
+    // private GameValue.WeaponType _currentType = GameValue.WeaponType.None;
 
     private bool _sheathDone = false;
     private float _exitTime = 1f;
@@ -23,10 +23,9 @@ public class SheathState : BaseState
     {
         base.OperateEnter();
 
-        SetWeaponType(ref _currentType);
-        _layerIndex = GetLayerIndex(_currentType, _sheathDone);
+        _layerIndex = GetLayerIndex(_sheathDone);
 
-        if (_currentType != GameValue.WeaponType.None)
+        if (_weaponType != GameValue.WeaponType.None)
         {
             int animHash = _player.ThisAnimData.AnimNameSheath;
 
@@ -47,7 +46,7 @@ public class SheathState : BaseState
             if (_player.IsMoving)
                 _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
 
-            _layerIndex = GetLayerIndex(_currentType, _sheathDone);
+            _layerIndex = GetLayerIndex(_sheathDone);
             _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
 
             // baselayer로
