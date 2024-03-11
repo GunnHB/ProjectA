@@ -24,6 +24,12 @@ namespace FSM
             if (GetPreviousState(_player.ThisAttackState))
                 CrossFadeInFixedUpdate(_player.ThisAnimData.AnimNameLocomotion);
 
+            if (_player.IsMoving)
+            {
+                _player.WalkAction?.Invoke();
+                return;
+            }
+
             if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisSprintState))
             {
                 _currBlendValue = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);

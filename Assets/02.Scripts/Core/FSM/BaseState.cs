@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FSM
@@ -141,6 +137,33 @@ namespace FSM
                 return;
 
             type = weaponData.type;
+        }
+
+        protected int GetLayerIndex(GameValue.WeaponType type, bool _animDone)
+        {
+            string layerName = string.Empty;
+
+            switch (type)
+            {
+                case GameValue.WeaponType.OneHand:
+                    {
+                        if (_animDone)
+                            layerName = GameValue.ANIM_LAYER_ONEHAND;
+                        else
+                            layerName = _player.IsMoving ? GameValue.ANIM_LAYER_ONEHAND_UPPER : GameValue.ANIM_LAYER_ONEHAND;
+                    }
+                    break;
+                case GameValue.WeaponType.TwoHand:
+                    {
+                        if (_animDone)
+                            layerName = GameValue.ANIM_LAYER_TOWHAND;
+                        else
+                            layerName = _player.IsMoving ? GameValue.ANIM_LAYER_TOWHAND_UPPER : GameValue.ANIM_LAYER_TOWHAND;
+                    }
+                    break;
+            }
+
+            return _player.ThisAnimator.GetLayerIndex(layerName);
         }
     }
 }

@@ -13,10 +13,10 @@ public class PlayerAnimData : CharacterAnimData
     private string _animNameLocomotion = "Locomotion";
     private string _animNameDefault = "Default";
 
-    private string _animNameOneHandDraw01 = "Draw01";
-    private string _animNameOneHandDraw02 = "Draw02";
-    private string _animNameOneHandSheath01 = "Sheath01";
-    private string _animNameOneHandSheath02 = "Sheath02";
+    private string _animNameOneHandDraw = "Draw";
+    // private string _animNameOneHandDraw02 = "Draw02";
+    private string _animNameOneHandSheath = "Sheath";
+    // private string _animNameOneHandSheath02 = "Sheath02";
 
     private string _animNameAttack01 = "Attack01";
     private string _animNameAttack02 = "Attack02";
@@ -32,10 +32,11 @@ public class PlayerAnimData : CharacterAnimData
     public int AnimNameLocomotion { get; private set; }
     public int AnimNameDefault { get; private set; }
 
-    public int AnimNameDraw01 { get; private set; }
-    public int AnimNameDraw02 { get; private set; }
-    public int AnimNameSheath01 { get; private set; }
-    public int AnimNameSheath02 { get; private set; }
+    public int AnimNameDraw { get; private set; }
+    // public int AnimNameDraw02 { get; private set; }
+    public int AnimNameSheath { get; private set; }
+    // public int AnimNameSheath02 { get; private set; }
+
 
     public int AnimNameAttack01 { get; private set; }
     public int AnimNameAttack02 { get; private set; }
@@ -53,10 +54,10 @@ public class PlayerAnimData : CharacterAnimData
         AnimNameLocomotion = Animator.StringToHash(_animNameLocomotion);
         AnimNameDefault = Animator.StringToHash(_animNameDefault);
 
-        AnimNameDraw01 = Animator.StringToHash(_animNameOneHandDraw01);
-        AnimNameDraw02 = Animator.StringToHash(_animNameOneHandDraw02);
-        AnimNameSheath01 = Animator.StringToHash(_animNameOneHandSheath01);
-        AnimNameSheath02 = Animator.StringToHash(_animNameOneHandSheath02);
+        AnimNameDraw = Animator.StringToHash(_animNameOneHandDraw);
+        // AnimNameDraw02 = Animator.StringToHash(_animNameOneHandDraw02);
+        AnimNameSheath = Animator.StringToHash(_animNameOneHandSheath);
+        // AnimNameSheath02 = Animator.StringToHash(_animNameOneHandSheath02);
 
         AnimNameAttack01 = Animator.StringToHash(_animNameAttack01);
         AnimNameAttack02 = Animator.StringToHash(_animNameAttack02);

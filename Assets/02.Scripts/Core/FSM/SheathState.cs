@@ -10,10 +10,10 @@ public class SheathState : BaseState
 
     private GameValue.WeaponType _currentType = GameValue.WeaponType.None;
 
-    private bool _doNext = false;
-    private bool _drawDone = false;
-
+    private bool _sheathDone = false;
     private float _exitTime = 1f;
+
+    private int _layerIndex = 0;
 
     public SheathState(PlayerController player) : base(player)
     {
@@ -24,12 +24,13 @@ public class SheathState : BaseState
         base.OperateEnter();
 
         SetWeaponType(ref _currentType);
+        _layerIndex = GetLayerIndex(_currentType, _sheathDone);
 
         if (_currentType != GameValue.WeaponType.None)
         {
-            int animHash = _doNext ? _player.ThisAnimData.AnimNameSheath02 : _player.ThisAnimData.AnimNameSheath01;
+            int animHash = _player.ThisAnimData.AnimNameSheath;
 
-            _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f, (int)_currentType);
+            _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f, _layerIndex);
         }
     }
 
@@ -37,30 +38,30 @@ public class SheathState : BaseState
     {
         base.OperateUpdate();
 
-        var currentInfo = GetCurrentAnimatorStateInfo((int)_currentType);
-        var nextInfo = GetNextAniomatorStateInfo((int)_currentType);
+        var currentInfo = GetCurrentAnimatorStateInfo(_layerIndex);
+        var nextInfo = GetNextAniomatorStateInfo(_layerIndex);
 
         float normalizedTime = float.MinValue;
 
-        if (_player.ThisAnimator.IsInTransition((int)_currentType) && nextInfo.IsTag(TAG_SHEATH))
+        if (_player.ThisAnimator.IsInTransition(_layerIndex) && nextInfo.IsTag(TAG_SHEATH))
             normalizedTime = nextInfo.normalizedTime;
-        else if (!_player.ThisAnimator.IsInTransition((int)_currentType) && currentInfo.IsTag(TAG_SHEATH))
+        else if (!_player.ThisAnimator.IsInTransition(_layerIndex) && currentInfo.IsTag(TAG_SHEATH))
             normalizedTime = currentInfo.normalizedTime;
 
         if (normalizedTime >= _exitTime)
         {
-            if (_doNext)
-            {
-                _drawDone = true;
+            _sheathDone = true;
 
-                _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, (int)_currentType);
-                _stateMachine.SetState(_player.ThisIdleState);
-            }
-            else
-            {
-                _doNext = true;
-                _stateMachine.SetState(this, true);
-            }
+            if (_player.IsMoving)
+                _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+
+            _layerIndex = GetLayerIndex(_currentType, _sheathDone);
+            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+
+            // baselayer로
+            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, 0);
+
+            _player.IdleAction?.Invoke();
         }
     }
 
@@ -68,10 +69,6 @@ public class SheathState : BaseState
     {
         base.OperateExit();
 
-        if (_drawDone)
-        {
-            _drawDone = false;
-            _doNext = false;
-        }
+        _sheathDone = false;
     }
 }
