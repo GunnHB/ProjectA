@@ -1,5 +1,7 @@
 using Sirenix.OdinInspector;
 
+using System.Collections.Generic;
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Character Mesh SO", menuName = "Scriptable Object/New Character Mesh SO", order = int.MaxValue)]
@@ -68,6 +70,62 @@ public class CharacterMeshSO : SerializedScriptableObject
     [BoxGroup(GROUP_LEG), ListDrawerSettings(NumberOfItemsPerPage = 5), HideIf(nameof(_showMale)), SerializeField]
     private Mesh[] _femaleLegLeftArray;
 
-    public Mesh[] MaleHeadArray => _maleHeadArray;
-    public Mesh[] FemaleHeadArray => _femaleHeadArray;
+    // public Mesh[] MaleHeadArray => _maleHeadArray;
+    // public Mesh[] FemaleHeadArray => _femaleHeadArray;
+    private Dictionary<GameValue.MeshKey, Mesh[]> _maleMeshList;
+    public Dictionary<GameValue.MeshKey, Mesh[]> MaleMeshList
+    {
+        get
+        {
+            if (_maleMeshList == null)
+            {
+                _maleMeshList = new Dictionary<GameValue.MeshKey, Mesh[]>()
+                {
+                    {GameValue.MeshKey.Head, _maleHeadArray},
+                    {GameValue.MeshKey.Eyebrows, _maleEyebrowsArray},
+                    {GameValue.MeshKey.FacialHair, _maleFacialHairArray},
+                    {GameValue.MeshKey.Torso, _maleTorsoArray},
+                    {GameValue.MeshKey.UpperArmRight, _maleUpperArmRightArray},
+                    {GameValue.MeshKey.UpperArmLeft, _maleUpperArmLeftArray},
+                    {GameValue.MeshKey.LowerArmRight, _maleLowerArmRightArray},
+                    {GameValue.MeshKey.LowerArmLeft, _maleLowerArmLeftArray},
+                    {GameValue.MeshKey.HandRight, _maleHandRightArray},
+                    {GameValue.MeshKey.HandLeft, _maleHandLeftArray},
+                    {GameValue.MeshKey.Hip, _maleHipArray},
+                    {GameValue.MeshKey.LegRight, _maleLegRightArray},
+                    {GameValue.MeshKey.LegLeft, _maleLegLeftArray},
+                };
+            }
+
+            return _maleMeshList;
+        }
+    }
+
+    private Dictionary<GameValue.MeshKey, Mesh[]> _femaleMeshList;
+    public Dictionary<GameValue.MeshKey, Mesh[]> FemaleMeshList
+    {
+        get
+        {
+            if (_femaleMeshList == null)
+            {
+                _femaleMeshList = new Dictionary<GameValue.MeshKey, Mesh[]>()
+                {
+                    {GameValue.MeshKey.Head, _femaleHeadArray},
+                    {GameValue.MeshKey.Eyebrows, _femaleEyebrowsArray},
+                    {GameValue.MeshKey.Torso, _femaleTorsoArray},
+                    {GameValue.MeshKey.UpperArmRight, _femaleUpperArmRightArray},
+                    {GameValue.MeshKey.UpperArmLeft, _femaleUpperArmLeftArray},
+                    {GameValue.MeshKey.LowerArmRight, _femaleLowerArmRightArray},
+                    {GameValue.MeshKey.LowerArmLeft, _femaleLowerArmLeftArray},
+                    {GameValue.MeshKey.HandRight, _femaleHandRightArray},
+                    {GameValue.MeshKey.HandLeft, _femaleHandLeftArray},
+                    {GameValue.MeshKey.Hip, _femaleHipArray},
+                    {GameValue.MeshKey.LegRight, _femaleLegRightArray},
+                    {GameValue.MeshKey.LegLeft, _femaleLegLeftArray},
+                };
+            }
+
+            return _femaleMeshList;
+        }
+    }
 }

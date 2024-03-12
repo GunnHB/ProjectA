@@ -50,4 +50,22 @@ public static class GameValue
         [EnumMember(Value = "TwoHand")]
         TwoHand,
     }
+
+    public enum MeshKey
+    {
+        None = -1,
+        Head,
+        Eyebrows,
+        FacialHair,
+        Torso,
+        UpperArmRight,
+        UpperArmLeft,
+        LowerArmRight,
+        LowerArmLeft,
+        HandRight,
+        HandLeft,
+        Hip,
+        LegRight,
+        LegLeft,
+    }
 }
