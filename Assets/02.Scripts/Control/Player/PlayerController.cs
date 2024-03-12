@@ -11,7 +11,7 @@ using UnityEngine.Events;
 /// <summary>
 /// 플레이어의 총괄 클래스
 /// </summary>
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 {
     private const string PLAYER_ACTION_MAP = "PlayerActionMap";
     private const string UI_ACTION_MAP = "UIActionMap";
@@ -22,7 +22,6 @@ public partial class PlayerController : MonoBehaviour
     // Components
     private Movement _movement;
     private Equipment _equipment;
-    private Attack _attack;
     private PlayerInput _playerInput;
     private Animator _animator;
 
@@ -41,6 +40,7 @@ public partial class PlayerController : MonoBehaviour
     private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
     private int _attackIndex = -1;
+    private Dictionary<GameValue.WeaponType, List<AttackData>> _attackDataDic;
     private Queue<AttackData> _attackQueue = new();     // 공격 데이터 큐 (콤보 공격용)
 
     public UnityAction IdleAction;
@@ -73,6 +73,7 @@ public partial class PlayerController : MonoBehaviour
     public bool IsAttacking => _isAttacking;
     public int AttackIndex => _attackIndex;
 
+    public Dictionary<GameValue.WeaponType, List<AttackData>> AttackDataDic => _attackDataDic;
     public Queue<AttackData> AttackQueue => _attackQueue;
 
     // 일반적인 움직임의 상태 (대기, 걷기, 달리기...)
@@ -115,13 +116,14 @@ public partial class PlayerController : MonoBehaviour
     {
         _movement = GetComponent<Movement>();
         _equipment = GetComponent<Equipment>();
-        _attack = GetComponent<Attack>();
+        // _attack = GetComponent<Attack>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
 
         _animData.Initialize();
 
-        SetAttackData();
+        // SetAttackData();
+        RegistAttackData();
         SetIsAttacking(false);
 
         RegistStateDictionary();
@@ -196,9 +198,71 @@ public partial class PlayerController : MonoBehaviour
         _isAttacking = isActive;
     }
 
-    private void SetAttackData()
+    // private void SetAttackData()
+    // {
+    //     var onehandDataList = new List<AttackData>();
+
+    //     if (_animData.IsInit)
+    //     {
+    //         onehandDataList = new List<AttackData>()
+    //         {
+    //             new AttackData()
+    //             {
+    //                 _attackAnimHash = _animData.AnimNameAttack01,
+    //                 _transitionDuration = .1f,
+    //             },
+    //             new AttackData()
+    //             {
+    //                 _attackAnimHash = _animData.AnimNameAttack02,
+    //                 _transitionDuration = .1f,
+    //             },
+    //             new AttackData()
+    //             {
+    //                 _attackAnimHash = _animData.AnimNameAttack03,
+    //                 _transitionDuration = .1f,
+    //             },
+    //             new AttackData()
+    //             {
+    //                 _attackAnimHash = _animData.AnimNameAttack04,
+    //                 _transitionDuration = .2f,
+    //             },
+    //         };
+    //     }
+
+    //     // _attack.RegistData(GameValue.WeaponType.OneHand, onehandDataList);
+    // }
+
+    public List<AttackData> GetAttackDataList()
     {
+        if (ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
+            return null;
+
+        var weaponData = ModelWeapon.Model.DataDic[ItemManager.Instance.EquipWeaponData._invenItemData._itemData.ref_id];
+
+        if (weaponData == null)
+            return null;
+
+        return _attackDataDic[weaponData.type];
+    }
+
+    public void ResetAttackIndex()
+    {
+        _attackIndex = -1;
+    }
+
+    public void ClearActions()
+    {
+        DrawWeaponAction = null;
+        SheathWeaponAction = null;
+        AttackAction = null;
+    }
+
+    public void RegistAttackData()
+    {
+        _attackDataDic = new();
+
         var onehandDataList = new List<AttackData>();
+        var twoHandDataList = new List<AttackData>();
 
         if (_animData.IsInit)
         {
@@ -225,33 +289,39 @@ public partial class PlayerController : MonoBehaviour
                     _transitionDuration = .2f,
                 },
             };
+
+            twoHandDataList = new List<AttackData>()
+            {
+
+            };
         }
 
-        _attack.RegistData(GameValue.WeaponType.OneHand, onehandDataList);
+        _attackDataDic.Add(GameValue.WeaponType.OneHand, onehandDataList);
+        _attackDataDic.Add(GameValue.WeaponType.TwoHand, twoHandDataList);
     }
 
-    public List<AttackData> GetAttackDataList()
+    public void StartCheckHitCollider()
     {
-        if (ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
-            return null;
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab == null)
+            return;
 
-        var weaponData = ModelWeapon.Model.DataDic[ItemManager.Instance.EquipWeaponData._invenItemData._itemData.ref_id];
-
-        if (weaponData == null)
-            return null;
-
-        return _attack.AttackDic[weaponData.type];
+        // 시작되는 동안은 콜라이더 기능 켜기
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab.TryGetComponent(out WeaponItem weaponItem))
+            weaponItem.EnableCollider();
     }
 
-    public void ResetAttackIndex()
+    public void EndCheckHitCollider()
     {
-        _attackIndex = -1;
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab == null)
+            return;
+
+        // 끝나면 콜라이더 기능 끄기
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab.TryGetComponent(out WeaponItem weaponItem))
+            weaponItem.DisableCollider();
     }
 
-    public void ClearActions()
+    public void GetDamaged(int damagedValue)
     {
-        DrawWeaponAction = null;
-        SheathWeaponAction = null;
-        AttackAction = null;
+        Debug.Log($"{damagedValue} damaged!");
     }
 }

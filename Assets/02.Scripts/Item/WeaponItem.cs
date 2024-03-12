@@ -17,7 +17,10 @@ public class WeaponItem : MonoBehaviour
     {
         if (other.gameObject.layer != (int)GameManager.Instance.PlayerMask)
         {
-            Debug.Log(other.name);
+            if (other.TryGetComponent(out IDamage damageCompo))
+            {
+                damageCompo.GetDamaged(10);
+            }
         }
     }
 
