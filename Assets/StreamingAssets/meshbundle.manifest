@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 3847016437
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5b7a00fffdeaab34779d8a3f32ef2b2f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7d0af44820542a4eecfd16bdbefa641d
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 5b7a00fffdeaab34779d8a3f32ef2b2f
+HashAppended: 0
+ClassTypes:
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: d3725ab742144c949aa8333821a66454, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Sirenix.Serialization
+  ClassName: Sirenix.Serialization.SerializationData
+Assets:
+- Assets/02.Scripts/Core/ScriptableObject/CharacterMeshSO.asset
+Dependencies: []

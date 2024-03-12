@@ -116,7 +116,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     {
         _movement = GetComponent<Movement>();
         _equipment = GetComponent<Equipment>();
-        // _attack = GetComponent<Attack>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
 
@@ -197,40 +196,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     {
         _isAttacking = isActive;
     }
-
-    // private void SetAttackData()
-    // {
-    //     var onehandDataList = new List<AttackData>();
-
-    //     if (_animData.IsInit)
-    //     {
-    //         onehandDataList = new List<AttackData>()
-    //         {
-    //             new AttackData()
-    //             {
-    //                 _attackAnimHash = _animData.AnimNameAttack01,
-    //                 _transitionDuration = .1f,
-    //             },
-    //             new AttackData()
-    //             {
-    //                 _attackAnimHash = _animData.AnimNameAttack02,
-    //                 _transitionDuration = .1f,
-    //             },
-    //             new AttackData()
-    //             {
-    //                 _attackAnimHash = _animData.AnimNameAttack03,
-    //                 _transitionDuration = .1f,
-    //             },
-    //             new AttackData()
-    //             {
-    //                 _attackAnimHash = _animData.AnimNameAttack04,
-    //                 _transitionDuration = .2f,
-    //             },
-    //         };
-    //     }
-
-    //     // _attack.RegistData(GameValue.WeaponType.OneHand, onehandDataList);
-    // }
 
     public List<AttackData> GetAttackDataList()
     {

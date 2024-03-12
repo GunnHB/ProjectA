@@ -10,10 +10,12 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
     private const string BUNDLE_UI = "uibundle";
     private const string BUNDLE_ATLAS = "atlasbundle";
     private const string BUNDLE_MATERIAL = "materialbundle";
+    private const string BUNDLE_MESH = "meshbundle";
 
     private AssetBundle _uiBundle;
     private AssetBundle _atlasBundle;
     private AssetBundle _materialBundle;
+    private AssetBundle _meshbundle;
 
     protected override void Awake()
     {
@@ -49,6 +51,14 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
             GetAssetBundle(ref _atlasBundle, BUNDLE_ATLAS);
 
         return _atlasBundle;
+    }
+
+    public AssetBundle GetSOBundle()
+    {
+        if (_meshbundle == null)
+            GetAssetBundle(ref _meshbundle, BUNDLE_MESH);
+
+        return _meshbundle;
     }
 
     public AssetBundle GetAssetBundle(ref AssetBundle bundle, string path)

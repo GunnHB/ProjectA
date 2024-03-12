@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1074511683
+CRC: 1952733647
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -11,4 +11,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_2:
       Name: materialbundle
+      Dependencies: {}
+    Info_3:
+      Name: meshbundle
       Dependencies: {}

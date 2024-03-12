@@ -72,14 +72,14 @@ public class CharacterMeshSO : SerializedScriptableObject
 
     // public Mesh[] MaleHeadArray => _maleHeadArray;
     // public Mesh[] FemaleHeadArray => _femaleHeadArray;
-    private Dictionary<GameValue.MeshKey, Mesh[]> _maleMeshList;
-    public Dictionary<GameValue.MeshKey, Mesh[]> MaleMeshList
+    private Dictionary<GameValue.MeshKey, Mesh[]> _maleMeshDic;
+    public Dictionary<GameValue.MeshKey, Mesh[]> MaleMeshDic
     {
         get
         {
-            if (_maleMeshList == null)
+            if (_maleMeshDic == null)
             {
-                _maleMeshList = new Dictionary<GameValue.MeshKey, Mesh[]>()
+                _maleMeshDic = new Dictionary<GameValue.MeshKey, Mesh[]>()
                 {
                     {GameValue.MeshKey.Head, _maleHeadArray},
                     {GameValue.MeshKey.Eyebrows, _maleEyebrowsArray},
@@ -97,18 +97,18 @@ public class CharacterMeshSO : SerializedScriptableObject
                 };
             }
 
-            return _maleMeshList;
+            return _maleMeshDic;
         }
     }
 
-    private Dictionary<GameValue.MeshKey, Mesh[]> _femaleMeshList;
-    public Dictionary<GameValue.MeshKey, Mesh[]> FemaleMeshList
+    private Dictionary<GameValue.MeshKey, Mesh[]> _femaleMeshDic;
+    public Dictionary<GameValue.MeshKey, Mesh[]> FemaleMeshDic
     {
         get
         {
-            if (_femaleMeshList == null)
+            if (_femaleMeshDic == null)
             {
-                _femaleMeshList = new Dictionary<GameValue.MeshKey, Mesh[]>()
+                _femaleMeshDic = new Dictionary<GameValue.MeshKey, Mesh[]>()
                 {
                     {GameValue.MeshKey.Head, _femaleHeadArray},
                     {GameValue.MeshKey.Eyebrows, _femaleEyebrowsArray},
@@ -125,7 +125,7 @@ public class CharacterMeshSO : SerializedScriptableObject
                 };
             }
 
-            return _femaleMeshList;
+            return _femaleMeshDic;
         }
     }
 }
