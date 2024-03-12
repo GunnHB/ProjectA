@@ -29,6 +29,10 @@ public class Attack : MonoBehaviour
     {
         if (ItemManager.Instance.EquipWeaponData._itemPrefab == null)
             return;
+
+        // 시작되는 동안은 콜라이더 기능 켜기
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab.TryGetComponent(out WeaponItem weaponItem))
+            weaponItem.EnableCollider();
     }
 
     // animation events
@@ -36,5 +40,9 @@ public class Attack : MonoBehaviour
     {
         if (ItemManager.Instance.EquipWeaponData._itemPrefab == null)
             return;
+
+        // 끝나면 콜라이더 기능 끄기
+        if (ItemManager.Instance.EquipWeaponData._itemPrefab.TryGetComponent(out WeaponItem weaponItem))
+            weaponItem.DisableCollider();
     }
 }

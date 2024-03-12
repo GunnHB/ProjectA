@@ -2,19 +2,34 @@ using UnityEngine;
 
 public class WeaponItem : MonoBehaviour
 {
+    [SerializeField]
     private Collider _collider;
-    public Collider ThisCollider => _collider;
 
     private void Start()
     {
-        _collider = GetComponent<Collider>();
+        if (_collider == null)
+            _collider = GetComponent<Collider>();
 
-        if (_collider != null)
-            _collider.enabled = false;
+        DisableCollider();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer != (int)GameManager.Instance.PlayerMask)
+        {
+            Debug.Log(other.name);
+        }
+    }
 
+    public void EnableCollider()
+    {
+        if (_collider != null)
+            _collider.enabled = true;
+    }
+
+    public void DisableCollider()
+    {
+        if (_collider != null)
+            _collider.enabled = false;
     }
 }

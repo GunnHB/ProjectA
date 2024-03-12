@@ -196,7 +196,7 @@ public class ItemManager : SingletonObject<ItemManager>
         ActiveEquipment(weaponItemData._itemData, isSheath: false, isActive: true);
         ActiveEquipment(weaponItemData._itemData, isSheath: true, isActive: false);
 
-        _equipWeaponData._isInHand = true;
+        SetPrefab(_equipWeaponData, true);
 
         if (!shieldItemData.IsEmpty())
         {
@@ -206,7 +206,7 @@ public class ItemManager : SingletonObject<ItemManager>
                 ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: true);
                 ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: false);
 
-                _equipShieldData._isInHand = true;
+                SetPrefab(_equipShieldData, true);
             }
             else
             {
@@ -214,9 +214,11 @@ public class ItemManager : SingletonObject<ItemManager>
                 ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: true);
                 ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
 
-                _equipShieldData._isInHand = false;
+                SetPrefab(_equipShieldData, false);
             }
         }
+
+        SetPrefab(_equipWeaponData, true);
     }
 
     public void SheathWeapon()
@@ -233,7 +235,7 @@ public class ItemManager : SingletonObject<ItemManager>
         ActiveEquipment(weaponItemData._itemData, isSheath: true, isActive: true);
         ActiveEquipment(weaponItemData._itemData, isSheath: false, isActive: false);
 
-        _equipWeaponData._isInHand = false;
+        SetPrefab(_equipWeaponData, false);
 
         if (!shieldItemData.IsEmpty())
         {
@@ -242,13 +244,13 @@ public class ItemManager : SingletonObject<ItemManager>
                 ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: true);
                 ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: false);
 
-                _equipShieldData._isInHand = true;
+                SetPrefab(_equipShieldData, false);
             }
 
             ActiveEquipment(shieldItemData._itemData, isSheath: true, isActive: true);
             ActiveEquipment(shieldItemData._itemData, isSheath: false, isActive: false);
 
-            _equipShieldData._isInHand = false;
+            SetPrefab(_equipShieldData, false);
         }
     }
 
@@ -567,10 +569,10 @@ public class ItemManager : SingletonObject<ItemManager>
 
         RefreshSlot(equipmentData._invenItemData);
 
-        SetPrefab(equipmentData);
+        SetPrefab(equipmentData, false);
     }
 
-    private void SetPrefab(EquipmentData equipmentData)
+    private void SetPrefab(EquipmentData equipmentData, bool inHand)
     {
         switch (equipmentData._invenItemData._itemData.type)
         {
@@ -581,18 +583,23 @@ public class ItemManager : SingletonObject<ItemManager>
                     if (weaponData == null)
                         return;
 
-                    for (int index = 0; index < _playerHolderDic[weaponData.hand_holder].transform.childCount; index++)
+                    string holderName = inHand ? weaponData.hand_holder : weaponData.equip_holder;
+
+                    for (int index = 0; index < _playerHolderDic[holderName].transform.childCount; index++)
                     {
-                        var item = _playerHolderDic[weaponData.hand_holder].transform.GetChild(index);
+                        var item = _playerHolderDic[holderName].transform.GetChild(index);
 
                         if (item.gameObject.activeInHierarchy)
                         {
                             equipmentData._itemPrefab = item.gameObject;
+                            equipmentData._isInHand = inHand;
+
                             return;
                         }
                     }
 
                     equipmentData._itemPrefab = null;
+                    equipmentData._isInHand = false;
                 }
                 break;
             case GameValue.ItemType.Shield:
@@ -602,18 +609,23 @@ public class ItemManager : SingletonObject<ItemManager>
                     if (shieldData == null)
                         return;
 
-                    for (int index = 0; index < _playerHolderDic[shieldData.hand_holder].transform.childCount; index++)
+                    string holderName = inHand ? shieldData.hand_holder : shieldData.equip_holder;
+
+                    for (int index = 0; index < _playerHolderDic[holderName].transform.childCount; index++)
                     {
-                        var item = _playerHolderDic[shieldData.hand_holder].transform.GetChild(index);
+                        var item = _playerHolderDic[holderName].transform.GetChild(index);
 
                         if (item.gameObject.activeInHierarchy)
                         {
                             equipmentData._itemPrefab = item.gameObject;
+                            equipmentData._isInHand = inHand;
+
                             return;
                         }
                     }
 
                     equipmentData._itemPrefab = null;
+                    equipmentData._isInHand = false;
                 }
                 break;
         }
