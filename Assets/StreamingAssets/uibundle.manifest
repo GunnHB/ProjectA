@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1906328681
+CRC: 1004623275
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 255a03cf95fc35abfafec81a277f4d4f
+    Hash: 9288d201eb109525dc9a3ce18d02633f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 55ded59f86480458e55f973a1b954153
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 255a03cf95fc35abfafec81a277f4d4f
+    Hash: 9288d201eb109525dc9a3ce18d02633f
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -150,6 +150,7 @@ Assets:
 - Assets/03.Prefabs/UI/CategoryTab.prefab
 - Assets/03.Prefabs/UI/UISlideOptionPopup.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
+- Assets/03.Prefabs/UI/StartPanel.prefab
 - Assets/03.Prefabs/UI/UIInteractNotice.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab
 - Assets/03.Prefabs/UI/UIButton.prefab
