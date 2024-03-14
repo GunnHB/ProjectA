@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2857688987
+CRC: 491831349
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e495398c724886ddf9ff33db6dbb4fd0
+    Hash: ce34d5d57c9ff6174efef92055720b56
   TypeTreeHash:
     serializedVersion: 2
     Hash: 033fafe2c9f6c610c3a734393882fd4c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e495398c724886ddf9ff33db6dbb4fd0
+    Hash: ce34d5d57c9ff6174efef92055720b56
 HashAppended: 0
 ClassTypes:
 - Class: 28
@@ -22,4 +22,5 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/04.Images/SpriteAtlas/InventoryAtlas.spriteatlas
 - Assets/04.Images/SpriteAtlas/BackgroundAtlas.spriteatlas
+- Assets/04.Images/SpriteAtlas/CommonAtlas.spriteatlas
 Dependencies: []

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2105863006233995542}
   - component: {fileID: 3686976977932591110}
   - component: {fileID: 8545478019791493041}
+  - component: {fileID: 6066089925514501063}
   m_Layer: 0
   m_Name: PlayerSlot
   m_TagString: Untagged
@@ -140,6 +141,18 @@ MonoBehaviour:
   _frame: {fileID: 8658157478064600934}
   _rawImage: {fileID: 2609590094592275739}
   _genderText: {fileID: 5600529934144400477}
+--- !u!225 &6066089925514501063
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937747179677259078}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1945055740630455319
 GameObject:
   m_ObjectHideFlags: 0

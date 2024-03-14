@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using TMPro;
 
+using DG.Tweening;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,9 @@ public class PlayerSlot : MonoBehaviour
     private UICreateCharacterPanel _createPanel;
     private GameValue.GenderType _genderType;
 
+    private Sequence _slotSeq;
+    public Sequence SlotSeq => _slotSeq;
+
     private void Awake()
     {
         _button.onClick.RemoveAllListeners();
@@ -28,7 +33,7 @@ public class PlayerSlot : MonoBehaviour
         _button.onClick.AddListener(OnClickButton);
     }
 
-    public void Init(UICreateCharacterPanel createPanel, GameValue.GenderType gender)
+    public void Init(UICreateCharacterPanel createPanel, GameValue.GenderType gender, Sequence seq)
     {
         _createPanel = createPanel;
         _genderType = gender;
@@ -36,6 +41,9 @@ public class PlayerSlot : MonoBehaviour
         _genderText.text = _genderType.ToString();
 
         _frame.gameObject.SetActive(false);
+
+        _slotSeq = seq;
+        _slotSeq.Pause();       // 등록 후 바로 실행되지 않도록
     }
 
     private void OnClickButton()
@@ -98,5 +106,11 @@ public class PlayerSlot : MonoBehaviour
         _frame.color = new Color(_frame.color.r, _frame.color.g, _frame.color.b, 1f);
 
         _frame.gameObject.SetActive(false);
+    }
+
+    public void StartSequence()
+    {
+        if (_slotSeq != null)
+            _slotSeq.Play();
     }
 }
