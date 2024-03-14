@@ -9,14 +9,20 @@ public class UIManager : SingletonObject<UIManager>
     private const string CANVAS_HUD = "HUDCanvas";
     private const string CANVAS_PANEL = "PanelCanvas";
     private const string CANVAS_POPUP = "PopupCanvas";
+    private const string CANVAS_FLOATING = "FloatingCanvas";
+    private const string CANVAS_FADE = "FadeCanvas";
 
     private Canvas _hudCanvas;
     private Canvas _panelCanvas;
     private Canvas _popupCanvas;
+    private Canvas _floatingCanvas;
+    private Canvas _fadeCanvas;
 
     public Canvas HUDCanvas { get => GetCanvasByProperty(ref _hudCanvas, CANVAS_HUD); }
     public Canvas PanelCanvas { get => GetCanvasByProperty(ref _panelCanvas, CANVAS_PANEL); }
     public Canvas PopupCanvas { get => GetCanvasByProperty(ref _popupCanvas, CANVAS_POPUP); }
+    public Canvas FloatingCanvas { get => GetCanvasByProperty(ref _floatingCanvas, CANVAS_FLOATING); }
+    public Canvas FadeCanvas { get => GetCanvasByProperty(ref _fadeCanvas, CANVAS_FADE); }
 
     private List<Canvas> _canvasList;
 
@@ -25,7 +31,8 @@ public class UIManager : SingletonObject<UIManager>
         base.Awake();
 
         // 우선순위가 높은 순으로 추가합시다
-        _canvasList = new List<Canvas>() { PopupCanvas, PanelCanvas, HUDCanvas };
+        // FadeCanvas는 화면 전환용이기 때문에 추가할 필요 없음
+        _canvasList = new List<Canvas>() { PopupCanvas, PanelCanvas, HUDCanvas, FloatingCanvas };
     }
 
     /// <summary>
@@ -52,7 +59,7 @@ public class UIManager : SingletonObject<UIManager>
 
         if (canvas == null)
         {
-            Debug.Log("there is no cnavas");
+            Debug.Log("there is no canvas");
             return null;
         }
 
@@ -113,8 +120,6 @@ public class UIManager : SingletonObject<UIManager>
             return null;
         }
 
-        // LoadFromFile();
-
         // 에셋번들에서 불러오기
         // 불러오는 에셋의 이름이 같아야 함둥
         var prefab = AssetBundleManager.Instance.GetUIBundle().LoadAsset<GameObject>(typeof(T).Name);
@@ -138,6 +143,9 @@ public class UIManager : SingletonObject<UIManager>
             return PanelCanvas;
         else if (typeof(T).BaseType.Equals(typeof(UIPopupBase)))
             return PopupCanvas;
+        // else if(typeof(T).BaseType.Equals(typeof()))
+        else if (typeof(T).BaseType.Equals(typeof(UIFadeBase)))
+            return FadeCanvas;
         else
             return null;
     }

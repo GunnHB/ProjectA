@@ -695,7 +695,7 @@ GameObject:
   - component: {fileID: 7642741534640183629}
   - component: {fileID: 878611751520057402}
   m_Layer: 0
-  m_Name: CreateCharacterPanel
+  m_Name: UICreateCharacterPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -21,7 +21,7 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
     {
         base.Awake();
 
-        GetUIBundle();
+        // GetUIBundle();
     }
 
     // 외부에서 요걸로 호출하면 됩니당.

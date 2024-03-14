@@ -2,7 +2,7 @@ using UnityEngine;
 
 using Sirenix.OdinInspector;
 
-public class StartPanel : UIPanelBase
+public class UIStartPanel : UIPanelBase
 {
     private const string GROUP_BUTTONS = "Buttons";
 
@@ -42,7 +42,7 @@ public class StartPanel : UIPanelBase
 
     private void OnClickNewGame()
     {
-
+        LoadSceneManager.Instance.DoFade();
     }
 
     private void OnClickLoadGame()

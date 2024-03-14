@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1004623275
+CRC: 3297719148
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9288d201eb109525dc9a3ce18d02633f
+    Hash: 94459152248e125762eab73bfc85827b
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 55ded59f86480458e55f973a1b954153
+    Hash: b1b9e1626c63c83120e400ef9773250e
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9288d201eb109525dc9a3ce18d02633f
+    Hash: 94459152248e125762eab73bfc85827b
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -35,7 +35,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: e4e6fff3b1b78b444b61494d1d194ab8, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: edf0e4f0a8749824289fde8377118475, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 4f15d7b08f8906e4994874e82560a9d4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3210f742d2f87034b89f4cb8f1ecb8a4, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
@@ -47,9 +51,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: c8bcb69ca8941ab418a446a9651ba6bd, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 992115d8890859f4cb9d460eebd85288, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 1196cc10f411f7146925c3e217339267, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c7ebbc87cb925cf4cba8649b0a7b8f37, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 4d0390bd8b8ffd640b34fe25065ff1df, type: 3}
 - Class: 114
@@ -146,12 +154,15 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
+- Assets/03.Prefabs/UI/UIButtonRaw.prefab
+- Assets/03.Prefabs/UI/UILoadSceneFade.prefab
 - Assets/03.Prefabs/UI/InventorySlot.prefab
 - Assets/03.Prefabs/UI/CategoryTab.prefab
 - Assets/03.Prefabs/UI/UISlideOptionPopup.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
-- Assets/03.Prefabs/UI/StartPanel.prefab
 - Assets/03.Prefabs/UI/UIInteractNotice.prefab
+- Assets/03.Prefabs/UI/UIStartPanel.prefab
+- Assets/03.Prefabs/UI/UICreateCharacterPanel.prefab
 - Assets/03.Prefabs/UI/InventoryRow.prefab
 - Assets/03.Prefabs/UI/UIButton.prefab
 - Assets/03.Prefabs/UI/UICheckStateHUD.prefab

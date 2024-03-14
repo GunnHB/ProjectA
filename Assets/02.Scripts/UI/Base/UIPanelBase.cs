@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 public class UIPanelBase : UIBase
 {
+    private const string GROUP_OPTION_PANEL = "Panel option";
+
     protected Sequence _startSequence;
     protected Sequence _destorySequence;
+
+    [BoxGroup(GROUP_OPTION_PANEL), SerializeField]
+    protected bool _doTween = true;
 
     public override void Init()
     {
         transform.SetParent(UIManager.Instance.PanelCanvas.transform);
-        UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().alpha = 0f;
+
+        if (_doTween)
+            UIManager.Instance.PanelCanvas.GetComponent<CanvasGroup>().alpha = 0f;
 
         base.Init();
 
@@ -21,8 +29,11 @@ public class UIPanelBase : UIBase
 
     private void Start()
     {
-        _startSequence = DOTween.Sequence()
-                                .Append(StartSeq());
+        if (_doTween)
+        {
+            _startSequence = DOTween.Sequence()
+                                    .Append(StartSeq());
+        }
     }
 
     private Sequence StartSeq()
@@ -37,8 +48,13 @@ public class UIPanelBase : UIBase
 
     public override void Close()
     {
-        _destorySequence = DOTween.Sequence()
-                                .Append(DestroySeq());
+        if (_doTween)
+        {
+            _destorySequence = DOTween.Sequence()
+                                    .Append(DestroySeq());
+        }
+        else
+            base.Close();
     }
 
     private Sequence DestroySeq()

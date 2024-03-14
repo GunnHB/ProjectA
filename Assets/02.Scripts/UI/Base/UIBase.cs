@@ -9,12 +9,17 @@ using UnityEngine.UI;
 
 public abstract class UIBase : MonoBehaviour
 {
+    private const string GAMEOBJECT_BG = "BG";
+    private const string GAMEOBJECT_BLUR = "Blur";
+
     protected enum UIType
     {
         NONE = -1,
         HUD,
         PANEL,
         POPUP,
+        Floating,
+        Fade,
     }
 
     [BoxGroup("[Common]"), SerializeField]
@@ -25,6 +30,7 @@ public abstract class UIBase : MonoBehaviour
     protected UIType _uiType;
 
     private GameObject _blurObj;
+    private GameObject _bgObj;
 
     // 닫힐 운명...
     private bool _isClose = false;
@@ -59,10 +65,18 @@ public abstract class UIBase : MonoBehaviour
 
     private void SetBlur()
     {
-        _blurObj = transform.Find("Blur").gameObject;
+        _blurObj = transform.Find(GAMEOBJECT_BLUR).gameObject;
 
         if (_blurObj != null && !_needBlur)
             _blurObj.SetActive(false);
+    }
+
+    protected GameObject GetBG()
+    {
+        if (_bgObj == null)
+            _bgObj = transform.Find(GAMEOBJECT_BG).gameObject;
+
+        return _bgObj;
     }
 
     public void PrevClose()
