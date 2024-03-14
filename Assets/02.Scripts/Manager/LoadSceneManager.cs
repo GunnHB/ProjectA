@@ -59,7 +59,7 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
     {
         float _currFadeTime = 0f;
 
-        // 후방의 ui 동작 막기
+        // 레이타겟 끄기
         _uiFade.SetRayTarget(true);
         _isFadeInFin = false;
 
@@ -101,6 +101,8 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
             yield return null;
         }
 
+        // 레이타겟 켜주기
+        _uiFade.SetRayTarget(false);
         _isFadeInFin = false;
     }
 }

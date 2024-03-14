@@ -68,4 +68,11 @@ public static class GameValue
         LegRight,
         LegLeft,
     }
+
+    public enum GenderType
+    {
+        None = -1,
+        Male,
+        Female,
+    }
 }

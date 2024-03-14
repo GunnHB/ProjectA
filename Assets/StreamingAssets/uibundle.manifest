@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3297719148
+CRC: 4011254840
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 94459152248e125762eab73bfc85827b
+    Hash: 71a46d7d000c3b9d812bf0be01ef0d05
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b1b9e1626c63c83120e400ef9773250e
+    Hash: 522feb6d1b4385494589fc6e2b7bbfa9
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 94459152248e125762eab73bfc85827b
+    Hash: 71a46d7d000c3b9d812bf0be01ef0d05
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -76,6 +76,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 1816588ff9c689a4e9348e572adcde16, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d225cd0e677e1394c81cfe901667e2cc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3148e9d624c58464e8834de101fd68eb, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -166,6 +168,7 @@ Assets:
 - Assets/03.Prefabs/UI/InventoryRow.prefab
 - Assets/03.Prefabs/UI/UIButton.prefab
 - Assets/03.Prefabs/UI/UICheckStateHUD.prefab
+- Assets/03.Prefabs/UI/PlayerSlot.prefab
 - Assets/03.Prefabs/UI/ItemMenu.prefab
 - Assets/03.Prefabs/UI/UIMenuPanel.prefab
 Dependencies:
