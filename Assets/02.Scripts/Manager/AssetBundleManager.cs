@@ -14,14 +14,16 @@ public class AssetBundleManager : SingletonObject<AssetBundleManager>
 
     private AssetBundle _uiBundle;
     private AssetBundle _atlasBundle;
-    private AssetBundle _materialBundle;
+    // private AssetBundle _materialBundle;
     private AssetBundle _meshbundle;
 
     protected override void Awake()
     {
         base.Awake();
 
-        // GetUIBundle();
+        GetUIBundle();
+        GetAtlasBundle();
+        GetSOBundle();
     }
 
     // 외부에서 요걸로 호출하면 됩니당.

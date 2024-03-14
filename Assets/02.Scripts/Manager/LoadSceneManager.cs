@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class LoadSceneManager : SingletonObject<LoadSceneManager>
@@ -43,7 +44,7 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
         }
     }
 
-    public void DoFade()
+    public void DoFade(UnityAction action = null)
     {
         if (_fadeIn != null)
         {
@@ -51,15 +52,16 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
             _fadeIn = null;
         }
 
-        _fadeIn = StartCoroutine(Cor_FadeIn());
+        _fadeIn = StartCoroutine(Cor_FadeIn(action));
     }
 
-    public IEnumerator Cor_FadeIn()
+    public IEnumerator Cor_FadeIn(UnityAction action)
     {
         float _currFadeTime = 0f;
 
         // 후방의 ui 동작 막기
         _uiFade.SetRayTarget(true);
+        _isFadeInFin = false;
 
         while (_currFadeTime < _fadeTime)
         {
@@ -69,10 +71,36 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
 
             yield return null;
         }
+
+        _isFadeInFin = true;
+
+        action?.Invoke();
+
+        if (_fadeOut != null)
+        {
+            StopCoroutine(_fadeOut);
+            _fadeOut = null;
+        }
+
+        _fadeOut = StartCoroutine(nameof(Cor_FadeOut));
     }
 
     public IEnumerator Cor_FadeOut()
     {
-        yield break;
+        float _currFadeTime = 1f;
+
+        while (_currFadeTime > 0)
+        {
+            if (_isFadeInFin)
+            {
+                _currFadeTime -= Time.deltaTime / _fadeTime;
+
+                _uiFade.SetFade(_currFadeTime);
+            }
+
+            yield return null;
+        }
+
+        _isFadeInFin = false;
     }
 }

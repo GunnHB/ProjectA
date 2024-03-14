@@ -42,7 +42,10 @@ public class UIStartPanel : UIPanelBase
 
     private void OnClickNewGame()
     {
-        LoadSceneManager.Instance.DoFade();
+        LoadSceneManager.Instance.DoFade(() =>
+        {
+            UIManager.Instance.OpenUI<UICreateCharacterPanel>();
+        });
     }
 
     private void OnClickLoadGame()
