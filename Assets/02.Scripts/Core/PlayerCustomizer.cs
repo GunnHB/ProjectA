@@ -16,23 +16,48 @@ public class PartsData
 {
     public Transform _rootTransform;
     public SkinnedMeshRenderer _targetSkinned;
+    [ListDrawerSettings(NumberOfItemsPerPage = 5)]
     public List<SkinnedMeshRendererInfo> _skinnedInfoList = new();
+
+    private SkinnedMeshRendererInfo _currentSkinnInfo;
+    public SkinnedMeshRendererInfo CurrentSkinnInfo => _currentSkinnInfo;
 
     public void SwtichParts(int index)
     {
+        if (_skinnedInfoList.Count == 0)
+        {
+            _targetSkinned.sharedMesh = null;
+            _currentSkinnInfo = null;
+
+            return;
+        }
+
+        _currentSkinnInfo = _skinnedInfoList[index];
+
         _targetSkinned.sharedMesh = _skinnedInfoList[index]._mesh;
         _targetSkinned.bones = _skinnedInfoList[index]._bones;
         _targetSkinned.rootBone = _skinnedInfoList[index]._rootBones;
+    }
+
+    public int GetCurrentInfoIndex()
+    {
+        if (_currentSkinnInfo == null)
+            return 0;
+        else
+            return _skinnedInfoList.IndexOf(_currentSkinnInfo);
     }
 }
 
 public class PlayerCustomizer : SerializedMonoBehaviour
 {
     [SerializeField, InlineButton("@UpdateSkinnedInfoList(_maleDataDic)", label: "update")]
+    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.Foldout)]
     private Dictionary<GameValue.PartsKey, PartsData> _maleDataDic = new();
     [SerializeField, InlineButton("@UpdateSkinnedInfoList(_femaleDataDic)", label: "update")]
+    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.Foldout)]
     private Dictionary<GameValue.PartsKey, PartsData> _femaleDataDic = new();
     [SerializeField, InlineButton("@UpdateSkinnedInfoList(_commonDataDic)", label: "update")]
+    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.Foldout)]
     private Dictionary<GameValue.PartsKey, PartsData> _commonDataDic;
 
     public Dictionary<GameValue.PartsKey, PartsData> MaleDataDic => _maleDataDic;

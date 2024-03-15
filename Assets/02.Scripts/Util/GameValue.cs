@@ -56,7 +56,7 @@ public static class GameValue
     public enum PartsKey
     {
         None = -1,
-        Head,
+        Face,
         Eyebrows,
         FacialHair,
         Torso,

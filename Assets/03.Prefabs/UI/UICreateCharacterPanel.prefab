@@ -863,6 +863,10 @@ MonoBehaviour:
   _genderSelectGroup: {fileID: 955631698443683749}
   _customizeGroup: {fileID: 562152621879764294}
   _partsGroup: {fileID: 7989355683235115669}
+  _hairSlot: {fileID: 9170042360881128548}
+  _headSlot: {fileID: 7160948286234849852}
+  _eyebrowsSlot: {fileID: 1820423666210656052}
+  _facialHairSlot: {fileID: 6703529394543089704}
   _customizeRawImage: {fileID: 783696769467701361}
   _subtitleText: {fileID: 5184935834055440979}
   _backButton: {fileID: 2175557849792607509}
@@ -1643,7 +1647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442354349806843624, guid: e52c4f450a2131c448164f6896853c94, type: 3}
       propertyPath: m_Name
-      value: PartsSlot (2)
+      value: PartsSlot_eyebrows
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1655,6 +1659,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 179410424078005323, guid: e52c4f450a2131c448164f6896853c94, type: 3}
   m_PrefabInstance: {fileID: 1364845342754924195}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1820423666210656052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 843182715153131927, guid: e52c4f450a2131c448164f6896853c94, type: 3}
+  m_PrefabInstance: {fileID: 1364845342754924195}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b045cdb2bf1c0654da01970eb7a5c62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1450883944186322398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2147,7 +2162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442354349806843624, guid: e52c4f450a2131c448164f6896853c94, type: 3}
       propertyPath: m_Name
-      value: PartsSlot (3)
+      value: PartsSlot_facialhair
       objectReference: {fileID: 0}
     - target: {fileID: 5442354349806843624, guid: e52c4f450a2131c448164f6896853c94, type: 3}
       propertyPath: m_IsActive
@@ -2163,6 +2178,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 179410424078005323, guid: e52c4f450a2131c448164f6896853c94, type: 3}
   m_PrefabInstance: {fileID: 6247669443641668031}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6703529394543089704 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 843182715153131927, guid: e52c4f450a2131c448164f6896853c94, type: 3}
+  m_PrefabInstance: {fileID: 6247669443641668031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b045cdb2bf1c0654da01970eb7a5c62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7553480715993340843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2253,13 +2279,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442354349806843624, guid: e52c4f450a2131c448164f6896853c94, type: 3}
       propertyPath: m_Name
-      value: PartsSlot (1)
+      value: PartsSlot_head
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e52c4f450a2131c448164f6896853c94, type: 3}
+--- !u!114 &7160948286234849852 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 843182715153131927, guid: e52c4f450a2131c448164f6896853c94, type: 3}
+  m_PrefabInstance: {fileID: 7553480715993340843}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b045cdb2bf1c0654da01970eb7a5c62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7687150214974549984 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 179410424078005323, guid: e52c4f450a2131c448164f6896853c94, type: 3}
@@ -2355,7 +2392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442354349806843624, guid: e52c4f450a2131c448164f6896853c94, type: 3}
       propertyPath: m_Name
-      value: PartsSlot
+      value: PartsSlot_hair
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2367,3 +2404,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 179410424078005323, guid: e52c4f450a2131c448164f6896853c94, type: 3}
   m_PrefabInstance: {fileID: 8426550219963436531}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9170042360881128548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 843182715153131927, guid: e52c4f450a2131c448164f6896853c94, type: 3}
+  m_PrefabInstance: {fileID: 8426550219963436531}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b045cdb2bf1c0654da01970eb7a5c62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

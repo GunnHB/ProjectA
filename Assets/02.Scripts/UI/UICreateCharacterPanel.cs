@@ -32,6 +32,14 @@ public class UICreateCharacterPanel : UIPanelBase
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private GameObject _partsGroup;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
+    private PartsSlot _hairSlot;
+    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
+    private PartsSlot _headSlot;
+    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
+    private PartsSlot _eyebrowsSlot;
+    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
+    private PartsSlot _facialHairSlot;
+    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private RawImage _customizeRawImage;
 
     [BoxGroup(GROUP_COMMON), SerializeField]
@@ -102,9 +110,9 @@ public class UICreateCharacterPanel : UIPanelBase
             return;
         }
 
-        var maleRenderTexture = new RenderTexture(256, 256, 24);
-        var femaleRenderTextrue = new RenderTexture(256, 256, 24);
-        var customizeRenderTexture = new RenderTexture(256, 256, 24);
+        var maleRenderTexture = new RenderTexture(512, 512, 24);
+        var femaleRenderTextrue = new RenderTexture(512, 512, 24);
+        var customizeRenderTexture = new RenderTexture(512, 512, 24);
 
         _maleCam.targetTexture = maleRenderTexture;
         _femaleCam.targetTexture = femaleRenderTextrue;
@@ -152,6 +160,25 @@ public class UICreateCharacterPanel : UIPanelBase
             return;
 
         _customizer.PresetByGender(_selectedSlot.GenderType);
+    }
+
+    private void SetPartsSlots()
+    {
+        if (_selectedSlot == null)
+            return;
+
+        _hairSlot.InitSlot(_customizer, GameValue.GenderType.COMMON, GameValue.PartsKey.Hair);
+
+        _headSlot.InitSlot(_customizer, _selectedSlot.GenderType, GameValue.PartsKey.Face);
+        _eyebrowsSlot.InitSlot(_customizer, _selectedSlot.GenderType, GameValue.PartsKey.Eyebrows);
+
+        if (_selectedSlot.GenderType == GameValue.GenderType.Female)
+            _facialHairSlot.gameObject.SetActive(false);
+        else
+        {
+            _facialHairSlot.gameObject.SetActive(true);
+            _facialHairSlot.InitSlot(_customizer, _selectedSlot.GenderType, GameValue.PartsKey.FacialHair);
+        }
     }
 
     private void InitBackAndNext()
@@ -231,7 +258,9 @@ public class UICreateCharacterPanel : UIPanelBase
                     .OnStart(() =>
                     {
                         ButtonInteratable(false);
+
                         SetCustomizePlayer();
+                        SetPartsSlots();
                     })
                     .AppendCallback(() =>
                     {

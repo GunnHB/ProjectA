@@ -81,7 +81,7 @@ public class CharacterMeshSO : SerializedScriptableObject
             {
                 _maleMeshDic = new Dictionary<GameValue.PartsKey, Mesh[]>()
                 {
-                    {GameValue.PartsKey.Head, _maleHeadArray},
+                    {GameValue.PartsKey.Face, _maleHeadArray},
                     {GameValue.PartsKey.Eyebrows, _maleEyebrowsArray},
                     {GameValue.PartsKey.FacialHair, _maleFacialHairArray},
                     {GameValue.PartsKey.Torso, _maleTorsoArray},
@@ -110,7 +110,7 @@ public class CharacterMeshSO : SerializedScriptableObject
             {
                 _femaleMeshDic = new Dictionary<GameValue.PartsKey, Mesh[]>()
                 {
-                    {GameValue.PartsKey.Head, _femaleHeadArray},
+                    {GameValue.PartsKey.Face, _femaleHeadArray},
                     {GameValue.PartsKey.Eyebrows, _femaleEyebrowsArray},
                     {GameValue.PartsKey.Torso, _femaleTorsoArray},
                     {GameValue.PartsKey.UpperArmRight, _femaleUpperArmRightArray},
