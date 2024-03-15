@@ -51,7 +51,8 @@ public static class GameValue
         TwoHand,
     }
 
-    // enum 추가하고 싶으면 아래에 추가해주세용
+    // enum 추가하고 싶으면 아래에 추가하기
+    // 안그럼 기존 값들이 다 밀림요...ㅠ
     public enum PartsKey
     {
         None = -1,
