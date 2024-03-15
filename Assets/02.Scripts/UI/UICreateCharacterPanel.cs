@@ -213,6 +213,7 @@ public class UICreateCharacterPanel : UIPanelBase
         else
         {
             // 인게임 씬으로 전환
+            // 알림창 하나 띄우기
         }
     }
 

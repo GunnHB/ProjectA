@@ -51,6 +51,7 @@ public static class GameValue
         TwoHand,
     }
 
+    // enum 추가하고 싶으면 아래에 추가해주세용
     public enum PartsKey
     {
         None = -1,
@@ -67,6 +68,7 @@ public static class GameValue
         Hip,
         LegRight,
         LegLeft,
+        Hair,
     }
 
     public enum GenderType
