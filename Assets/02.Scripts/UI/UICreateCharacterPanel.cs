@@ -146,6 +146,14 @@ public class UICreateCharacterPanel : UIPanelBase
         }
     }
 
+    private void SetCustomizePlayer()
+    {
+        if (_selectedSlot == null)
+            return;
+
+        _customizer.PresetByGender(_selectedSlot.GenderType);
+    }
+
     private void InitBackAndNext()
     {
         _backButton.onClick.RemoveAllListeners();
@@ -223,6 +231,7 @@ public class UICreateCharacterPanel : UIPanelBase
                     .OnStart(() =>
                     {
                         ButtonInteratable(false);
+                        SetCustomizePlayer();
                     })
                     .AppendCallback(() =>
                     {

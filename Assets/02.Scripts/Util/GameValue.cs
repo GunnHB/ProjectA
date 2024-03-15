@@ -77,5 +77,6 @@ public static class GameValue
         None = -1,
         Male,
         Female,
+        COMMON,         // 헤어, 장신구, ...
     }
 }

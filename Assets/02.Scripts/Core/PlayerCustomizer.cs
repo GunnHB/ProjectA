@@ -17,6 +17,13 @@ public class PartsData
     public Transform _rootTransform;
     public SkinnedMeshRenderer _targetSkinned;
     public List<SkinnedMeshRendererInfo> _skinnedInfoList = new();
+
+    public void SwtichParts(int index)
+    {
+        _targetSkinned.sharedMesh = _skinnedInfoList[index]._mesh;
+        _targetSkinned.bones = _skinnedInfoList[index]._bones;
+        _targetSkinned.rootBone = _skinnedInfoList[index]._rootBones;
+    }
 }
 
 public class PlayerCustomizer : SerializedMonoBehaviour
@@ -61,5 +68,34 @@ public class PlayerCustomizer : SerializedMonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 플레이어를 성별에 따라 기본 값으로 세팅
+    /// </summary>
+    /// <param name="genderType"></param>
+    public void PresetByGender(GameValue.GenderType genderType)
+    {
+        switch (genderType)
+        {
+            case GameValue.GenderType.Male:
+                {
+                    SwtichPartsAllByIndex(_maleDataDic, 0);
+                }
+                break;
+            case GameValue.GenderType.Female:
+                {
+                    SwtichPartsAllByIndex(_femaleDataDic, 0);
+                }
+                break;
+        }
+
+        _commonDataDic[GameValue.PartsKey.Hair].SwtichParts(0);
+    }
+
+    private void SwtichPartsAllByIndex(Dictionary<GameValue.PartsKey, PartsData> dataDic, int index)
+    {
+        foreach (var item in dataDic.Keys)
+            dataDic[item].SwtichParts(index);
     }
 }

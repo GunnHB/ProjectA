@@ -25,6 +25,8 @@ public class PlayerSlot : MonoBehaviour
     private Sequence _slotSeq;
     public Sequence SlotSeq => _slotSeq;
 
+    public GameValue.GenderType GenderType => _genderType;
+
     private void Awake()
     {
         _button.onClick.RemoveAllListeners();
