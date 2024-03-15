@@ -37,6 +37,19 @@ public class UIButton : Button, IPointerEnterHandler, IPointerExitHandler, IBegi
         }
     }
 
+    /// <summary>
+    /// 버튼에 액션을 등록
+    /// </summary>
+    /// <param name="action">등록될 액션</param>
+    /// <param name="removeAll">기존 액션들을 초기화할건지</param>
+    public void AddListener(UnityAction action, bool removeAll = true)
+    {
+        if (removeAll)
+            onClick.RemoveAllListeners();
+
+        onClick.AddListener(action);
+    }
+
     public override void OnPointerClick(PointerEventData eventData)
     {
         base.OnPointerClick(eventData);

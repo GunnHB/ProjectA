@@ -111,6 +111,11 @@ public class PlayerSlot : MonoBehaviour
     public void StartSequence()
     {
         if (_slotSeq != null)
-            _slotSeq.Play();
+            _slotSeq.Restart();
+    }
+
+    public void SetBtnInteractable(bool active)
+    {
+        _button.interactable = active;
     }
 }

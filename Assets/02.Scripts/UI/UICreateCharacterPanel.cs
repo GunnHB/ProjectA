@@ -6,6 +6,7 @@ using DG.Tweening;
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UICreateCharacterPanel : UIPanelBase
 {
@@ -15,6 +16,9 @@ public class UICreateCharacterPanel : UIPanelBase
 
     private const string CAMERA_MALE = "MaleCamera";
     private const string CAMERA_FEMALE = "FemaleCamera";
+    private const string CAMERA_CUSTOMIZE = "CustomizeCamera";
+
+    private const string OBJECT_CUSTOMIZE_PLAYER = "CustomizePlayer";
 
     [BoxGroup(GROUP_SELECT_GENDER), SerializeField]
     private PlayerSlot _maleSlot;
@@ -27,8 +31,6 @@ public class UICreateCharacterPanel : UIPanelBase
     private GameObject _customizeGroup;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private GameObject _partsGroup;
-    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
-    private ObjectPool _partsSlotPool;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private RawImage _customizeRawImage;
 
@@ -44,13 +46,19 @@ public class UICreateCharacterPanel : UIPanelBase
 
     private Camera _maleCam;
     private Camera _femaleCam;
+    private Camera _customizeCam;
 
     private PlayerSlot _selectedSlot;
     public PlayerSlot SelectedSlot => _selectedSlot;
 
     private Sequence _panelSequence;
-
     private Sequence _partsGroupSeq;
+
+    // 이거 말고 더 좋은 방법이 있을건디...
+    private Vector3 _partsGroupOriginLocalPos;
+    private Vector3 _customizeRawImageOriginLocalPos;
+
+    private PlayerCustomizer _customizer;
 
     public override void Init()
     {
@@ -68,7 +76,6 @@ public class UICreateCharacterPanel : UIPanelBase
     private void InitSelectGenderGroup()
     {
         InitRenderTexture();
-
     }
 
     private void InitRenderTexture()
@@ -79,25 +86,34 @@ public class UICreateCharacterPanel : UIPanelBase
         if (_femaleCam == null)
             _femaleCam = GetCamera(CAMERA_FEMALE);
 
-        if (_maleCam == null || _femaleCam == null)
+        if (_customizeCam == null)
+            _customizeCam = GetCamera(CAMERA_CUSTOMIZE);
+
+        if (_maleCam == null || _femaleCam == null || _customizeCam == null)
             return;
 
-        if (_maleCam.targetTexture != null && _femaleCam.targetTexture != null)
+        if (_maleCam.targetTexture != null && _femaleCam.targetTexture != null && _customizeCam.targetTexture != null)
         {
             _maleSlot.SetTexture(_maleCam.targetTexture);
             _femaleSlot.SetTexture(_femaleCam.targetTexture);
+
+            _customizeRawImage.texture = _customizeCam.targetTexture;
 
             return;
         }
 
         var maleRenderTexture = new RenderTexture(256, 256, 24);
         var femaleRenderTextrue = new RenderTexture(256, 256, 24);
+        var customizeRenderTexture = new RenderTexture(256, 256, 24);
 
         _maleCam.targetTexture = maleRenderTexture;
         _femaleCam.targetTexture = femaleRenderTextrue;
+        _customizeCam.targetTexture = customizeRenderTexture;
 
         _maleSlot.SetTexture(maleRenderTexture);
         _femaleSlot.SetTexture(femaleRenderTextrue);
+
+        _customizeRawImage.texture = customizeRenderTexture;
     }
 
     private Camera GetCamera(string camName)
@@ -112,7 +128,22 @@ public class UICreateCharacterPanel : UIPanelBase
 
     private void InitCustomizeGroup()
     {
+        _partsGroupOriginLocalPos = _partsGroup.transform.localPosition;
+        _customizeRawImageOriginLocalPos = _customizeRawImage.transform.localPosition;
 
+        if (_customizer == null)
+        {
+            var playerObj = GameObject.Find(OBJECT_CUSTOMIZE_PLAYER);
+
+            if (playerObj == null)
+            {
+                Debug.Log("~~~ no player :( ~~~)");
+                return;
+            }
+
+            if (playerObj.TryGetComponent(out PlayerCustomizer customizer))
+                _customizer = customizer;
+        }
     }
 
     private void InitBackAndNext()
@@ -188,6 +219,10 @@ public class UICreateCharacterPanel : UIPanelBase
     private Sequence GoToCustomize()
     {
         return DOTween.Sequence()
+                    .OnStart(() =>
+                    {
+                        ButtonInteratable(false);
+                    })
                     .AppendCallback(() =>
                     {
                         _maleSlot.StartSequence();
@@ -197,31 +232,76 @@ public class UICreateCharacterPanel : UIPanelBase
                     {
                         _genderSelectGroup.SetActive(false);
                         _customizeGroup.SetActive(true);
-
-                        // 비디오 돌리기
-                        _maleSlot.SlotSeq.Rewind();
-                        _femaleSlot.SlotSeq.Rewind();
                     })  // .5초 후에 콜백 실행
-                    .Append(CustomizeGroupSeq());
+                    .Append(CustomizeGroupSeq())
+                    .OnComplete(() =>
+                    {
+                        ButtonInteratable(true);
+                    });
     }
 
     private Sequence CustomizeGroupSeq()
     {
+        _partsGroupSeq = null;
+
         _partsGroupSeq = DOTween.Sequence()
-                                .SetAutoKill(false)
                                 .OnStart(() =>
                                 {
+                                    _partsGroup.transform.DOLocalMoveX(_partsGroupOriginLocalPos.x - 50f, 0f);
                                     _partsGroup.GetComponent<CanvasGroup>().alpha = 0f;
+
+                                    _customizeRawImage.color = new Color(1f, 1f, 1f, 0f);
+                                    _customizeRawImage.transform.DOLocalMoveX(_customizeRawImageOriginLocalPos.x + 50f, 0f);
                                 })
-                                .SetDelay(.5f)
-                                .Append(_partsGroup.transform.DOLocalMoveX(-100f, .3f).From(true))
-                                .Join(_partsGroup.GetComponent<CanvasGroup>().DOFade(1f, 3f).From(true));
+                                .AppendCallback(() =>
+                                {
+                                    _partsGroup.transform.DOLocalMoveX(_partsGroupOriginLocalPos.x + 50f, .3f);
+                                    _partsGroup.GetComponent<CanvasGroup>().DOFade(1f, .3f);
+
+                                    _customizeRawImage.transform.DOLocalMoveX(_customizeRawImageOriginLocalPos.x - 50f, .3f);
+                                    _customizeRawImage.DOFade(1f, .3f);
+                                });
 
         return _partsGroupSeq;
     }
 
     private Sequence GoToGenderSelect()
     {
-        return DOTween.Sequence();
+        return DOTween.Sequence()
+                    .OnStart(() =>
+                    {
+                        ButtonInteratable(false);
+                    })
+                    .AppendCallback(() =>
+                    {
+                        _partsGroup.transform.DOLocalMoveX(_partsGroupOriginLocalPos.x - 50f, .3f);
+                        _partsGroup.GetComponent<CanvasGroup>().DOFade(0f, .3f);
+
+                        _customizeRawImage.transform.DOLocalMoveX(_customizeRawImageOriginLocalPos.x + 50f, .3f);
+                        _customizeRawImage.DOFade(0f, .3f);
+                    })
+                    .InsertCallback(.3f, () =>
+                    {
+                        _customizeGroup.SetActive(false);
+                        _genderSelectGroup.SetActive(true);
+                    })
+                    .InsertCallback(.5f, () =>
+                    {
+                        _maleSlot.SlotSeq.PlayBackwards();
+                        _femaleSlot.SlotSeq.PlayBackwards();
+                    })
+                    .OnComplete(() =>
+                    {
+                        ButtonInteratable(true);
+                    });
+    }
+
+    private void ButtonInteratable(bool active)
+    {
+        _backButton.interactable = active;
+        _nextButton.interactable = active;
+
+        _maleSlot.SetBtnInteractable(active);
+        _femaleSlot.SetBtnInteractable(active);
     }
 }

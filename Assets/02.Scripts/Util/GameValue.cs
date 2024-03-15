@@ -51,7 +51,7 @@ public static class GameValue
         TwoHand,
     }
 
-    public enum MeshKey
+    public enum PartsKey
     {
         None = -1,
         Head,

@@ -72,28 +72,28 @@ public class CharacterMeshSO : SerializedScriptableObject
 
     // public Mesh[] MaleHeadArray => _maleHeadArray;
     // public Mesh[] FemaleHeadArray => _femaleHeadArray;
-    private Dictionary<GameValue.MeshKey, Mesh[]> _maleMeshDic;
-    public Dictionary<GameValue.MeshKey, Mesh[]> MaleMeshDic
+    private Dictionary<GameValue.PartsKey, Mesh[]> _maleMeshDic;
+    public Dictionary<GameValue.PartsKey, Mesh[]> MaleMeshDic
     {
         get
         {
             if (_maleMeshDic == null)
             {
-                _maleMeshDic = new Dictionary<GameValue.MeshKey, Mesh[]>()
+                _maleMeshDic = new Dictionary<GameValue.PartsKey, Mesh[]>()
                 {
-                    {GameValue.MeshKey.Head, _maleHeadArray},
-                    {GameValue.MeshKey.Eyebrows, _maleEyebrowsArray},
-                    {GameValue.MeshKey.FacialHair, _maleFacialHairArray},
-                    {GameValue.MeshKey.Torso, _maleTorsoArray},
-                    {GameValue.MeshKey.UpperArmRight, _maleUpperArmRightArray},
-                    {GameValue.MeshKey.UpperArmLeft, _maleUpperArmLeftArray},
-                    {GameValue.MeshKey.LowerArmRight, _maleLowerArmRightArray},
-                    {GameValue.MeshKey.LowerArmLeft, _maleLowerArmLeftArray},
-                    {GameValue.MeshKey.HandRight, _maleHandRightArray},
-                    {GameValue.MeshKey.HandLeft, _maleHandLeftArray},
-                    {GameValue.MeshKey.Hip, _maleHipArray},
-                    {GameValue.MeshKey.LegRight, _maleLegRightArray},
-                    {GameValue.MeshKey.LegLeft, _maleLegLeftArray},
+                    {GameValue.PartsKey.Head, _maleHeadArray},
+                    {GameValue.PartsKey.Eyebrows, _maleEyebrowsArray},
+                    {GameValue.PartsKey.FacialHair, _maleFacialHairArray},
+                    {GameValue.PartsKey.Torso, _maleTorsoArray},
+                    {GameValue.PartsKey.UpperArmRight, _maleUpperArmRightArray},
+                    {GameValue.PartsKey.UpperArmLeft, _maleUpperArmLeftArray},
+                    {GameValue.PartsKey.LowerArmRight, _maleLowerArmRightArray},
+                    {GameValue.PartsKey.LowerArmLeft, _maleLowerArmLeftArray},
+                    {GameValue.PartsKey.HandRight, _maleHandRightArray},
+                    {GameValue.PartsKey.HandLeft, _maleHandLeftArray},
+                    {GameValue.PartsKey.Hip, _maleHipArray},
+                    {GameValue.PartsKey.LegRight, _maleLegRightArray},
+                    {GameValue.PartsKey.LegLeft, _maleLegLeftArray},
                 };
             }
 
@@ -101,27 +101,27 @@ public class CharacterMeshSO : SerializedScriptableObject
         }
     }
 
-    private Dictionary<GameValue.MeshKey, Mesh[]> _femaleMeshDic;
-    public Dictionary<GameValue.MeshKey, Mesh[]> FemaleMeshDic
+    private Dictionary<GameValue.PartsKey, Mesh[]> _femaleMeshDic;
+    public Dictionary<GameValue.PartsKey, Mesh[]> FemaleMeshDic
     {
         get
         {
             if (_femaleMeshDic == null)
             {
-                _femaleMeshDic = new Dictionary<GameValue.MeshKey, Mesh[]>()
+                _femaleMeshDic = new Dictionary<GameValue.PartsKey, Mesh[]>()
                 {
-                    {GameValue.MeshKey.Head, _femaleHeadArray},
-                    {GameValue.MeshKey.Eyebrows, _femaleEyebrowsArray},
-                    {GameValue.MeshKey.Torso, _femaleTorsoArray},
-                    {GameValue.MeshKey.UpperArmRight, _femaleUpperArmRightArray},
-                    {GameValue.MeshKey.UpperArmLeft, _femaleUpperArmLeftArray},
-                    {GameValue.MeshKey.LowerArmRight, _femaleLowerArmRightArray},
-                    {GameValue.MeshKey.LowerArmLeft, _femaleLowerArmLeftArray},
-                    {GameValue.MeshKey.HandRight, _femaleHandRightArray},
-                    {GameValue.MeshKey.HandLeft, _femaleHandLeftArray},
-                    {GameValue.MeshKey.Hip, _femaleHipArray},
-                    {GameValue.MeshKey.LegRight, _femaleLegRightArray},
-                    {GameValue.MeshKey.LegLeft, _femaleLegLeftArray},
+                    {GameValue.PartsKey.Head, _femaleHeadArray},
+                    {GameValue.PartsKey.Eyebrows, _femaleEyebrowsArray},
+                    {GameValue.PartsKey.Torso, _femaleTorsoArray},
+                    {GameValue.PartsKey.UpperArmRight, _femaleUpperArmRightArray},
+                    {GameValue.PartsKey.UpperArmLeft, _femaleUpperArmLeftArray},
+                    {GameValue.PartsKey.LowerArmRight, _femaleLowerArmRightArray},
+                    {GameValue.PartsKey.LowerArmLeft, _femaleLowerArmLeftArray},
+                    {GameValue.PartsKey.HandRight, _femaleHandRightArray},
+                    {GameValue.PartsKey.HandLeft, _femaleHandLeftArray},
+                    {GameValue.PartsKey.Hip, _femaleHipArray},
+                    {GameValue.PartsKey.LegRight, _femaleLegRightArray},
+                    {GameValue.PartsKey.LegLeft, _femaleLegLeftArray},
                 };
             }
 
