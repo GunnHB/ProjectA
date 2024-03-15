@@ -87,4 +87,11 @@ public class PartsSlot : MonoBehaviour
 
         _indexText.text = $"{_currIndex + 1} / {_maxValue}";
     }
+
+    public void SetPartsByIndex(GameValue.PartsKey key, int index)
+    {
+        _cacheDic[key].SwtichParts(index);
+
+        SetIndexText(key);
+    }
 }

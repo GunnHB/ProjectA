@@ -34,11 +34,15 @@ public class UICreateCharacterPanel : UIPanelBase
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private PartsSlot _hairSlot;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
-    private PartsSlot _headSlot;
+    private PartsSlot _faceSlot;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private PartsSlot _eyebrowsSlot;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private PartsSlot _facialHairSlot;
+    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
+    private UIButton _randomButton;
+    [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
+    private UIButton _resetButton;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private RawImage _customizeRawImage;
 
@@ -152,6 +156,46 @@ public class UICreateCharacterPanel : UIPanelBase
             if (playerObj.TryGetComponent(out PlayerCustomizer customizer))
                 _customizer = customizer;
         }
+
+        _resetButton.ButtonText.text = "RESET";
+        _randomButton.ButtonText.text = "RANDOM";
+
+        _resetButton.AddListener(OnClickReset);
+        _randomButton.AddListener(OnClickRandom);
+    }
+
+    private void OnClickRandom()
+    {
+        if (_selectedSlot == null || _customizer == null)
+            return;
+
+        _hairSlot.SetPartsByIndex(GameValue.PartsKey.Hair, GetRandomIndexByKey(GameValue.PartsKey.Hair, true));
+        _faceSlot.SetPartsByIndex(GameValue.PartsKey.Face, GetRandomIndexByKey(GameValue.PartsKey.Face));
+        _eyebrowsSlot.SetPartsByIndex(GameValue.PartsKey.Eyebrows, GetRandomIndexByKey(GameValue.PartsKey.Eyebrows));
+
+        if (_facialHairSlot.gameObject.activeInHierarchy)
+            _facialHairSlot.SetPartsByIndex(GameValue.PartsKey.FacialHair, GetRandomIndexByKey(GameValue.PartsKey.FacialHair));
+    }
+
+    private int GetRandomIndexByKey(GameValue.PartsKey key, bool isCommon = false)
+    {
+        if (!isCommon)
+            return Random.Range(0, _customizer.PartDataDic[_selectedSlot.GenderType][key]._skinnedInfoList.Count);
+        else
+            return Random.Range(0, _customizer.PartDataDic[GameValue.GenderType.COMMON][key]._skinnedInfoList.Count);
+    }
+
+    private void OnClickReset()
+    {
+        if (_selectedSlot == null || _customizer == null)
+            return;
+
+        _hairSlot.SetPartsByIndex(GameValue.PartsKey.Hair, 0);
+        _faceSlot.SetPartsByIndex(GameValue.PartsKey.Face, 0);
+        _eyebrowsSlot.SetPartsByIndex(GameValue.PartsKey.Eyebrows, 0);
+
+        if (_facialHairSlot.gameObject.activeInHierarchy)
+            _facialHairSlot.SetPartsByIndex(GameValue.PartsKey.FacialHair, 0);
     }
 
     private void SetCustomizePlayer()
@@ -169,7 +213,7 @@ public class UICreateCharacterPanel : UIPanelBase
 
         _hairSlot.InitSlot(_customizer, GameValue.GenderType.COMMON, GameValue.PartsKey.Hair);
 
-        _headSlot.InitSlot(_customizer, _selectedSlot.GenderType, GameValue.PartsKey.Face);
+        _faceSlot.InitSlot(_customizer, _selectedSlot.GenderType, GameValue.PartsKey.Face);
         _eyebrowsSlot.InitSlot(_customizer, _selectedSlot.GenderType, GameValue.PartsKey.Eyebrows);
 
         if (_selectedSlot.GenderType == GameValue.GenderType.Female)
@@ -276,6 +320,8 @@ public class UICreateCharacterPanel : UIPanelBase
                     .OnComplete(() =>
                     {
                         ButtonInteratable(true);
+
+                        _subtitleText.text = "Please customize your character";
                     });
     }
 
@@ -332,6 +378,8 @@ public class UICreateCharacterPanel : UIPanelBase
                     .OnComplete(() =>
                     {
                         ButtonInteratable(true);
+
+                        _subtitleText.text = "Please select your character's gender";
                     });
     }
 
@@ -339,6 +387,9 @@ public class UICreateCharacterPanel : UIPanelBase
     {
         _backButton.interactable = active;
         _nextButton.interactable = active;
+
+        _resetButton.interactable = active;
+        _randomButton.interactable = active;
 
         _maleSlot.SetBtnInteractable(active);
         _femaleSlot.SetBtnInteractable(active);

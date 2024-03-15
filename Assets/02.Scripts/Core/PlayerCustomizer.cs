@@ -64,6 +64,25 @@ public class PlayerCustomizer : SerializedMonoBehaviour
     public Dictionary<GameValue.PartsKey, PartsData> FemaleDataDic => _femaleDataDic;
     public Dictionary<GameValue.PartsKey, PartsData> CommonDataDic => _commonDataDic;
 
+    private Dictionary<GameValue.GenderType, Dictionary<GameValue.PartsKey, PartsData>> _partDataDic;
+    public Dictionary<GameValue.GenderType, Dictionary<GameValue.PartsKey, PartsData>> PartDataDic
+    {
+        get
+        {
+            if (_partDataDic == null)
+            {
+                _partDataDic = new Dictionary<GameValue.GenderType, Dictionary<GameValue.PartsKey, PartsData>>()
+                {
+                    {GameValue.GenderType.Male, _maleDataDic},
+                    {GameValue.GenderType.Female, _femaleDataDic},
+                    {GameValue.GenderType.COMMON, _commonDataDic},
+                };
+            }
+
+            return _partDataDic;
+        }
+    }
+
     private void UpdateSkinnedInfoList(Dictionary<GameValue.PartsKey, PartsData> partsDic)
     {
         if (partsDic == null || partsDic.Count == 0)
