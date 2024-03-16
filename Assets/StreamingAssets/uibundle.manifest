@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2606185163
+CRC: 4140186901
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8dde1f1fb556c226735b11258c590fc5
+    Hash: 9664aaa2db9c20370c57ac5e4a94764c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6b7f067c9ddc1aa5dc780491d6436987
+    Hash: 2f3b6a9dc93c701f838f207be206fdb5
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 8dde1f1fb556c226735b11258c590fc5
+    Hash: 9664aaa2db9c20370c57ac5e4a94764c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -80,6 +80,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 1816588ff9c689a4e9348e572adcde16, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d225cd0e677e1394c81cfe901667e2cc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e1c472494230c4742a289bc2c5b4767e, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -161,6 +163,7 @@ Assets:
 - Assets/03.Prefabs/UI/UIButtonRaw.prefab
 - Assets/03.Prefabs/UI/UILoadSceneFade.prefab
 - Assets/03.Prefabs/UI/PartsSlot.prefab
+- Assets/03.Prefabs/UI/UIRawImage.prefab
 - Assets/03.Prefabs/UI/InventorySlot.prefab
 - Assets/03.Prefabs/UI/CategoryTab.prefab
 - Assets/03.Prefabs/UI/UISlideOptionPopup.prefab

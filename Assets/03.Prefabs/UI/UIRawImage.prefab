@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 949310674364097450}
   - component: {fileID: 5444055760195060644}
   m_Layer: 0
-  m_Name: RawImage
+  m_Name: UIRawImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

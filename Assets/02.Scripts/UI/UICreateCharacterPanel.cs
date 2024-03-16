@@ -44,7 +44,7 @@ public class UICreateCharacterPanel : UIPanelBase
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
     private UIButton _resetButton;
     [BoxGroup(GROUP_CUSTOMIZE), SerializeField]
-    private RawImage _customizeRawImage;
+    private UIRawImage _customizeRawImage;
 
     [BoxGroup(GROUP_COMMON), SerializeField]
     private TextMeshProUGUI _subtitleText;
