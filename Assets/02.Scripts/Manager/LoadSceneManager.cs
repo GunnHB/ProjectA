@@ -19,8 +19,9 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
     private float _prevAlpha = 0f;              // 직전의 알파 값
     private float _fadeTime = 1f;               // 전환 시간
 
-    private Coroutine _fadeIn;
-    private Coroutine _fadeOut;
+    private Coroutine _corFadeIn;
+    private Coroutine _corFadeOut;
+    private Coroutine _corLoadScene;
 
     private bool _isFadeInFin;                  // 페이드 인 끝났는지
 
@@ -46,13 +47,13 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
 
     public void DoFade(UnityAction action = null)
     {
-        if (_fadeIn != null)
+        if (_corFadeIn != null)
         {
-            StopCoroutine(_fadeIn);
-            _fadeIn = null;
+            StopCoroutine(_corFadeIn);
+            _corFadeIn = null;
         }
 
-        _fadeIn = StartCoroutine(Cor_FadeIn(action));
+        _corFadeIn = StartCoroutine(Cor_FadeIn(action));
     }
 
     public IEnumerator Cor_FadeIn(UnityAction action)
@@ -76,13 +77,13 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
 
         action?.Invoke();
 
-        if (_fadeOut != null)
+        if (_corFadeOut != null)
         {
-            StopCoroutine(_fadeOut);
-            _fadeOut = null;
+            StopCoroutine(_corFadeOut);
+            _corFadeOut = null;
         }
 
-        _fadeOut = StartCoroutine(nameof(Cor_FadeOut));
+        _corFadeOut = StartCoroutine(nameof(Cor_FadeOut));
     }
 
     public IEnumerator Cor_FadeOut()
@@ -104,5 +105,13 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
         // 레이타겟 켜주기
         _uiFade.SetRayTarget(false);
         _isFadeInFin = false;
+    }
+
+    public void LoadScene(SceneType sceneType)
+    {
+        if (_corLoadScene != null)
+        {
+
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UIManager : SingletonObject<UIManager>
 {
@@ -168,6 +169,17 @@ public class UIManager : SingletonObject<UIManager>
     /// </summary>
     public void CloseUI<T>(T ui) where T : UIBase
     {
+        ui.PrevClose();
+        ui.Close();
+    }
+
+    /// <summary>
+    /// 콜백 실행 후 UI 닫기
+    /// </summary>
+    public void CloseUI<T>(T ui, UnityAction callback) where T : UIBase
+    {
+        callback?.Invoke();
+
         ui.PrevClose();
         ui.Close();
     }

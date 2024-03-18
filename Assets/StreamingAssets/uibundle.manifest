@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 4140186901
+CRC: 3168633176
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9664aaa2db9c20370c57ac5e4a94764c
+    Hash: 026db0be2a7e81d3f3ef7b995312814d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2f3b6a9dc93c701f838f207be206fdb5
+    Hash: a1d7568fe93db822c4a80fcc96a9db0f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9664aaa2db9c20370c57ac5e4a94764c
+    Hash: 026db0be2a7e81d3f3ef7b995312814d
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -57,6 +57,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 992115d8890859f4cb9d460eebd85288, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: e1c472494230c4742a289bc2c5b4767e, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 1196cc10f411f7146925c3e217339267, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: c7ebbc87cb925cf4cba8649b0a7b8f37, type: 3}
@@ -81,7 +83,7 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: d225cd0e677e1394c81cfe901667e2cc, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: e1c472494230c4742a289bc2c5b4767e, type: 3}
+  Script: {fileID: 11500000, guid: 2a618e07f7c52104aa05f0306edbdbf0, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -166,6 +168,7 @@ Assets:
 - Assets/03.Prefabs/UI/UIRawImage.prefab
 - Assets/03.Prefabs/UI/InventorySlot.prefab
 - Assets/03.Prefabs/UI/CategoryTab.prefab
+- Assets/03.Prefabs/UI/UIDialogBoxPopup.prefab
 - Assets/03.Prefabs/UI/UISlideOptionPopup.prefab
 - Assets/03.Prefabs/UI/Inventory.prefab
 - Assets/03.Prefabs/UI/UIInteractNotice.prefab

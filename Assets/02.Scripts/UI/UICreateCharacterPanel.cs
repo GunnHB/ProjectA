@@ -293,6 +293,14 @@ public class UICreateCharacterPanel : UIPanelBase
         {
             // 인게임 씬으로 전환
             // 알림창 하나 띄우기
+            var dialog = UIManager.Instance.OpenUI<UIDialogBoxPopup>();
+
+            if (dialog != null)
+            {
+                dialog.Open("NOTICE", "Do you want to create this character?",
+                            string.Empty, () => LoadSceneManager.Instance.LoadScene(LoadSceneManager.SceneType.InGameScene),
+                            string.Empty, null);
+            }
         }
     }
 
