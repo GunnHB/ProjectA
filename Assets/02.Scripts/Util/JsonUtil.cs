@@ -317,6 +317,8 @@ public class JsonUtil
     {{
         private static List<Data> _dataList = new();
         private static Dictionary<long, Data> _dataDic = new();
+
+        private static bool _isInit = false;
         {InitializeMethod(assetName)}
 
         public static List<Data> DataList => _dataList;
@@ -367,11 +369,16 @@ public class JsonUtil
         /// </summary>
         public static void Initialize()
         {{
+            if (_isInit)
+                return;
+
             var jsonData = File.ReadAllText(""{JSON_PATH}{assetName}.json"");
             JsonUtil.Deserialize(jsonData, _dataList);
 
-            foreach(var item in _dataList)
+            foreach (var item in _dataList)
                 _dataDic.Add(item.id, item);
+            
+            _isInit = true;
         }}";
 
         return mehtodString;
