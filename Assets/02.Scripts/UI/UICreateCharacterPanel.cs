@@ -300,7 +300,12 @@ public class UICreateCharacterPanel : UIPanelBase
                 dialog.Open("NOTICE", "Do you want to create this character?",
                             string.Empty, () =>
                             {
-                                LoadSceneManager.Instance.DoFade(null, LoadSceneManager.SceneType.InGameScene);
+                                LoadSceneManager.Instance.DoFade(() =>
+                                {
+                                    PlayerPartsManager.Instance.SetPlayerDataDic(_customizer.PartDataDic,
+                                                                                _selectedSlot.GenderType);
+                                },
+                                LoadSceneManager.SceneType.InGameScene);
                             },
                             string.Empty, null);
             }

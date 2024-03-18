@@ -142,4 +142,27 @@ public class PlayerCustomizer : SerializedMonoBehaviour
         foreach (var item in dataDic.Keys)
             dataDic[item].SwtichParts(index);
     }
+
+    public void SwitchAllParts(GameValue.GenderType genderType)
+    {
+        if (PlayerPartsManager.Instance.GeneralDataDic == null || PlayerPartsManager.Instance.CommonDataDic == null)
+            return;
+
+        foreach (var key in PlayerPartsManager.Instance.GeneralDataDic.Keys)
+        {
+            int index = PlayerPartsManager.Instance.GeneralDataDic[key].GetCurrentInfoIndex();
+
+            if (genderType == GameValue.GenderType.Male)
+                _maleDataDic[key].SwtichParts(index);
+            else
+                _femaleDataDic[key].SwtichParts(index);
+        }
+
+        foreach (var key in PlayerPartsManager.Instance.CommonDataDic.Keys)
+        {
+            int index = PlayerPartsManager.Instance.CommonDataDic[key].GetCurrentInfoIndex();
+
+            _commonDataDic[key].SwtichParts(index);
+        }
+    }
 }

@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
         if (_playerRawImage == null)
             return;
 
-        var renderTexture = new RenderTexture(256, 256, 24);
+        var renderTexture = new RenderTexture(512, 512, 24);
         Camera renderCam = GameObject.Find(PLAYER_RENDER_TEXTURE).transform.Find(CAMERA_RENDER_TEXTURE).GetComponent<Camera>();
 
         if (renderCam == null)

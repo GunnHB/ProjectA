@@ -23,6 +23,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     private Movement _movement;
     private Equipment _equipment;
     private PlayerInput _playerInput;
+    private PlayerCustomizer _customizer;
     private Animator _animator;
 
     // datas
@@ -118,6 +119,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
         _equipment = GetComponent<Equipment>();
         _playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
+        _customizer = GetComponent<PlayerCustomizer>();
 
         _animData.Initialize();
 
@@ -132,6 +134,8 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
         GameManager.Instance.InGameModeAction += InGameModeAction;
         GameManager.Instance.UIModeAction += UIModeAction;
+
+        // PlayerPartsManager.Instance.InitPlayer();
     }
 
     private void Update()

@@ -18,6 +18,7 @@ public class SingletonCreator : MonoBehaviour
         InitSingletonObject<AtlasManager>();
         InitSingletonObject<ItemManager>();
         InitSingletonObject<LoadSceneManager>();
+        InitSingletonObject<PlayerPartsManager>();
     }
 
     private void InitSingletonObject<T>()

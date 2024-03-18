@@ -117,6 +117,7 @@ public class LoadSceneManager : SingletonObject<LoadSceneManager>
                 if (_sceneType != SceneType.None)
                     LoadScene(_sceneType);
 
+                // 호출할 콜백이 있으면 씬 로드 후에 하기
                 yield return new WaitUntil(() => _isDoneChangeScene);
 
                 _callback?.Invoke();

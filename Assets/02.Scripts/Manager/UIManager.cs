@@ -25,15 +25,11 @@ public class UIManager : SingletonObject<UIManager>
     public Canvas FloatingCanvas { get => GetCanvasByProperty(ref _floatingCanvas, CANVAS_FLOATING); }
     public Canvas FadeCanvas { get => GetCanvasByProperty(ref _fadeCanvas, CANVAS_FADE); }
 
-    private List<Canvas> _canvasList;
+    private List<Canvas> _canvasList = new();
 
     protected override void Awake()
     {
         base.Awake();
-
-        // 우선순위가 높은 순으로 추가합시다
-        // FadeCanvas는 화면 전환용이기 때문에 추가할 필요 없음
-        _canvasList = new List<Canvas>() { PopupCanvas, PanelCanvas, HUDCanvas, FloatingCanvas };
     }
 
     /// <summary>
@@ -205,9 +201,11 @@ public class UIManager : SingletonObject<UIManager>
     /// <returns></returns>
     public bool IsOpenAnyUIAllCanvas()
     {
+        SetCanvasList();
+
         foreach (var canvas in _canvasList)
         {
-            if (canvas == HUDCanvas)
+            if (canvas == HUDCanvas || canvas == null)
                 continue;
 
             for (int index = 0; index < canvas.transform.childCount; index++)
@@ -233,6 +231,8 @@ public class UIManager : SingletonObject<UIManager>
     /// </summary>
     public void CloseTopUIByAllCanvas()
     {
+        SetCanvasList();
+
         foreach (var canvas in _canvasList)
         {
             if (canvas == HUDCanvas)
@@ -248,6 +248,9 @@ public class UIManager : SingletonObject<UIManager>
     /// </summary>
     public bool IsCloseTopUI(Canvas canvas)
     {
+        if (canvas == null)
+            return false;
+
         for (int index = 0; index < canvas.transform.childCount; index++)
         {
             var ui = canvas.transform.GetChild(index);
@@ -263,5 +266,11 @@ public class UIManager : SingletonObject<UIManager>
         }
 
         return false;
+    }
+
+    private void SetCanvasList()
+    {
+        _canvasList.Clear();
+        _canvasList.AddRange(new List<Canvas>() { PopupCanvas, FloatingCanvas, PanelCanvas });
     }
 }
