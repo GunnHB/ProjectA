@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIFadeBase : UIBase
 {
+    [SerializeField]
     protected Image _fadeImage;
 
     public override void Init()

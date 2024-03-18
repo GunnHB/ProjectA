@@ -61,7 +61,7 @@ public class ItemManager : SingletonObject<ItemManager>
 
     private void Start()
     {
-        if (LoadSceneManager.Instance.CurrentScene == LoadSceneManager.SceneType.InGameScene)
+        if (LoadSceneManager.Instance.ThisSceneType == LoadSceneManager.SceneType.InGameScene)
             InitInGameScene();
     }
 

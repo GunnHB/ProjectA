@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class UILoadSceneFade : UIFadeBase
 {
-
-
     public override void Init()
     {
         base.Init();
