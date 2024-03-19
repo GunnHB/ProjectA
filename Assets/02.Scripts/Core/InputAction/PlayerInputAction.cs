@@ -125,6 +125,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Focus"",
+                    ""type"": ""Button"",
+                    ""id"": ""95b0f95a-923b-45bb-9c53-735653b8fe12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -347,6 +356,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Setting"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7563899-9b65-443d-a0b4-d4b39425922e"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Focus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -411,6 +431,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerActionMap_ZoomOut = m_PlayerActionMap.FindAction("ZoomOut", throwIfNotFound: true);
         m_PlayerActionMap_Inventory = m_PlayerActionMap.FindAction("Inventory", throwIfNotFound: true);
         m_PlayerActionMap_Setting = m_PlayerActionMap.FindAction("Setting", throwIfNotFound: true);
+        m_PlayerActionMap_Focus = m_PlayerActionMap.FindAction("Focus", throwIfNotFound: true);
         // UIActionMap
         m_UIActionMap = asset.FindActionMap("UIActionMap", throwIfNotFound: true);
         m_UIActionMap_Escape = m_UIActionMap.FindAction("Escape", throwIfNotFound: true);
@@ -486,6 +507,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_ZoomOut;
     private readonly InputAction m_PlayerActionMap_Inventory;
     private readonly InputAction m_PlayerActionMap_Setting;
+    private readonly InputAction m_PlayerActionMap_Focus;
     public struct PlayerActionMapActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -501,6 +523,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @ZoomOut => m_Wrapper.m_PlayerActionMap_ZoomOut;
         public InputAction @Inventory => m_Wrapper.m_PlayerActionMap_Inventory;
         public InputAction @Setting => m_Wrapper.m_PlayerActionMap_Setting;
+        public InputAction @Focus => m_Wrapper.m_PlayerActionMap_Focus;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -543,6 +566,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Setting.started += instance.OnSetting;
             @Setting.performed += instance.OnSetting;
             @Setting.canceled += instance.OnSetting;
+            @Focus.started += instance.OnFocus;
+            @Focus.performed += instance.OnFocus;
+            @Focus.canceled += instance.OnFocus;
         }
 
         private void UnregisterCallbacks(IPlayerActionMapActions instance)
@@ -580,6 +606,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Setting.started -= instance.OnSetting;
             @Setting.performed -= instance.OnSetting;
             @Setting.canceled -= instance.OnSetting;
+            @Focus.started -= instance.OnFocus;
+            @Focus.performed -= instance.OnFocus;
+            @Focus.canceled -= instance.OnFocus;
         }
 
         public void RemoveCallbacks(IPlayerActionMapActions instance)
@@ -665,6 +694,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnZoomOut(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnSetting(InputAction.CallbackContext context);
+        void OnFocus(InputAction.CallbackContext context);
     }
     public interface IUIActionMapActions
     {
