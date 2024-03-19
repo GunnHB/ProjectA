@@ -1,7 +1,5 @@
 using System.Linq;
-
 using FSM;
-using UnityEngine;
 
 public class AttackState : BaseState
 {
@@ -11,6 +9,8 @@ public class AttackState : BaseState
 
     private int _layerIndex = 0;
     private float _exitTime = .7f;
+
+    private bool _isLastAttackIndex = false;
 
     public AttackState(PlayerController player) : base(player)
     {
@@ -25,6 +25,8 @@ public class AttackState : BaseState
 
         _player.SetIsAttacking(true);
         _player.ThisAnimator.CrossFadeInFixedTime(_currAttackData._attackAnimHash, _currAttackData._transitionDuration, _layerIndex);
+
+        _isLastAttackIndex = _player.GetAttackDataList().Last() == _currAttackData;
     }
 
     public override void OperateUpdate()
@@ -35,8 +37,12 @@ public class AttackState : BaseState
 
         if (normalizedTime > _exitTime)
         {
-            if (_player.AttackQueue.Count > 0)
-                _player.AttackAction?.Invoke(_player.AttackQueue.Dequeue());
+            // if (_player.AttackQueue.Count > 0)
+            //     _player.AttackAction?.Invoke(_player.AttackQueue.Dequeue());
+            // else
+            // {
+            if (_player.DoCombo)
+                _player.AttackAction?.Invoke(_player.GetAttackDataList()[_player.AttackIndex]);
             else
             {
                 _player.ResetAttackIndex();
@@ -44,6 +50,7 @@ public class AttackState : BaseState
                 _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
                 _player.IdleAction?.Invoke();
             }
+            // }
         }
     }
 
@@ -51,8 +58,13 @@ public class AttackState : BaseState
     {
         base.OperateExit();
 
-        if (_player.AttackQueue.Count == 0)
-            _player.SetIsAttacking(false);
+        if (!_player.DoCombo)
+            _player.StartAttackIntervalCoroutine();
+        else
+            _player.SetDoCombo(false);
+
+        // if (_player.AttackQueue.Count == 0)
+        //     _player.StartAttackIntervalCoroutine();
     }
 
     public void SetCurrAttackData(AttackData newData)

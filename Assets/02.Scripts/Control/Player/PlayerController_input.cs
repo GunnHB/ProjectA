@@ -253,24 +253,51 @@ public partial class PlayerController : MonoBehaviour
     #region Attack
     private void StartAttackInput(InputAction.CallbackContext context)
     {
-        if (!CanAttack || GetAttackDataList() == null)
+        if (!ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty() && !_equipment.IsDraw)
+        {
+            DrawWeaponAction?.Invoke();
             return;
+        }
 
-        if (_attackQueue.Count > 0 && _attackQueue.Last() == GetAttackDataList().Last())
+        if (!CanAttack || _runningCoroutine || _doCombo)
             return;
 
         if (_attackIndex >= GetAttackDataList().Count - 1)
+        {
             ResetAttackIndex();
+            _lastAttackIndex = true;
+        }
+
+        if (_lastAttackIndex)
+            return;
 
         _attackIndex++;
 
         if (_isAttacking)
         {
-            _attackQueue.Enqueue(GetAttackDataList()[_attackIndex]);
+            SetDoCombo(true);
             return;
         }
 
         AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
+        // if (!CanAttack || _runningCoroutine || GetAttackDataList() == null)
+        //     return;
+
+        // if (_attackQueue.Count > 0 && _attackQueue.Last() == GetAttackDataList().Last())
+        //     return;
+
+        // if (_attackIndex >= GetAttackDataList().Count - 1)
+        //     ResetAttackIndex();
+
+        // _attackIndex++;
+
+        // if (_isAttacking)
+        // {
+        //     _attackQueue.Enqueue(GetAttackDataList()[_attackIndex]);
+        //     return;
+        // }
+
+        // AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
     }
     #endregion
 

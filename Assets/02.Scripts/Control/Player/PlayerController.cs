@@ -40,9 +40,10 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     // combo attack
     private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
+    private bool _lastAttackIndex;                      // 공격 데이터 중 마지막 값인지
     private int _attackIndex = -1;
     private Dictionary<GameValue.WeaponType, List<AttackData>> _attackDataDic;
-    private Queue<AttackData> _attackQueue = new();     // 공격 데이터 큐 (콤보 공격용)
+    // private Queue<AttackData> _attackQueue = new();     // 공격 데이터 큐 (콤보 공격용)
 
     public UnityAction IdleAction;
     public UnityAction WalkAction;
@@ -75,7 +76,11 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public int AttackIndex => _attackIndex;
 
     public Dictionary<GameValue.WeaponType, List<AttackData>> AttackDataDic => _attackDataDic;
-    public Queue<AttackData> AttackQueue => _attackQueue;
+    // public Queue<AttackData> AttackQueue => _attackQueue;
+
+    // 마지막 공격 후 다음 공격의 텀을 가지기 위한 코루틴
+    private Coroutine _attackintervalCoroutin;
+    private bool _runningCoroutine;
 
     // 일반적인 움직임의 상태 (대기, 걷기, 달리기...)
     public bool IsNormalState
@@ -105,7 +110,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     // 공격이 가능한 상태
     public bool CanAttack
     {
-        get { return _equipment.IsDraw && (IsNormalState || IsCrouching || _isAttacking); }
+        get { return IsNormalState || IsCrouching || _isAttacking; }
     }
 
     private void Awake()
@@ -123,7 +128,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
         _animData.Initialize();
 
-        // SetAttackData();
         RegistAttackData();
         SetIsAttacking(false);
 
@@ -292,5 +296,37 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public void GetDamaged(int damagedValue)
     {
         Debug.Log($"{damagedValue} damaged!");
+    }
+
+    public void StartAttackIntervalCoroutine()
+    {
+        if (_attackintervalCoroutin != null)
+        {
+            StopCoroutine(_attackintervalCoroutin);
+            _attackintervalCoroutin = null;
+        }
+
+        _attackintervalCoroutin = StartCoroutine(nameof(Cor_UpdateAttackInterval));
+    }
+
+    private IEnumerator Cor_UpdateAttackInterval()
+    {
+        float _currTime = 0f;
+        float targetTime = 1.2f;
+
+        _runningCoroutine = true;
+
+        while (_currTime < targetTime)
+        {
+            _currTime += Time.deltaTime / targetTime;
+            Debug.Log(_currTime);
+            yield return null;
+        }
+
+        _isAttacking = false;
+        _runningCoroutine = false;
+        _lastAttackIndex = false;
+
+        // _attackQueue.Clear();
     }
 }
