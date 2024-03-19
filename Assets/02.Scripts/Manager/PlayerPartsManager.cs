@@ -33,16 +33,4 @@ public class PlayerPartsManager : SingletonObject<PlayerPartsManager>
                 customizer.SwitchAllParts(genderType);
         }
     }
-
-    // public void InitPlayer()
-    // {
-    //     if (_dataDic == null || _dataDic.Count == 0)
-    //         return;
-
-    //     if (GameManager.Instance.PlayerObj != null)
-    //     {
-    //         if (GameManager.Instance.PlayerObj.TryGetComponent(out PlayerCustomizer customizer))
-    //             customizer.SwitchAllParts();
-    //     }
-    // }
 }
