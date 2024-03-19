@@ -23,6 +23,8 @@ public partial class PlayerController : MonoBehaviour
     private InputAction _drawWeaponInput;               // 무기 듦 
     private InputAction _attackInput;                   // 공격
 
+    private InputAction _focusInput;                    // 포커싱
+
     private InputAction _zoomInInput;                   // 카메라 줌 인
     private InputAction _zoomOutInput;                  // 카메라 줌 아웃
 
@@ -51,6 +53,8 @@ public partial class PlayerController : MonoBehaviour
         _zoomInInput = _action.PlayerActionMap.ZoomIn;
         _zoomOutInput = _action.PlayerActionMap.ZoomOut;
 
+        _focusInput = _action.PlayerActionMap.Focus;
+
         _inventoryInput = _action.PlayerActionMap.Inventory;
 
         _settingInput = _action.PlayerActionMap.Setting;
@@ -71,6 +75,8 @@ public partial class PlayerController : MonoBehaviour
 
         RegistInputAction(_zoomInInput, null, PerformZoomInInput, null);
         RegistInputAction(_zoomOutInput, null, PerformZoomOutInput, null);
+
+        RegistInputAction(_focusInput, null, PerformFocusInput, CancelFocusInput);
 
         RegistInputAction(_inventoryInput, StartInventoryInput);
 
@@ -171,11 +177,11 @@ public partial class PlayerController : MonoBehaviour
         // 방향 세팅
         _movement.SetDirection(_moveDirection);
 
-        if (IsOnAir || IsCrouching)
+        if (IsOnAir || IsCrouching || _isAttacking)
             return;
 
         if (_readyToSprint)
-            SprintAction?.Invoke(_readyToSprint);
+            SprintAction?.Invoke(true);
         else
             WalkAction?.Invoke();
     }
@@ -184,6 +190,9 @@ public partial class PlayerController : MonoBehaviour
     {
         _moveDirection = Vector3.zero;
         _movement.SetDirection(_moveDirection);
+
+        if (_isAttacking)
+            return;
 
         // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
         if (!IsOnAir && !IsCrouching)
@@ -224,7 +233,7 @@ public partial class PlayerController : MonoBehaviour
         if (IsOnAir)
             return;
 
-        if (_moveDirection == Vector3.zero)
+        if (!IsMoving)
             _stateMachine.SetState(_idleState);
         else
         {
@@ -253,14 +262,14 @@ public partial class PlayerController : MonoBehaviour
     #region Attack
     private void StartAttackInput(InputAction.CallbackContext context)
     {
+        if (!CanAttack || _runningCoroutine || _doCombo || ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
+            return;
+
         if (!ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty() && !_equipment.IsDraw)
         {
             DrawWeaponAction?.Invoke();
             return;
         }
-
-        if (!CanAttack || _runningCoroutine || _doCombo)
-            return;
 
         if (_attackIndex >= GetAttackDataList().Count - 1)
         {
@@ -280,24 +289,6 @@ public partial class PlayerController : MonoBehaviour
         }
 
         AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
-        // if (!CanAttack || _runningCoroutine || GetAttackDataList() == null)
-        //     return;
-
-        // if (_attackQueue.Count > 0 && _attackQueue.Last() == GetAttackDataList().Last())
-        //     return;
-
-        // if (_attackIndex >= GetAttackDataList().Count - 1)
-        //     ResetAttackIndex();
-
-        // _attackIndex++;
-
-        // if (_isAttacking)
-        // {
-        //     _attackQueue.Enqueue(GetAttackDataList()[_attackIndex]);
-        //     return;
-        // }
-
-        // AttackAction?.Invoke(GetAttackDataList()[_attackIndex]);
     }
     #endregion
 
@@ -314,6 +305,26 @@ public partial class PlayerController : MonoBehaviour
         // var zoomValue = context.ReadValue<float>();
 
         // Debug.Log("OUT " + zoomValue);
+    }
+    #endregion
+
+    #region Focus
+    private void PerformFocusInput(InputAction.CallbackContext context)
+    {
+        FocusAction?.Invoke();
+    }
+
+    private void CancelFocusInput(InputAction.CallbackContext context)
+    {
+        if (!IsMoving)
+            IdleAction?.Invoke();
+        else
+        {
+            if (_readyToSprint)
+                SprintAction?.Invoke(true);
+            else
+                WalkAction?.Invoke();
+        }
     }
     #endregion
 

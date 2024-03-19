@@ -21,6 +21,8 @@ public class AttackState : BaseState
     {
         base.OperateEnter();
 
+        _player.SetDoNotMovePlayer(true);
+
         _layerIndex = GetLayerIndex();
 
         _player.SetIsAttacking(true);
@@ -37,10 +39,6 @@ public class AttackState : BaseState
 
         if (normalizedTime > _exitTime)
         {
-            // if (_player.AttackQueue.Count > 0)
-            //     _player.AttackAction?.Invoke(_player.AttackQueue.Dequeue());
-            // else
-            // {
             if (_player.DoCombo)
                 _player.AttackAction?.Invoke(_player.GetAttackDataList()[_player.AttackIndex]);
             else
@@ -50,7 +48,6 @@ public class AttackState : BaseState
                 _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
                 _player.IdleAction?.Invoke();
             }
-            // }
         }
     }
 
@@ -58,13 +55,12 @@ public class AttackState : BaseState
     {
         base.OperateExit();
 
+        _player.SetDoNotMovePlayer(false);
+
         if (!_player.DoCombo)
             _player.StartAttackIntervalCoroutine();
         else
             _player.SetDoCombo(false);
-
-        // if (_player.AttackQueue.Count == 0)
-        //     _player.StartAttackIntervalCoroutine();
     }
 
     public void SetCurrAttackData(AttackData newData)

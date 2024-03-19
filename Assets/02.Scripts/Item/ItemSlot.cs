@@ -116,10 +116,7 @@ public class ItemSlot : MonoBehaviour
         ActiveFrame(active);
 
         if (active)
-        {
             _frameImage.color = new Color(1f, 1f, 1f, 1f);
-            // ItemManager.Instance.GoToSlotAction?.Invoke(this);
-        }
     }
 
     private void SelectAction()

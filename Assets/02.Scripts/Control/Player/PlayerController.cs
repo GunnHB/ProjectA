@@ -43,7 +43,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     private bool _lastAttackIndex;                      // 공격 데이터 중 마지막 값인지
     private int _attackIndex = -1;
     private Dictionary<GameValue.WeaponType, List<AttackData>> _attackDataDic;
-    // private Queue<AttackData> _attackQueue = new();     // 공격 데이터 큐 (콤보 공격용)
 
     public UnityAction IdleAction;
     public UnityAction WalkAction;
@@ -54,6 +53,8 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public UnityAction LandingAction;
 
     public UnityAction CrouchAction;
+
+    public UnityAction FocusAction;
 
     public UnityAction DrawWeaponAction;
     public UnityAction SheathWeaponAction;
@@ -66,7 +67,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public StateMachine ThisStateMachine => _stateMachine;
     public float ThisMoveSpeed => _moveSpeed;
 
-    public bool IsMoving => _moveDirection != Vector3.zero;         // 이동 중인지
+    public bool IsMoving => _moveDirection != Vector3.zero;         // 이동 입력이 있는지
     public bool IsGrounded => _movement.IsGrounded;                 // 땅에 발이 닿았는지
     public bool IsPeak => _movement.IsPeak;                         // 최고 높이를 찍었는지
     public bool ReadyToSprint => _readyToSprint;                    // 달리기 입력이 들어갔는지
@@ -81,6 +82,8 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     // 마지막 공격 후 다음 공격의 텀을 가지기 위한 코루틴
     private Coroutine _attackintervalCoroutin;
     private bool _runningCoroutine;
+
+    private bool _doNotMovePlayer = false;                          // 플레이어의 이동을 강제로 막는 플래그
 
     // 일반적인 움직임의 상태 (대기, 걷기, 달리기...)
     public bool IsNormalState
@@ -138,8 +141,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
         GameManager.Instance.InGameModeAction += InGameModeAction;
         GameManager.Instance.UIModeAction += UIModeAction;
-
-        // PlayerPartsManager.Instance.InitPlayer();
     }
 
     private void Update()
@@ -151,7 +152,9 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
     private void FixedUpdate()
     {
-        _movement.MovementUpdate();
+        if (!_doNotMovePlayer)
+            _movement.MovementUpdate();
+
         _movement.GravityUpdate();
     }
 
@@ -326,7 +329,10 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
         _isAttacking = false;
         _runningCoroutine = false;
         _lastAttackIndex = false;
+    }
 
-        // _attackQueue.Clear();
+    public void SetDoNotMovePlayer(bool active)
+    {
+        _doNotMovePlayer = active;
     }
 }

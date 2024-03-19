@@ -85,6 +85,8 @@ public partial class PlayerController : MonoBehaviour
         WalkAction += OnWalk;
         SprintAction += OnSprint;
 
+        FocusAction += OnFocus;
+
         DrawWeaponAction += OnDraw;
         SheathWeaponAction += OnSheath;
 
@@ -97,8 +99,10 @@ public partial class PlayerController : MonoBehaviour
         WalkAction -= OnWalk;
         SprintAction -= OnSprint;
 
-        JumpAction += OnJump;
-        FallingAction += OnFalling;
+        JumpAction -= OnJump;
+        FallingAction -= OnFalling;
+
+        FocusAction -= OnFocus;
 
         DrawWeaponAction -= OnDraw;
         SheathWeaponAction -= OnSheath;
@@ -113,7 +117,8 @@ public partial class PlayerController : MonoBehaviour
 
     private void OnWalk()
     {
-        _stateMachine.SetState(_walkState);
+        if (!_doNotMovePlayer)
+            _stateMachine.SetState(_walkState);
     }
 
     private void OnSprint(bool readyToSprint)
@@ -124,7 +129,7 @@ public partial class PlayerController : MonoBehaviour
             return;
 
         // 상태 세팅
-        if (_moveDirection != Vector3.zero)
+        if (IsMoving)
         {
             if (readyToSprint)
                 _stateMachine.SetState(_sprintState);
@@ -139,6 +144,11 @@ public partial class PlayerController : MonoBehaviour
     }
 
     private void OnFalling()
+    {
+
+    }
+
+    private void OnFocus()
     {
 
     }
