@@ -79,7 +79,10 @@ public partial class PlayerController : MonoBehaviour
     {
         IdleAction += OnIdle;
         SprintAction += OnSprint;
-        SprintCancelAction += CancelSprint;
+        CancelSprintAction += CancelSprint;
+
+        CrouchAction += OnCrouch;
+        CancelCrouchAction += CancelCrouch;
 
         FocusAction += OnFocus;
 
@@ -93,7 +96,10 @@ public partial class PlayerController : MonoBehaviour
     {
         IdleAction -= OnIdle;
         SprintAction -= OnSprint;
-        SprintCancelAction -= CancelSprint;
+        CancelSprintAction -= CancelSprint;
+
+        CrouchAction += OnCrouch;
+        CancelCrouchAction += CancelCrouch;
 
         JumpAction -= OnJump;
         FallingAction -= OnFalling;
@@ -108,13 +114,13 @@ public partial class PlayerController : MonoBehaviour
 
     private void OnIdle()
     {
-        _stateMachine.SetState(_idleState);
+        _stateMachine.SwitchState(_idleState);
     }
 
     private void OnSprint(bool doSprint)
     {
         _targetDamp = doSprint ? GameValue._baseLocomotionMaxValue : _moveDirection.magnitude;
-        _stateMachine.SetState(doSprint ? _sprintState : _idleState);
+        _stateMachine.SwitchState(doSprint ? _sprintState : _idleState);
 
         // _readyToSprint = readyToSprint;
 
@@ -132,7 +138,21 @@ public partial class PlayerController : MonoBehaviour
     private void CancelSprint()
     {
         _readyToSprint = false;
-        _stateMachine.SetState(_idleState);
+        _stateMachine.SwitchState(_idleState);
+    }
+
+    private void OnCrouch(bool doCrouch)
+    {
+        if (doCrouch)
+            _stateMachine.SwitchState(_crouchState);
+        else
+            CancelCrouchAction?.Invoke();
+    }
+
+    private void CancelCrouch()
+    {
+        _readyToCrouch = false;
+        _stateMachine.SwitchState(_idleState);
     }
 
     private void OnJump()
@@ -152,17 +172,17 @@ public partial class PlayerController : MonoBehaviour
 
     private void OnDraw()
     {
-        _stateMachine.SetState(_drawState);
+        _stateMachine.SwitchState(_drawState);
     }
 
     private void OnSheath()
     {
-        _stateMachine.SetState(_sheathState);
+        _stateMachine.SwitchState(_sheathState);
     }
 
     private void OnAttack(AttackData attackData)
     {
         (_attackState as AttackState).SetCurrAttackData(attackData);
-        _stateMachine.SetState(_attackState, true);
+        _stateMachine.SwitchState(_attackState, true);
     }
 }

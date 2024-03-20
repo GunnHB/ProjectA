@@ -68,7 +68,7 @@ public partial class PlayerController : MonoBehaviour
 
         RegistInputAction(_jumpInput, StartJumpInput);
 
-        RegistInputAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+        RegistInputAction(_crouchInput, StartCrouchInput);
 
         RegistInputAction(_drawWeaponInput, StartDrawWeaponInput);
         RegistInputAction(_attackInput, StartAttackInput);
@@ -94,7 +94,7 @@ public partial class PlayerController : MonoBehaviour
 
         UnregistInputAction(_jumpInput, StartJumpInput);
 
-        UnregistInputAction(_crouchInput, null, PerformCrouchInput, CancelCrouchInput);
+        UnregistInputAction(_crouchInput, StartCrouchInput);
 
         UnregistInputAction(_drawWeaponInput, StartDrawWeaponInput);
         UnregistInputAction(_attackInput, StartAttackInput);
@@ -222,29 +222,31 @@ public partial class PlayerController : MonoBehaviour
     #endregion
 
     #region Crouch
-    private void PerformCrouchInput(InputAction.CallbackContext context)
+    private void StartCrouchInput(InputAction.CallbackContext context)
     {
-        // 공중에 있는 상태에서는 웅크리기 불가
-        if (!IsOnAir)
-            CrouchAction?.Invoke();
+        // // 공중에 있는 상태에서는 웅크리기 불가
+        // if (!IsOnAir)
+        //     CrouchAction?.Invoke();
+        _readyToCrouch = !_readyToCrouch;
+        CrouchAction?.Invoke(_readyToCrouch);
     }
 
-    private void CancelCrouchInput(InputAction.CallbackContext context)
-    {
-        // 공중에 있는 상태에서는 무시
-        if (IsOnAir)
-            return;
+    // private void CancelCrouchInput(InputAction.CallbackContext context)
+    // {
+    //     // 공중에 있는 상태에서는 무시
+    //     if (IsOnAir)
+    //         return;
 
-        if (!IsMoving)
-            _stateMachine.SetState(_idleState);
-        else
-        {
-            if (_readyToSprint)
-                _stateMachine.SetState(_sprintState);
-            else
-                _stateMachine.SetState(_walkState);
-        }
-    }
+    //     if (!IsMoving)
+    //         _stateMachine.SetState(_idleState);
+    //     else
+    //     {
+    //         if (_readyToSprint)
+    //             _stateMachine.SetState(_sprintState);
+    //         else
+    //             _stateMachine.SetState(_walkState);
+    //     }
+    // }
     #endregion
 
     #region Draw / Sheath weapon

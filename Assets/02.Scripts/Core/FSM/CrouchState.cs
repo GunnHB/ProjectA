@@ -7,7 +7,7 @@ namespace FSM
 {
     public class CrouchState : BaseState
     {
-        private float _maxBlendValue = .5f;
+        // private float _maxBlendValue = .5f;
 
         public CrouchState(PlayerController player) : base(player)
         {
@@ -17,27 +17,21 @@ namespace FSM
         {
             base.OperateEnter();
 
-            _currLengthOfVector = 0f;
-            StartAnimation(_player.ThisAnimData.AnimParamCrouch);
+            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameCrouch, .1f);
         }
 
         public override void OperateUpdate()
         {
             base.OperateUpdate();
 
-            // if (_player.IsMoving)
-            //     _dampTarget = _maxBlendValue;
-            // else
-            //     _dampTarget = 0f;
-
-            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
+            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch, .5f);
         }
 
         public override void OperateExit()
         {
             base.OperateExit();
 
-            StopAnimation(_player.ThisAnimData.AnimParamCrouch);
+            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f);
         }
     }
 }

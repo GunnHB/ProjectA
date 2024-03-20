@@ -11,6 +11,7 @@ public class PlayerAnimData : CharacterAnimData
     private string _animParamAttackIndex = "Int_AttackIndex";
 
     private string _animNameLocomotion = "Locomotion";
+    private string _animNameCrouch = "Crouch";
     private string _animNameDefault = "Default";
 
     private string _animNameOneHandDraw = "Draw";
@@ -30,6 +31,7 @@ public class PlayerAnimData : CharacterAnimData
     public int AnimParamAttackIndex { get; private set; }
 
     public int AnimNameLocomotion { get; private set; }
+    public int AnimNameCrouch { get; private set; }
     public int AnimNameDefault { get; private set; }
 
     public int AnimNameDraw { get; private set; }
@@ -52,6 +54,7 @@ public class PlayerAnimData : CharacterAnimData
         AnimParamAttackIndex = Animator.StringToHash(_animParamAttackIndex);
 
         AnimNameLocomotion = Animator.StringToHash(_animNameLocomotion);
+        AnimNameCrouch = Animator.StringToHash(_animNameCrouch);
         AnimNameDefault = Animator.StringToHash(_animNameDefault);
 
         AnimNameDraw = Animator.StringToHash(_animNameOneHandDraw);

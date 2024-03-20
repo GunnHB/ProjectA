@@ -17,7 +17,7 @@ namespace FSM
 
             if (_player.IsGrounded)
             {
-                _stateMachine.SetState(_player.ThisLandingState);
+                _stateMachine.SwitchState(_player.ThisLandingState);
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace FSM
             base.OperateUpdate();
 
             if (_player.IsGrounded)
-                _stateMachine.SetState(_player.ThisLandingState);
+                _stateMachine.SwitchState(_player.ThisLandingState);
         }
 
         public override void OperateExit()

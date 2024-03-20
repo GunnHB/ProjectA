@@ -23,11 +23,11 @@ public class LandingState : BaseState
         base.OperateUpdate();
 
         if (!_player.IsMoving)
-            _stateMachine.SetState(_player.ThisIdleState);
+            _stateMachine.SwitchState(_player.ThisIdleState);
         else
         {
             if (_player.ReadyToSprint)
-                _stateMachine.SetState(_player.ThisSprintState);
+                _stateMachine.SwitchState(_player.ThisSprintState);
         }
     }
 

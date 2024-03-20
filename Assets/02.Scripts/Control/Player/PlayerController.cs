@@ -38,6 +38,9 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     // about jump
     private float _jumpForce = 1f;
 
+    // about crouch
+    private bool _readyToCrouch = false;                // 앉기 키 입력 여부
+
     // combo attack
     private bool _isAttacking;                          // 공격 중인지
     private bool _doCombo;
@@ -47,13 +50,14 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
     public UnityAction IdleAction;
     public UnityAction<bool> SprintAction;
-    public UnityAction SprintCancelAction;
+    public UnityAction CancelSprintAction;
 
     public UnityAction JumpAction;
     public UnityAction FallingAction;
     public UnityAction LandingAction;
 
-    public UnityAction CrouchAction;
+    public UnityAction<bool> CrouchAction;
+    public UnityAction CancelCrouchAction;
 
     public UnityAction FocusAction;
 

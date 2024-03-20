@@ -23,7 +23,7 @@ namespace FSM
         public IState CurrentState => _currentState;
         public IState PreviousState => _previousState;
 
-        public void SetState(IState state, bool isLoop = false)
+        public void SwitchState(IState state, bool isLoop = false)
         {
             // 같은 상태를 다시 불러내지 않는다면
             // 들어온 상태가 현재 상태와 같으면 리턴

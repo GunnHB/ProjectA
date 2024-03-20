@@ -30,9 +30,9 @@ namespace FSM
                 _isjumped = true;
 
             if (_player.IsPeak)
-                _stateMachine.SetState(_player.ThisFallingState);
+                _stateMachine.SwitchState(_player.ThisFallingState);
             else if (_isjumped && _player.IsGrounded)
-                _stateMachine.SetState(_player.ThisLandingState);
+                _stateMachine.SwitchState(_player.ThisLandingState);
         }
 
         public override void OperateExit()

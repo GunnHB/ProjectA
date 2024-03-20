@@ -27,7 +27,7 @@ namespace FSM
 
             // 달리는 중에 멈추면 달리기 취소
             if (!_player.IsMoving)
-                _player.SprintCancelAction?.Invoke();
+                _player.CancelSprintAction?.Invoke();
         }
 
         public override void OperateExit()
