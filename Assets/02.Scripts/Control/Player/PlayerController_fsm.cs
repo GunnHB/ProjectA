@@ -119,30 +119,30 @@ public partial class PlayerController : MonoBehaviour
 
     private void OnSprint(bool doSprint)
     {
+        if (_readyToCrouch)
+            CancelCrouchAction?.Invoke();
+
         _targetDamp = doSprint ? GameValue._baseLocomotionMaxValue : _moveDirection.magnitude;
         _stateMachine.SwitchState(doSprint ? _sprintState : _idleState);
-
-        // _readyToSprint = readyToSprint;
-
-        // if (IsOnAir)
-        //     return;
-
-        // // 상태 세팅
-        // if (IsMoving)
-        // {
-        //     if (readyToSprint)
-        //         _stateMachine.SetState(_sprintState);
-        // }
     }
 
     private void CancelSprint()
     {
         _readyToSprint = false;
+        _targetDamp = _moveDirection.magnitude;
+
+        if (_readyToCrouch)
+            return;
+
         _stateMachine.SwitchState(_idleState);
     }
 
     private void OnCrouch(bool doCrouch)
     {
+        // 달리고 있던 중이면 호출
+        if (_readyToSprint)
+            CancelSprintAction?.Invoke();
+
         if (doCrouch)
             _stateMachine.SwitchState(_crouchState);
         else
@@ -152,7 +152,9 @@ public partial class PlayerController : MonoBehaviour
     private void CancelCrouch()
     {
         _readyToCrouch = false;
-        _stateMachine.SwitchState(_idleState);
+
+        if (!_readyToSprint)
+            _stateMachine.SwitchState(_idleState);
     }
 
     private void OnJump()

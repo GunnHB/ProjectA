@@ -177,13 +177,6 @@ public partial class PlayerController : MonoBehaviour
         // 방향 세팅
         _movement.SetDirection(_moveDirection);
         _targetDamp = _moveDirection.magnitude;
-
-        // if (IsOnAir || IsCrouching || _isAttacking)
-        //     return;
-
-        // if (_readyToSprint)
-        //     SprintAction?.Invoke(true);
-
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
@@ -193,13 +186,6 @@ public partial class PlayerController : MonoBehaviour
 
         _movement.SetDirection(_moveDirection);
         _targetDamp = _moveDirection.magnitude;
-
-        // if (_isAttacking)
-        //     return;
-
-        // // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
-        // if (!IsOnAir && !IsCrouching)
-        //     IdleAction?.Invoke();
     }
     #endregion
 
@@ -224,29 +210,9 @@ public partial class PlayerController : MonoBehaviour
     #region Crouch
     private void StartCrouchInput(InputAction.CallbackContext context)
     {
-        // // 공중에 있는 상태에서는 웅크리기 불가
-        // if (!IsOnAir)
-        //     CrouchAction?.Invoke();
         _readyToCrouch = !_readyToCrouch;
         CrouchAction?.Invoke(_readyToCrouch);
     }
-
-    // private void CancelCrouchInput(InputAction.CallbackContext context)
-    // {
-    //     // 공중에 있는 상태에서는 무시
-    //     if (IsOnAir)
-    //         return;
-
-    //     if (!IsMoving)
-    //         _stateMachine.SetState(_idleState);
-    //     else
-    //     {
-    //         if (_readyToSprint)
-    //             _stateMachine.SetState(_sprintState);
-    //         else
-    //             _stateMachine.SetState(_walkState);
-    //     }
-    // }
     #endregion
 
     #region Draw / Sheath weapon

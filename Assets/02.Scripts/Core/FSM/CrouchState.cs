@@ -17,6 +17,7 @@ namespace FSM
         {
             base.OperateEnter();
 
+            _currLengthOfVector = 0f;
             _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameCrouch, .1f);
         }
 

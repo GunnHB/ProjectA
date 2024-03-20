@@ -6,7 +6,6 @@ public class PlayerAnimData : CharacterAnimData
 {
     private string _animParamJump = "Bool_Jump";
     private string _animParamCrouch = "Bool_Crouch";
-    protected string _animParamCombatMode = "Bool_CombatMode";
     private string _animParamBlendCrouch = "Float_Crouch";
     private string _animParamAttackIndex = "Int_AttackIndex";
 
@@ -15,9 +14,7 @@ public class PlayerAnimData : CharacterAnimData
     private string _animNameDefault = "Default";
 
     private string _animNameOneHandDraw = "Draw";
-    // private string _animNameOneHandDraw02 = "Draw02";
     private string _animNameOneHandSheath = "Sheath";
-    // private string _animNameOneHandSheath02 = "Sheath02";
 
     private string _animNameAttack01 = "Attack01";
     private string _animNameAttack02 = "Attack02";
@@ -26,7 +23,6 @@ public class PlayerAnimData : CharacterAnimData
 
     public int AnimParamJump { get; private set; }
     public int AnimParamCrouch { get; private set; }
-    public int AnimParamCombatMode { get; private set; }
     public int AnimParamBlendCrouch { get; private set; }
     public int AnimParamAttackIndex { get; private set; }
 
@@ -35,9 +31,7 @@ public class PlayerAnimData : CharacterAnimData
     public int AnimNameDefault { get; private set; }
 
     public int AnimNameDraw { get; private set; }
-    // public int AnimNameDraw02 { get; private set; }
     public int AnimNameSheath { get; private set; }
-    // public int AnimNameSheath02 { get; private set; }
 
 
     public int AnimNameAttack01 { get; private set; }
@@ -49,7 +43,6 @@ public class PlayerAnimData : CharacterAnimData
     {
         AnimParamJump = Animator.StringToHash(_animParamJump);
         AnimParamCrouch = Animator.StringToHash(_animParamCrouch);
-        AnimParamCombatMode = Animator.StringToHash(_animParamCombatMode);
         AnimParamBlendCrouch = Animator.StringToHash(_animParamBlendCrouch);
         AnimParamAttackIndex = Animator.StringToHash(_animParamAttackIndex);
 
