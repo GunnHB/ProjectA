@@ -176,9 +176,10 @@ public partial class PlayerController : MonoBehaviour
 
         // 방향 세팅
         _movement.SetDirection(_moveDirection);
+        _targetDamp = _moveDirection.magnitude;
 
-        if (IsOnAir || IsCrouching || _isAttacking)
-            return;
+        // if (IsOnAir || IsCrouching || _isAttacking)
+        //     return;
 
         if (_readyToSprint)
             SprintAction?.Invoke(true);
@@ -186,15 +187,18 @@ public partial class PlayerController : MonoBehaviour
 
     private void CancelMovementInput(InputAction.CallbackContext context)
     {
-        _moveDirection = Vector3.zero;
+        var inputValue = context.ReadValue<Vector2>();
+        _moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
+
         _movement.SetDirection(_moveDirection);
+        _targetDamp = _moveDirection.magnitude;
 
-        if (_isAttacking)
-            return;
+        // if (_isAttacking)
+        //     return;
 
-        // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
-        if (!IsOnAir && !IsCrouching)
-            IdleAction?.Invoke();
+        // // 점프 상태에서 이동 키를 뗐을 때 상태 이상 방지
+        // if (!IsOnAir && !IsCrouching)
+        //     IdleAction?.Invoke();
     }
     #endregion
 

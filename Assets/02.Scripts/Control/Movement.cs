@@ -26,7 +26,7 @@ public class Movement : MonoBehaviour
     private float _applySpeed;
 
     // direction
-    private Vector3 _direction = Vector3.zero;
+    private Vector3 _direction = Vector3.zero;  // 외부에서 입력되는 값으로 갱신
     private Vector3 _gravityVelocity;
 
     // character rotate

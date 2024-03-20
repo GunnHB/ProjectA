@@ -25,10 +25,10 @@ namespace FSM
         {
             base.OperateUpdate();
 
-            if (_player.IsMoving)
-                _dampTarget = _maxBlendValue;
-            else
-                _dampTarget = 0f;
+            // if (_player.IsMoving)
+            //     _dampTarget = _maxBlendValue;
+            // else
+            //     _dampTarget = 0f;
 
             SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
         }

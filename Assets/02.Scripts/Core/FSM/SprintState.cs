@@ -15,7 +15,7 @@ namespace FSM
         {
             base.OperateEnter();
 
-            _dampTarget = 1.5f;
+            // _dampTarget = 1.5f;
 
             if (GetPreviousState(_player.ThisLandingState))
                 _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);

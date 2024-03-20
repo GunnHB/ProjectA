@@ -10,7 +10,7 @@ namespace FSM
         protected float _currLengthOfVector;
         protected float _smoothVelocity;
         protected float _smoothTime = .15f;
-        protected float _dampTarget;
+        // protected float _dampTarget;
 
         protected GameValue.WeaponType _weaponType;
 
@@ -49,10 +49,11 @@ namespace FSM
         /// </summary>
         protected void SetPlayerMovement(int animHash)
         {
-            _currLengthOfVector = Mathf.SmoothDamp(_currLengthOfVector, _dampTarget, ref _smoothVelocity, _smoothTime);
+            _currLengthOfVector = Mathf.SmoothDamp(_currLengthOfVector, _player.TargetDamp, ref _smoothVelocity, _smoothTime);
+            float fixedValue = (float)System.Math.Round(_currLengthOfVector, 2);
 
-            SetFloatParam(animHash, _currLengthOfVector);
-            _player.SetMovementSpeed(_currLengthOfVector * _player.ThisMoveSpeed);
+            SetFloatParam(animHash, fixedValue);
+            _player.SetMovementSpeed(fixedValue * _player.ThisMoveSpeed);
         }
 
         protected bool GetPreviousState(IState state)

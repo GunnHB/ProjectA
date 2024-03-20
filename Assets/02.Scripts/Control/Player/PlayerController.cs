@@ -32,6 +32,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     // about move
     private float _moveSpeed = 4f;
     private Vector3 _moveDirection;
+    private float _targetDamp;
     private bool _readyToSprint = false;                // 스프린트 키 입력 여부
 
     // about jump
@@ -74,6 +75,8 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public bool DoCombo => _doCombo;
     public bool IsAttacking => _isAttacking;
     public int AttackIndex => _attackIndex;
+
+    public float TargetDamp => _targetDamp;
 
     public Dictionary<GameValue.WeaponType, List<AttackData>> AttackDataDic => _attackDataDic;
     // public Queue<AttackData> AttackQueue => _attackQueue;
