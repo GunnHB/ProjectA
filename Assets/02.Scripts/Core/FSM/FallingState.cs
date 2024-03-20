@@ -15,13 +15,15 @@ namespace FSM
         {
             base.OperateEnter();
 
-            if (_player.IsGrounded)
-            {
-                _stateMachine.SwitchState(_player.ThisLandingState);
-                return;
-            }
+            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameFalling, .1f);
 
-            StartAnimation(_player.ThisAnimData.AnimParamFalling);
+            // if (_player.IsGrounded)
+            // {
+            //     _stateMachine.SwitchState(_player.ThisLandingState);
+            //     return;
+            // }
+
+            // StartAnimation(_player.ThisAnimData.AnimParamFalling);
         }
 
         public override void OperateUpdate()
@@ -29,14 +31,17 @@ namespace FSM
             base.OperateUpdate();
 
             if (_player.IsGrounded)
-                _stateMachine.SwitchState(_player.ThisLandingState);
+                _player.LandingAction?.Invoke();
+
+            // if (_player.IsGrounded)
+            //     _stateMachine.SwitchState(_player.ThisLandingState);
         }
 
         public override void OperateExit()
         {
             base.OperateExit();
 
-            StopAnimation(_player.ThisAnimData.AnimParamFalling);
+            // StopAnimation(_player.ThisAnimData.AnimParamFalling);
         }
     }
 }

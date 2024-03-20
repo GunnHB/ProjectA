@@ -11,6 +11,9 @@ public class PlayerAnimData : CharacterAnimData
 
     private string _animNameLocomotion = "Locomotion";
     private string _animNameCrouch = "Crouch";
+    private string _animNameJump = "Jump";
+    private string _animNameFalling = "Falling";
+    private string _animNameLanding = "Landing";
     private string _animNameDefault = "Default";
 
     private string _animNameOneHandDraw = "Draw";
@@ -28,6 +31,9 @@ public class PlayerAnimData : CharacterAnimData
 
     public int AnimNameLocomotion { get; private set; }
     public int AnimNameCrouch { get; private set; }
+    public int AnimNameJump { get; private set; }
+    public int AnimNameFalling { get; private set; }
+    public int AnimNameLanding { get; private set; }
     public int AnimNameDefault { get; private set; }
 
     public int AnimNameDraw { get; private set; }
@@ -48,12 +54,13 @@ public class PlayerAnimData : CharacterAnimData
 
         AnimNameLocomotion = Animator.StringToHash(_animNameLocomotion);
         AnimNameCrouch = Animator.StringToHash(_animNameCrouch);
+        AnimNameJump = Animator.StringToHash(_animNameJump);
+        AnimNameFalling = Animator.StringToHash(_animNameFalling);
+        AnimNameLanding = Animator.StringToHash(_animNameLanding);
         AnimNameDefault = Animator.StringToHash(_animNameDefault);
 
         AnimNameDraw = Animator.StringToHash(_animNameOneHandDraw);
-        // AnimNameDraw02 = Animator.StringToHash(_animNameOneHandDraw02);
         AnimNameSheath = Animator.StringToHash(_animNameOneHandSheath);
-        // AnimNameSheath02 = Animator.StringToHash(_animNameOneHandSheath02);
 
         AnimNameAttack01 = Animator.StringToHash(_animNameAttack01);
         AnimNameAttack02 = Animator.StringToHash(_animNameAttack02);

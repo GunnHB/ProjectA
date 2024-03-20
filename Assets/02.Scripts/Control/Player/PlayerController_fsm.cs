@@ -84,6 +84,10 @@ public partial class PlayerController : MonoBehaviour
         CrouchAction += OnCrouch;
         CancelCrouchAction += CancelCrouch;
 
+        JumpAction += OnJump;
+        FallingAction += OnFalling;
+        LandingAction += OnLanding;
+
         FocusAction += OnFocus;
 
         DrawWeaponAction += OnDraw;
@@ -103,6 +107,7 @@ public partial class PlayerController : MonoBehaviour
 
         JumpAction -= OnJump;
         FallingAction -= OnFalling;
+        LandingAction += OnLanding;
 
         FocusAction -= OnFocus;
 
@@ -159,12 +164,17 @@ public partial class PlayerController : MonoBehaviour
 
     private void OnJump()
     {
-
+        _stateMachine.SwitchState(_jumpState);
     }
 
     private void OnFalling()
     {
+        _stateMachine.SwitchState(_fallingState);
+    }
 
+    private void OnLanding()
+    {
+        _stateMachine.SwitchState(_landingState);
     }
 
     private void OnFocus()

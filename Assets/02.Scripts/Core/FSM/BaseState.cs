@@ -146,7 +146,7 @@ namespace FSM
         {
             SetWeaponType();
 
-            string layerName = string.Empty;
+            string layerName = GameValue.ANIM_LAYER_BASE;
 
             switch (_weaponType)
             {
@@ -175,7 +175,7 @@ namespace FSM
         {
             SetWeaponType();
 
-            string layerName = string.Empty;
+            string layerName = GameValue.ANIM_LAYER_BASE;
 
             switch (_weaponType)
             {

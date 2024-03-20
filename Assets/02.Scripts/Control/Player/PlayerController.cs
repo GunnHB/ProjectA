@@ -342,4 +342,10 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     {
         _doNotMovePlayer = active;
     }
+
+    public void EndOfLanding()
+    {
+        _animator.CrossFadeInFixedTime(_animData.AnimNameLocomotion, .1f);
+        IdleAction?.Invoke();
+    }
 }
