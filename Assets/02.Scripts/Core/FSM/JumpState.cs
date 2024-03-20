@@ -3,43 +3,44 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using FSM;
-
-public class JumpState : BaseState
+namespace FSM
 {
-    bool _isjumped = false;
-
-    public JumpState(PlayerController player) : base(player)
+    public class JumpState : BaseState
     {
-    }
+        bool _isjumped = false;
 
-    public override void OperateEnter()
-    {
-        base.OperateEnter();
+        public JumpState(PlayerController player) : base(player)
+        {
+        }
 
-        // StartAnimation(_player.ThisAnimData.AnimParamJump);
+        public override void OperateEnter()
+        {
+            base.OperateEnter();
 
-        _player.DoJump();
-    }
+            // StartAnimation(_player.ThisAnimData.AnimParamJump);
 
-    public override void OperateUpdate()
-    {
-        base.OperateUpdate();
+            _player.DoJump();
+        }
 
-        if (!_player.IsGrounded)
-            _isjumped = true;
+        public override void OperateUpdate()
+        {
+            base.OperateUpdate();
 
-        if (_player.IsPeak)
-            _stateMachine.SetState(_player.ThisFallingState);
-        else if (_isjumped && _player.IsGrounded)
-            _stateMachine.SetState(_player.ThisLandingState);
-    }
+            if (!_player.IsGrounded)
+                _isjumped = true;
 
-    public override void OperateExit()
-    {
-        base.OperateExit();
+            if (_player.IsPeak)
+                _stateMachine.SetState(_player.ThisFallingState);
+            else if (_isjumped && _player.IsGrounded)
+                _stateMachine.SetState(_player.ThisLandingState);
+        }
 
-        _isjumped = false;
-        StopAnimation(_player.ThisAnimData.AnimParamJump);
+        public override void OperateExit()
+        {
+            base.OperateExit();
+
+            _isjumped = false;
+            StopAnimation(_player.ThisAnimData.AnimParamJump);
+        }
     }
 }

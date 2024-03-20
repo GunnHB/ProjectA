@@ -28,8 +28,6 @@ public class LandingState : BaseState
         {
             if (_player.ReadyToSprint)
                 _stateMachine.SetState(_player.ThisSprintState);
-            else
-                _stateMachine.SetState(_player.ThisWalkState);
         }
     }
 

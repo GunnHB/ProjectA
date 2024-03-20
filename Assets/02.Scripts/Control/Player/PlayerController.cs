@@ -45,7 +45,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     private Dictionary<GameValue.WeaponType, List<AttackData>> _attackDataDic;
 
     public UnityAction IdleAction;
-    public UnityAction WalkAction;
     public UnityAction<bool> SprintAction;
 
     public UnityAction JumpAction;

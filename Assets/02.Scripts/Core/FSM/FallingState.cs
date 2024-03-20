@@ -3,39 +3,40 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using FSM;
-
-public class FallingState : BaseState
+namespace FSM
 {
-    public FallingState(PlayerController player) : base(player)
+    public class FallingState : BaseState
     {
-    }
-
-    public override void OperateEnter()
-    {
-        base.OperateEnter();
-
-        if (_player.IsGrounded)
+        public FallingState(PlayerController player) : base(player)
         {
-            _stateMachine.SetState(_player.ThisLandingState);
-            return;
         }
 
-        StartAnimation(_player.ThisAnimData.AnimParamFalling);
-    }
+        public override void OperateEnter()
+        {
+            base.OperateEnter();
 
-    public override void OperateUpdate()
-    {
-        base.OperateUpdate();
+            if (_player.IsGrounded)
+            {
+                _stateMachine.SetState(_player.ThisLandingState);
+                return;
+            }
 
-        if (_player.IsGrounded)
-            _stateMachine.SetState(_player.ThisLandingState);
-    }
+            StartAnimation(_player.ThisAnimData.AnimParamFalling);
+        }
 
-    public override void OperateExit()
-    {
-        base.OperateExit();
+        public override void OperateUpdate()
+        {
+            base.OperateUpdate();
 
-        StopAnimation(_player.ThisAnimData.AnimParamFalling);
+            if (_player.IsGrounded)
+                _stateMachine.SetState(_player.ThisLandingState);
+        }
+
+        public override void OperateExit()
+        {
+            base.OperateExit();
+
+            StopAnimation(_player.ThisAnimData.AnimParamFalling);
+        }
     }
 }

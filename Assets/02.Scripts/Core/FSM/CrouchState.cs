@@ -3,40 +3,41 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using FSM;
-
-public class CrouchState : BaseState
+namespace FSM
 {
-    private float _maxBlendValue = .5f;
-
-    public CrouchState(PlayerController player) : base(player)
+    public class CrouchState : BaseState
     {
-    }
+        private float _maxBlendValue = .5f;
 
-    public override void OperateEnter()
-    {
-        base.OperateEnter();
+        public CrouchState(PlayerController player) : base(player)
+        {
+        }
 
-        _currLengthOfVector = 0f;
-        StartAnimation(_player.ThisAnimData.AnimParamCrouch);
-    }
+        public override void OperateEnter()
+        {
+            base.OperateEnter();
 
-    public override void OperateUpdate()
-    {
-        base.OperateUpdate();
+            _currLengthOfVector = 0f;
+            StartAnimation(_player.ThisAnimData.AnimParamCrouch);
+        }
 
-        if (_player.IsMoving)
-            _dampTarget = _maxBlendValue;
-        else
-            _dampTarget = 0f;
+        public override void OperateUpdate()
+        {
+            base.OperateUpdate();
 
-        SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
-    }
+            if (_player.IsMoving)
+                _dampTarget = _maxBlendValue;
+            else
+                _dampTarget = 0f;
 
-    public override void OperateExit()
-    {
-        base.OperateExit();
+            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
+        }
 
-        StopAnimation(_player.ThisAnimData.AnimParamCrouch);
+        public override void OperateExit()
+        {
+            base.OperateExit();
+
+            StopAnimation(_player.ThisAnimData.AnimParamCrouch);
+        }
     }
 }

@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace FSM
 {
+    /// <summary>
+    /// 기본 움직임에 대한 state
+    /// </summary>
     public class IdleState : BaseState
     {
         bool _isStopped = false;
@@ -24,13 +27,13 @@ namespace FSM
             if (GetPreviousState(_player.ThisAttackState))
                 CrossFadeInFixedUpdate(_player.ThisAnimData.AnimNameLocomotion);
 
-            if (_player.IsMoving)
-            {
-                _player.WalkAction?.Invoke();
-                return;
-            }
+            // if (_player.IsMoving)
+            // {
+            //     _player.WalkAction?.Invoke();
+            //     return;
+            // }
 
-            if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisSprintState))
+            if (GetPreviousState(_player.ThisSprintState))
             {
                 _currBlendValue = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
                 _isStopped = true;

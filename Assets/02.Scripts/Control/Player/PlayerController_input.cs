@@ -182,8 +182,6 @@ public partial class PlayerController : MonoBehaviour
 
         if (_readyToSprint)
             SprintAction?.Invoke(true);
-        else
-            WalkAction?.Invoke();
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
@@ -322,8 +320,6 @@ public partial class PlayerController : MonoBehaviour
         {
             if (_readyToSprint)
                 SprintAction?.Invoke(true);
-            else
-                WalkAction?.Invoke();
         }
     }
     #endregion

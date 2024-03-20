@@ -30,8 +30,6 @@ public partial class PlayerController : MonoBehaviour
 
     // Properties
     public IState ThisIdleState => _idleState;
-
-    public IState ThisWalkState => _walkState;
     public IState ThisSprintState => _sprintState;
 
     public IState ThisJumpState => _jumpState;
@@ -55,9 +53,7 @@ public partial class PlayerController : MonoBehaviour
     {
         // 상태 생성
 
-        // idle ~ move
         _idleState = new IdleState(this);
-        _walkState = new WalkState(this);
         _sprintState = new SprintState(this);
 
         // jump
@@ -82,7 +78,6 @@ public partial class PlayerController : MonoBehaviour
     private void RegistStateAction()
     {
         IdleAction += OnIdle;
-        WalkAction += OnWalk;
         SprintAction += OnSprint;
 
         FocusAction += OnFocus;
@@ -96,7 +91,6 @@ public partial class PlayerController : MonoBehaviour
     private void UnRegistStateAction()
     {
         IdleAction -= OnIdle;
-        WalkAction -= OnWalk;
         SprintAction -= OnSprint;
 
         JumpAction -= OnJump;
@@ -115,12 +109,6 @@ public partial class PlayerController : MonoBehaviour
         _stateMachine.SetState(_idleState);
     }
 
-    private void OnWalk()
-    {
-        if (!_doNotMovePlayer)
-            _stateMachine.SetState(_walkState);
-    }
-
     private void OnSprint(bool readyToSprint)
     {
         _readyToSprint = readyToSprint;
@@ -133,8 +121,6 @@ public partial class PlayerController : MonoBehaviour
         {
             if (readyToSprint)
                 _stateMachine.SetState(_sprintState);
-            else
-                WalkAction?.Invoke();
         }
     }
 

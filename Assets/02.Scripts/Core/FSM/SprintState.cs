@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace FSM
 {
+    // 달리기 state
     public class SprintState : BaseState
     {
         public SprintState(PlayerController player) : base(player)
@@ -16,7 +17,7 @@ namespace FSM
 
             _dampTarget = 1.5f;
 
-            if (GetPreviousState(_player.ThisWalkState) || GetPreviousState(_player.ThisLandingState))
+            if (GetPreviousState(_player.ThisLandingState))
                 _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
             else
                 _currLengthOfVector = 0f;
