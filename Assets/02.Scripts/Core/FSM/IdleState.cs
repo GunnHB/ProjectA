@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
-
 namespace FSM
 {
     /// <summary>
@@ -11,24 +5,24 @@ namespace FSM
     /// </summary>
     public class IdleState : BaseState
     {
-        // bool _isStopped = false;
-        // float _currBlendValue = 0f;
-
         public IdleState(PlayerController player) : base(player)
         {
-            if (player == null)
-                return;
+
         }
 
         public override void OperateEnter()
         {
             base.OperateEnter();
+
+            // 현재 locomotion 값을 가져옴
+            _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
         }
 
         public override void OperateUpdate()
         {
             base.OperateUpdate();
 
+            // 플레이어의 이동에 따라 애니의 인자값이 갱신됨
             SetPlayerMovement(_player.ThisAnimData.AnimParamBlendLocomotion);
         }
 

@@ -79,6 +79,7 @@ public partial class PlayerController : MonoBehaviour
     {
         IdleAction += OnIdle;
         SprintAction += OnSprint;
+        SprintCancelAction += CancelSprint;
 
         FocusAction += OnFocus;
 
@@ -92,6 +93,7 @@ public partial class PlayerController : MonoBehaviour
     {
         IdleAction -= OnIdle;
         SprintAction -= OnSprint;
+        SprintCancelAction -= CancelSprint;
 
         JumpAction -= OnJump;
         FallingAction -= OnFalling;
@@ -109,19 +111,28 @@ public partial class PlayerController : MonoBehaviour
         _stateMachine.SetState(_idleState);
     }
 
-    private void OnSprint(bool readyToSprint)
+    private void OnSprint(bool doSprint)
     {
-        _readyToSprint = readyToSprint;
+        _targetDamp = doSprint ? GameValue._baseLocomotionMaxValue : _moveDirection.magnitude;
+        _stateMachine.SetState(doSprint ? _sprintState : _idleState);
 
-        if (IsOnAir)
-            return;
+        // _readyToSprint = readyToSprint;
 
-        // 상태 세팅
-        if (IsMoving)
-        {
-            if (readyToSprint)
-                _stateMachine.SetState(_sprintState);
-        }
+        // if (IsOnAir)
+        //     return;
+
+        // // 상태 세팅
+        // if (IsMoving)
+        // {
+        //     if (readyToSprint)
+        //         _stateMachine.SetState(_sprintState);
+        // }
+    }
+
+    private void CancelSprint()
+    {
+        _readyToSprint = false;
+        _stateMachine.SetState(_idleState);
     }
 
     private void OnJump()

@@ -47,6 +47,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
     public UnityAction IdleAction;
     public UnityAction<bool> SprintAction;
+    public UnityAction SprintCancelAction;
 
     public UnityAction JumpAction;
     public UnityAction FallingAction;

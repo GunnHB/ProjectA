@@ -64,7 +64,7 @@ public partial class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         RegistInputAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
-        RegistInputAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+        RegistInputAction(_sprintInput, StartSprintInput);
 
         RegistInputAction(_jumpInput, StartJumpInput);
 
@@ -90,7 +90,7 @@ public partial class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         UnregistInputAction(_movementInput, null, PerformMovementInput, CancelMovementInput);
-        UnregistInputAction(_sprintInput, null, PerformSprintInput, CancelSprintInput);
+        UnregistInputAction(_sprintInput, StartSprintInput);
 
         UnregistInputAction(_jumpInput, StartJumpInput);
 
@@ -181,8 +181,9 @@ public partial class PlayerController : MonoBehaviour
         // if (IsOnAir || IsCrouching || _isAttacking)
         //     return;
 
-        if (_readyToSprint)
-            SprintAction?.Invoke(true);
+        // if (_readyToSprint)
+        //     SprintAction?.Invoke(true);
+
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
@@ -203,14 +204,13 @@ public partial class PlayerController : MonoBehaviour
     #endregion
 
     #region Sprint
-    private void PerformSprintInput(InputAction.CallbackContext context)
+    private void StartSprintInput(InputAction.CallbackContext context)
     {
-        SprintAction?.Invoke(true);
-    }
-
-    private void CancelSprintInput(InputAction.CallbackContext context)
-    {
-        SprintAction?.Invoke(false);
+        if (IsMoving)
+        {
+            _readyToSprint = !ReadyToSprint;
+            SprintAction?.Invoke(_readyToSprint);
+        }
     }
     #endregion
 
@@ -320,11 +320,11 @@ public partial class PlayerController : MonoBehaviour
     {
         if (!IsMoving)
             IdleAction?.Invoke();
-        else
-        {
-            if (_readyToSprint)
-                SprintAction?.Invoke(true);
-        }
+        // else
+        // {
+        //     if (_readyToSprint)
+        //         SprintAction?.Invoke(true);
+        // }
     }
     #endregion
 

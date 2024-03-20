@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 public static class GameValue
 {
     public static float _gravity = -9.81f;
+    public static float _baseLocomotionMaxValue = 1.5f;
 
     // 아이템 타입에 따른 인벤토리의 초기 슬롯 수
     public static int _initWeaponItemAmount = 4;
