@@ -9,7 +9,7 @@ namespace FSM
         private AttackData _currAttackData;
 
         private int _layerIndex = 0;
-        private float _exitTime = .3f;
+        private float _exitTime = .6f;
 
         public AttackState(PlayerController player) : base(player)
         {

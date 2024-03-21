@@ -322,7 +322,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     private IEnumerator Cor_UpdateAttackInterval()
     {
         float _currTime = 0f;
-        float targetTime = 1.2f;
+        float targetTime = .8f;
 
         _runningCoroutine = true;
 
