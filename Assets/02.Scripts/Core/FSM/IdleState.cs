@@ -24,6 +24,9 @@ namespace FSM
 
             // 플레이어의 이동에 따라 애니의 인자값이 갱신됨
             SetPlayerMovement(_player.ThisAnimData.AnimParamBlendLocomotion);
+
+            if (!_player.IsGrounded)
+                _player.FallingAction?.Invoke();
         }
 
         public override void OperateExit()
