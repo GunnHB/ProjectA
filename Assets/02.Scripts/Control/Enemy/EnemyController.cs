@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -53,8 +52,10 @@ public class EnemyController : MonoBehaviour
 
     protected List<INode> _rootNodeList;
 
-    protected List<INode> _alertNodeList;
-    protected List<INode> _patrolNodeList;
+    protected List<INode> _attackNodeList;              // 공격 노드 리스트
+    protected List<INode> _chaseNodeList;               // 추격 노드 리스트
+    protected List<INode> _alertNodeList;               // 주의 노드 리스트
+    protected List<INode> _patrolNodeList;              // 순찰 노드 리스트
 
     protected EnemyState _state;
 
@@ -100,6 +101,8 @@ public class EnemyController : MonoBehaviour
     {
         _rootNodeList = new List<INode>
         {
+            // AttackNode(),
+            // ChaseNode(),
             // AlertNode(),
             PatrolNode()
         };
@@ -107,6 +110,31 @@ public class EnemyController : MonoBehaviour
         return new SelectorNode(_rootNodeList);
     }
 
+    #region AttackNode
+    protected virtual SequenceNode AttackNode()
+    {
+        _chaseNodeList = new List<INode>
+        {
+
+        };
+
+        return new SequenceNode(_chaseNodeList);
+    }
+    #endregion
+
+    #region ChaseNode
+    protected virtual SequenceNode ChaseNode()
+    {
+        _chaseNodeList = new List<INode>
+        {
+
+        };
+
+        return new SequenceNode(_chaseNodeList);
+    }
+    #endregion
+
+    #region AlertNode
     protected virtual SequenceNode AlertNode()
     {
         _alertNodeList = new List<INode>
@@ -121,7 +149,9 @@ public class EnemyController : MonoBehaviour
     {
         throw new NotImplementedException();
     }
+    #endregion
 
+    #region PatrolNode
     protected virtual SequenceNode PatrolNode()
     {
         _patrolNodeList = new List<INode>
@@ -174,31 +204,6 @@ public class EnemyController : MonoBehaviour
         return _currWayPoint != Vector3.zero ? INode.ENodeState.RunningState : INode.ENodeState.FailureState;
     }
 
-    private Vector3 SetWayPointByRandom()
-    {
-        if (_currWayPoint == Vector3.zero)
-        {
-            // 현재 위치에서 랜덤한 지점을 반환
-            var randomSite = (UnityEngine.Random.insideUnitSphere * _radius) + transform.position;
-
-            _currWayPoint = new Vector3(randomSite.x, 0f, randomSite.z);
-        }
-
-        return _currWayPoint;
-    }
-
-    private Vector3 SetWayPointByList()
-    {
-        _currListIndex++;
-
-        if (_wayPointList.Count >= _currListIndex)
-            _currListIndex = 0;
-
-        _currWayPoint = _wayPointList[_currListIndex].transform.localPosition;
-
-        return _currWayPoint;
-    }
-
     private INode.ENodeState DoIdle()
     {
         _targetDamp = 0f;
@@ -232,6 +237,32 @@ public class EnemyController : MonoBehaviour
 
             return INode.ENodeState.SuccessState;
         }
+    }
+    #endregion
+
+    private Vector3 SetWayPointByRandom()
+    {
+        if (_currWayPoint == Vector3.zero)
+        {
+            // 현재 위치에서 랜덤한 지점을 반환
+            var randomSite = (UnityEngine.Random.insideUnitSphere * _radius) + transform.position;
+
+            _currWayPoint = new Vector3(randomSite.x, 0f, randomSite.z);
+        }
+
+        return _currWayPoint;
+    }
+
+    private Vector3 SetWayPointByList()
+    {
+        _currListIndex++;
+
+        if (_wayPointList.Count >= _currListIndex)
+            _currListIndex = 0;
+
+        _currWayPoint = _wayPointList[_currListIndex].transform.localPosition;
+
+        return _currWayPoint;
     }
 
     private void SetAnimDamp(float targetDamp)
