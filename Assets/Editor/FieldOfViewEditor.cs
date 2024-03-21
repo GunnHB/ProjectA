@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 
 using UnityEditor;
@@ -22,6 +19,15 @@ public class FieldOfViewEditor : OdinEditor
 
         Handles.color = Color.yellow;
         Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.MeleeAttackRange);
+
+        Handles.color = Color.cyan;
+        Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.AbleToMeleeAttackRange);
+
+        if (ColorUtility.TryParseHtmlString("#ff33ff", out Color color))
+        {
+            Handles.color = color;
+            Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.ReadyToCombatRange);
+        }
 
         Vector3 viewAngleA = fov.DirectionFromAngle(-fov.ViewAngle / 2, false);
         Vector3 viewAngleB = fov.DirectionFromAngle(fov.ViewAngle / 2, false);

@@ -162,11 +162,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb716d7c74b77b4d9796ca877c57da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doNotPatrol: 0
+  _doNotPatrol: 1
   _setRandom: 1
   _wayPointList: []
   _radius: 5
-  _drawGizmos: 1
+  _drawGizmos: 0
 --- !u!114 &2692302846842451180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,14 +179,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efafb88e7e92ce04481702836232dd21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewRadius: 5
-  _viewAngle: 130
-  _meleeAttackRange: 0.3
+  _viewRadius: 15
+  _viewAngle: 150
+  _readyToCombatRange: 11
+  _ableToMeleeAttackRange: 3
+  _meleeAttackRange: 1
   _canRangeAttack: 0
   _rangeAttackRange: 0
   _targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 0

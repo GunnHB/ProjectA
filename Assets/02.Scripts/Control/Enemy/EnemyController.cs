@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     // Components
     private Movement _movement;
     private Animator _animator;
+    private FieldOfView _fov;
 
     // speed
     private float _speed = 3f;
@@ -67,10 +68,14 @@ public class EnemyController : MonoBehaviour
     protected float _idleWaitTime = 0f;
     protected float _currIdleWaitTime = 0f;
 
+    private Transform _targetTr;
+    private bool _findTarget = false;
+
     private void Awake()
     {
         _movement = GetComponent<Movement>();
         _animator = GetComponent<Animator>();
+        _fov = GetComponent<FieldOfView>();
 
         _animData = new CharacterAnimData();
 
@@ -102,7 +107,7 @@ public class EnemyController : MonoBehaviour
         _rootNodeList = new List<INode>
         {
             // AttackNode(),
-            // ChaseNode(),
+            ChaseNode(),
             // AlertNode(),
             PatrolNode()
         };
@@ -127,11 +132,60 @@ public class EnemyController : MonoBehaviour
     {
         _chaseNodeList = new List<INode>
         {
-
+            new ActionNode(DoCheckDetectTarget),
+            new ActionNode(DoChaseTarget),
         };
 
         return new SequenceNode(_chaseNodeList);
     }
+
+    private INode.ENodeState DoCheckDetectTarget()
+    {
+        if (_fov == null)
+            return INode.ENodeState.FailureState;
+
+        _fov.FindVisibleTargets();
+        _targetTr = _fov.NearestTarget;
+
+        if (_targetTr != null)
+        {
+            _findTarget = true;
+            return INode.ENodeState.SuccessState;
+        }
+        else
+        {
+            if (_findTarget)
+                _findTarget = false;
+        }
+
+        return INode.ENodeState.FailureState;
+    }
+
+    private INode.ENodeState DoChaseTarget()
+    {
+        if (_targetTr == null)
+            return INode.ENodeState.FailureState;
+
+        SwitchEnemyState(EnemyState.Chase);
+
+        var distance = Vector3.SqrMagnitude(this.transform.position - _targetTr.position);
+
+        if (distance < Mathf.Pow(_fov.MeleeAttackRange, 2))
+            return INode.ENodeState.SuccessState;
+
+        MoveToTarget(_targetTr);
+
+        return INode.ENodeState.RunningState;
+    }
+
+    private void MoveToTarget(Transform target)
+    {
+        _movement.SetDirection(target.position);
+        _movement.SetSpeed(_speed);
+
+        _movement.MovementUpdate();
+    }
+
     #endregion
 
     #region AlertNode
@@ -199,7 +253,7 @@ public class EnemyController : MonoBehaviour
         _movement.MovementUpdate();
 
         if (_state != EnemyState.Patrol)
-            SetEnemyState(EnemyState.Patrol);
+            SwitchEnemyState(EnemyState.Patrol);
 
         return _currWayPoint != Vector3.zero ? INode.ENodeState.RunningState : INode.ENodeState.FailureState;
     }
@@ -211,13 +265,13 @@ public class EnemyController : MonoBehaviour
 
         if (_doNotPatrol)
         {
-            SetEnemyState(EnemyState.Idle);
+            SwitchEnemyState(EnemyState.Idle);
             return INode.ENodeState.RunningState;
         }
 
         if (_state != EnemyState.Idle)
         {
-            SetEnemyState(EnemyState.Idle);
+            SwitchEnemyState(EnemyState.Idle);
 
             if (_idleWaitTime == 0f)
                 _idleWaitTime = UnityEngine.Random.Range(3f, 5f);
@@ -230,7 +284,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            SetEnemyState(EnemyState.None);
+            SwitchEnemyState(EnemyState.None);
 
             _currIdleWaitTime = 0f;
             _idleWaitTime = 0f;
@@ -272,7 +326,7 @@ public class EnemyController : MonoBehaviour
         _animator.SetFloat(_animData.AnimParamBlendLocomotion, _currDamp);
     }
 
-    protected void SetEnemyState(EnemyState state)
+    protected void SwitchEnemyState(EnemyState state)
     {
         _state = state;
     }
