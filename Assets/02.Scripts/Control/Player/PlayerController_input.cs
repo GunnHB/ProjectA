@@ -189,6 +189,9 @@ public partial class PlayerController : MonoBehaviour
     #region Sprint
     private void StartSprintInput(InputAction.CallbackContext context)
     {
+        if (IsOnAir || _isAttacking)
+            return;
+
         if (IsMoving)
         {
             _readyToSprint = !ReadyToSprint;
@@ -229,7 +232,7 @@ public partial class PlayerController : MonoBehaviour
     #region Attack
     private void StartAttackInput(InputAction.CallbackContext context)
     {
-        if (!CanAttack || _runningCoroutine || _doCombo || ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
+        if (!CanAttack || _doCombo || ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty())
             return;
 
         if (!ItemManager.Instance.EquipWeaponData._invenItemData.IsEmpty() && !_equipment.IsDraw)
@@ -241,7 +244,7 @@ public partial class PlayerController : MonoBehaviour
         if (_attackIndex >= GetAttackDataList().Count - 1)
         {
             ResetAttackIndex();
-            _lastAttackIndex = true;
+            // _lastAttackIndex = true;
         }
 
         if (_lastAttackIndex)

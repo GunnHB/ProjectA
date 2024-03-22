@@ -85,11 +85,6 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public Vector3 InputDirection => _inputDirection;
 
     public Dictionary<GameValue.WeaponType, List<AttackData>> AttackDataDic => _attackDataDic;
-    // public Queue<AttackData> AttackQueue => _attackQueue;
-
-    // 마지막 공격 후 다음 공격의 텀을 가지기 위한 코루틴
-    private Coroutine _attackintervalCoroutin;
-    private bool _runningCoroutine;
 
     // private bool _doNotMovePlayer = false;                          // 플레이어의 이동을 강제로 막는 플래그
 
@@ -323,44 +318,15 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
         Debug.Log($"{damagedValue} damaged!");
     }
 
-    public void StartAttackIntervalCoroutine()
-    {
-        if (_attackintervalCoroutin != null)
-        {
-            StopCoroutine(_attackintervalCoroutin);
-            _attackintervalCoroutin = null;
-        }
-
-        _attackintervalCoroutin = StartCoroutine(nameof(Cor_UpdateAttackInterval));
-    }
-
-    private IEnumerator Cor_UpdateAttackInterval()
-    {
-        float _currTime = 0f;
-        float targetTime = .8f;
-
-        _runningCoroutine = true;
-
-        while (_currTime < targetTime)
-        {
-            _currTime += Time.deltaTime / targetTime;
-            Debug.Log(_currTime);
-            yield return null;
-        }
-
-        _isAttacking = false;
-        _runningCoroutine = false;
-        _lastAttackIndex = false;
-    }
-
-    // public void SetDoNotMovePlayer(bool active)
-    // {
-    //     _doNotMovePlayer = active;
-    // }
-
     public void EndOfLanding()
     {
-        _animator.CrossFadeInFixedTime(_animData.AnimNameLocomotion, .1f);
+        // _animator.CrossFadeInFixedTime(_animData.AnimNameLocomotion, .1f);
+        (_landingState as LandingState).ExitAction?.Invoke();
         IdleAction?.Invoke();
+    }
+
+    public void SetIsLastAttackIndex(bool isLast)
+    {
+        _lastAttackIndex = isLast;
     }
 }

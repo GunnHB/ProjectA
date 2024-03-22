@@ -27,9 +27,10 @@ namespace FSM
 
             if (_weaponType != GameValue.WeaponType.None)
             {
-                int animHash = _player.ThisAnimData.AnimNameSheath;
+                // int animHash = _player.ThisAnimData.AnimNameSheath;
 
-                _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f, _layerIndex);
+                // _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f, _layerIndex);
+                CrossFade(_player.ThisAnimData.AnimNameSheath, _sheathDone);
             }
         }
 
@@ -37,20 +38,23 @@ namespace FSM
         {
             base.OperateUpdate();
 
-            float normalizedTime = GetNormalizedTimeByTag(TAG_SHEATH, _layerIndex);
+            float normalizedTime = GetNormalizedTimeByTag(TAG_SHEATH);
 
             if (normalizedTime >= _exitTime)
             {
                 _sheathDone = true;
 
                 if (_player.IsMoving)
-                    _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+                    // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+                    CrossFade(_player.ThisAnimData.AnimNameDefault);
 
                 _layerIndex = GetLayerIndex(_sheathDone);
-                _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+                // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+                CrossFade(_player.ThisAnimData.AnimNameDefault, _sheathDone);
 
                 // baselayer로
-                _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, 0);
+                // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, 0);
+                CrossFade(_player.ThisAnimData.AnimNameLocomotion);
 
                 _player.IdleAction?.Invoke();
             }

@@ -98,13 +98,38 @@ namespace FSM
             return _player.ThisAnimator.GetCurrentAnimatorStateInfo(layerIndex).speed;
         }
 
-        protected void CrossFadeInFixedUpdate(int animHash, float transitionDuration = .1f)
+        // protected float GetNormalizedTimeByTag(string tagName, int layerIndex = 0)
+        // {
+        //     var currentInfo = GetCurrentAnimatorStateInfo(layerIndex);
+        //     var nextInfo = GetNextAniomatorStateInfo(layerIndex);
+
+        //     if (_player.ThisAnimator.IsInTransition(layerIndex) && nextInfo.IsTag(tagName))
+        //         return nextInfo.normalizedTime;
+        //     else if (!_player.ThisAnimator.IsInTransition(layerIndex) && currentInfo.IsTag(tagName))
+        //         return currentInfo.normalizedTime;
+
+        //     return 0f;
+        // }
+
+        protected float GetNormalizedTimeByTag(string tagName)
         {
-            _player.ThisAnimator.CrossFadeInFixedTime(animHash, transitionDuration);
+            int layerIndex = GetLayerIndex();
+
+            var currentInfo = GetCurrentAnimatorStateInfo(layerIndex);
+            var nextInfo = GetNextAniomatorStateInfo(layerIndex);
+
+            if (_player.ThisAnimator.IsInTransition(layerIndex) && nextInfo.IsTag(tagName))
+                return nextInfo.normalizedTime;
+            else if (!_player.ThisAnimator.IsInTransition(layerIndex) && currentInfo.IsTag(tagName))
+                return currentInfo.normalizedTime;
+
+            return 0f;
         }
 
-        protected float GetNormalizedTimeByTag(string tagName, int layerIndex = 0)
+        protected float GetNormalizedTimeByTag(string tagName, bool animDone)
         {
+            int layerIndex = GetLayerIndex(animDone);
+
             var currentInfo = GetCurrentAnimatorStateInfo(layerIndex);
             var nextInfo = GetNextAniomatorStateInfo(layerIndex);
 
@@ -194,6 +219,16 @@ namespace FSM
             }
 
             return _player.ThisAnimator.GetLayerIndex(layerName);
+        }
+
+        protected void CrossFade(int animHash, float transitionDuration = .1f)
+        {
+            _player.ThisAnimator.CrossFadeInFixedTime(animHash, transitionDuration, GetLayerIndex());
+        }
+
+        protected void CrossFade(int animHash, bool animDone, float transitionDuration = .1f)
+        {
+            _player.ThisAnimator.CrossFadeInFixedTime(animHash, transitionDuration, GetLayerIndex(animDone));
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace FSM
@@ -8,12 +10,14 @@ namespace FSM
 
         private AttackData _currAttackData;
 
-        private int _layerIndex = 0;
         private float _exitTime = .6f;
 
         private bool _isMoved = false;
         private float _moveEventTime = .3f;
 
+        private float _intervalTime = .7f;
+
+        private Coroutine _corAttackInterval;
         private Coroutine _corAttackMove;
 
         public AttackState(PlayerController player) : base(player)
@@ -27,17 +31,19 @@ namespace FSM
 
             _speedAdjustments = 3f;
 
-            _layerIndex = GetLayerIndex();
+            SetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion, 0);
 
             _player.SetIsAttacking(true);
-            _player.ThisAnimator.CrossFadeInFixedTime(_currAttackData._attackAnimHash, _currAttackData._transitionDuration, _layerIndex);
+            _player.SetIsLastAttackIndex(_player.GetAttackDataList().Last() == _currAttackData);
+
+            CrossFade(_currAttackData._attackAnimHash, _currAttackData._transitionDuration);
         }
 
         public override void OperateUpdate()
         {
             // base.OperateUpdate();
 
-            float normalizedTime = GetNormalizedTimeByTag(TAG_ATTACK, _layerIndex);
+            float normalizedTime = GetNormalizedTimeByTag(TAG_ATTACK);
 
             if (!_isMoved && normalizedTime > _moveEventTime)
             {
@@ -57,7 +63,7 @@ namespace FSM
                 {
                     _player.ResetAttackIndex();
 
-                    _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
+                    CrossFade(_player.ThisAnimData.AnimNameLocomotion);
                     _player.IdleAction?.Invoke();
                 }
             }
@@ -70,7 +76,7 @@ namespace FSM
             _isMoved = false;
 
             if (!_player.DoCombo)
-                _player.StartAttackIntervalCoroutine();
+                StartAttackIntervalCoroutine();
             else
                 _player.SetDoCombo(false);
         }
@@ -80,6 +86,59 @@ namespace FSM
             _currAttackData = newData;
         }
 
+        private void StartAttackIntervalCoroutine()
+        {
+            if (_corAttackInterval != null)
+                CoroutineManager.Instance.ThisStopCoroutine(_corAttackInterval);
+
+            CoroutineManager.Instance.ThisStartCoroutine(_corAttackInterval, Cor_AttackInterval());
+        }
+
+        private IEnumerator Cor_AttackInterval()
+        {
+            float _currTime = 0f;
+
+            while (_currTime < _intervalTime)
+            {
+                _currTime += Time.deltaTime;
+
+                yield return null;
+            }
+
+            _player.SetIsAttacking(false);
+            _player.SetIsLastAttackIndex(false);
+        }
+
+        // public void StartAttackIntervalCoroutine()
+        // {
+        //     if (_attackintervalCoroutin != null)
+        //     {
+        //         StopCoroutine(_attackintervalCoroutin);
+        //         _attackintervalCoroutin = null;
+        //     }
+
+        //     _attackintervalCoroutin = StartCoroutine(nameof(Cor_UpdateAttackInterval));
+        // }
+
+        // private IEnumerator Cor_UpdateAttackInterval()
+        // {
+        //     float _currTime = 0f;
+        //     float targetTime = .8f;
+
+        //     _runningCoroutine = true;
+
+        //     while (_currTime < targetTime)
+        //     {
+        //         _currTime += Time.deltaTime / targetTime;
+
+        //         yield return null;
+        //     }
+
+        //     _isAttacking = false;
+        //     _runningCoroutine = false;
+        //     _lastAttackIndex = false;
+        // }
+
         private void StartAttackMoveCoroutine(Vector3 direction)
         {
             if (_corAttackMove != null)
@@ -88,7 +147,7 @@ namespace FSM
             CoroutineManager.Instance.ThisStartCoroutine(_corAttackMove, Cor_AttackMovement(direction));
         }
 
-        private System.Collections.IEnumerator Cor_AttackMovement(Vector3 direction)
+        private IEnumerator Cor_AttackMovement(Vector3 direction)
         {
             float _currTime = 0f;
 

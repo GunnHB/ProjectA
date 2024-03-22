@@ -15,7 +15,8 @@ namespace FSM
         {
             base.OperateEnter();
 
-            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameFalling, .1f);
+            // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameFalling, .1f);
+            CrossFade(_player.ThisAnimData.AnimNameFalling);
 
             // if (_player.IsGrounded)
             // {

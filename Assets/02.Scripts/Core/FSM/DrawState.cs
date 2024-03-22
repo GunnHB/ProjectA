@@ -23,13 +23,14 @@ namespace FSM
         {
             base.OperateEnter();
 
-            _layerIndex = GetLayerIndex(_drawDone);
+            // _layerIndex = GetLayerIndex(_drawDone);
 
             if (_weaponType != GameValue.WeaponType.None)
             {
-                int animHash = _player.ThisAnimData.AnimNameDraw;
+                // int animHash = _player.ThisAnimData.AnimNameDraw;
 
-                _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f, _layerIndex);
+                // _player.ThisAnimator.CrossFadeInFixedTime(animHash, .1f, _layerIndex);
+                CrossFade(_player.ThisAnimData.AnimNameDraw, _drawDone);
             }
         }
 
@@ -37,17 +38,19 @@ namespace FSM
         {
             base.OperateUpdate();
 
-            float normalizedTime = GetNormalizedTimeByTag(TAG_DRAW, _layerIndex);
+            float normalizedTime = GetNormalizedTimeByTag(TAG_DRAW);
 
             if (normalizedTime >= _exitTime)
             {
                 _drawDone = true;
 
                 if (_player.IsMoving)
-                    _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+                    // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameDefault, .1f, _layerIndex);
+                    CrossFade(_player.ThisAnimData.AnimNameDefault);
 
-                _layerIndex = GetLayerIndex(_drawDone);
-                _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
+                // _layerIndex = GetLayerIndex(_drawDone);
+                // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f, _layerIndex);
+                CrossFade(_player.ThisAnimData.AnimNameLocomotion, _drawDone);
 
                 _player.IdleAction?.Invoke();
             }

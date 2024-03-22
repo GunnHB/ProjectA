@@ -20,7 +20,8 @@ namespace FSM
             _speedAdjustments = .5f;
 
             _currLengthOfVector = 0f;
-            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameCrouch, .1f);
+            // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameCrouch, .1f);
+            CrossFade(_player.ThisAnimData.AnimNameCrouch);
         }
 
         public override void OperateUpdate()
@@ -34,7 +35,8 @@ namespace FSM
         {
             base.OperateExit();
 
-            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f);
+            // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLocomotion, .1f);
+            CrossFade(_player.ThisAnimData.AnimNameLocomotion);
         }
     }
 }

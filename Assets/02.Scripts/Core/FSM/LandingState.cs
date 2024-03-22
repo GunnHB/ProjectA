@@ -7,6 +7,8 @@ using FSM;
 
 public class LandingState : BaseState
 {
+    public UnityEngine.Events.UnityAction ExitAction;
+
     public LandingState(PlayerController player) : base(player)
     {
     }
@@ -15,7 +17,9 @@ public class LandingState : BaseState
     {
         base.OperateEnter();
 
-        _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLanding, .1f);
+        // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameLanding, .1f);
+        CrossFade(_player.ThisAnimData.AnimNameLanding);
+        ExitAction += () => { CrossFade(_player.ThisAnimData.AnimNameLocomotion); };
 
         // StartAnimation(_player.ThisAnimData.AnimParamLanding);
     }

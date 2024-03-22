@@ -19,7 +19,8 @@ namespace FSM
             base.OperateEnter();
 
             _player.DoJump();
-            _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameJump, .1f);
+            // _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameJump, .1f);
+            CrossFade(_player.ThisAnimData.AnimNameJump);
         }
 
         public override void OperateUpdate()

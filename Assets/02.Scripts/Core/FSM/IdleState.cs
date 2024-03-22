@@ -16,6 +16,9 @@ namespace FSM
 
             _speedAdjustments = 1f;
 
+            // 레이어에 따른 애니메이션 전환
+            CrossFade(_player.ThisAnimData.AnimNameLocomotion);
+
             // 현재 locomotion 값을 가져옴
             _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
         }
