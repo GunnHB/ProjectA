@@ -172,20 +172,17 @@ public partial class PlayerController : MonoBehaviour
     {
         // 입력 감지
         var inputValue = context.ReadValue<Vector2>();
-        _moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
+        _inputDirection = new Vector3(inputValue.x, 0f, inputValue.y);
 
-        // 방향 세팅
-        _movement.SetDirection(_moveDirection);
-        _targetDamp = _moveDirection.magnitude;
+        _targetDamp = _inputDirection.magnitude;
     }
 
     private void CancelMovementInput(InputAction.CallbackContext context)
     {
         var inputValue = context.ReadValue<Vector2>();
-        _moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
+        _inputDirection = new Vector3(inputValue.x, 0f, inputValue.y);
 
-        _movement.SetDirection(_moveDirection);
-        _targetDamp = _moveDirection.magnitude;
+        _targetDamp = _inputDirection.magnitude;
     }
     #endregion
 

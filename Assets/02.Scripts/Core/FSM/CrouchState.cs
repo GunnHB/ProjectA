@@ -17,6 +17,8 @@ namespace FSM
         {
             base.OperateEnter();
 
+            _speedAdjustments = .5f;
+
             _currLengthOfVector = 0f;
             _player.ThisAnimator.CrossFadeInFixedTime(_player.ThisAnimData.AnimNameCrouch, .1f);
         }
@@ -25,7 +27,7 @@ namespace FSM
         {
             base.OperateUpdate();
 
-            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch, .5f);
+            SetPlayerMovement(_player.ThisAnimData.AnimParamBlendCrouch);
         }
 
         public override void OperateExit()

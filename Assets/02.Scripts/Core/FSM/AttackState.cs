@@ -1,4 +1,4 @@
-using System.Linq;
+using UnityEngine;
 
 namespace FSM
 {
@@ -11,6 +11,11 @@ namespace FSM
         private int _layerIndex = 0;
         private float _exitTime = .6f;
 
+        private bool _isMoved = false;
+        private float _moveEventTime = .3f;
+
+        private Coroutine _corAttackMove;
+
         public AttackState(PlayerController player) : base(player)
         {
 
@@ -20,7 +25,7 @@ namespace FSM
         {
             base.OperateEnter();
 
-            _player.SetDoNotMovePlayer(true);
+            _speedAdjustments = 3f;
 
             _layerIndex = GetLayerIndex();
 
@@ -30,9 +35,19 @@ namespace FSM
 
         public override void OperateUpdate()
         {
-            base.OperateUpdate();
+            // base.OperateUpdate();
 
             float normalizedTime = GetNormalizedTimeByTag(TAG_ATTACK, _layerIndex);
+
+            if (!_isMoved && normalizedTime > _moveEventTime)
+            {
+                if (_player.InputDirection == Vector3.zero)
+                    StartAttackMoveCoroutine(Vector3.forward);
+                else
+                    StartAttackMoveCoroutine(_player.InputDirection);
+
+                _isMoved = true;
+            }
 
             if (normalizedTime > _exitTime)
             {
@@ -52,7 +67,7 @@ namespace FSM
         {
             base.OperateExit();
 
-            _player.SetDoNotMovePlayer(false);
+            _isMoved = false;
 
             if (!_player.DoCombo)
                 _player.StartAttackIntervalCoroutine();
@@ -63,6 +78,27 @@ namespace FSM
         public void SetCurrAttackData(AttackData newData)
         {
             _currAttackData = newData;
+        }
+
+        private void StartAttackMoveCoroutine(Vector3 direction)
+        {
+            if (_corAttackMove != null)
+                CoroutineManager.Instance.ThisStopCoroutine(_corAttackMove);
+
+            CoroutineManager.Instance.ThisStartCoroutine(_corAttackMove, Cor_AttackMovement(direction));
+        }
+
+        private System.Collections.IEnumerator Cor_AttackMovement(Vector3 direction)
+        {
+            float _currTime = 0f;
+
+            while (_currTime < .1f)
+            {
+                _player.DoMove(direction, _speedAdjustments);
+                _currTime += Time.deltaTime;
+
+                yield return null;
+            }
         }
     }
 }

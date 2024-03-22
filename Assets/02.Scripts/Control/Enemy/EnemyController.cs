@@ -92,9 +92,9 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        _btRunner.Operate();
+        // _btRunner.Operate();
 
-        _movement.GravityUpdate();
+        // _movement.GravityUpdate();
     }
 
     private INode SettingBT()

@@ -31,7 +31,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
     // about move
     private float _moveSpeed = 4f;
-    private Vector3 _moveDirection;
+    private Vector3 _inputDirection;
     private float _targetDamp;
     private bool _readyToSprint = false;                // 스프린트 키 입력 여부
 
@@ -72,7 +72,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public StateMachine ThisStateMachine => _stateMachine;
     public float ThisMoveSpeed => _moveSpeed;
 
-    public bool IsMoving => _moveDirection != Vector3.zero;         // 이동 입력이 있는지
+    public bool IsMoving => _inputDirection != Vector3.zero;         // 이동 입력이 있는지
     public bool IsGrounded => _movement.IsGrounded;                 // 땅에 발이 닿았는지
     public bool IsPeak => _movement.IsPeak;                         // 최고 높이를 찍었는지
     public bool ReadyToSprint => _readyToSprint;                    // 달리기 입력이 들어갔는지
@@ -82,6 +82,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     public int AttackIndex => _attackIndex;
 
     public float TargetDamp => _targetDamp;
+    public Vector3 InputDirection => _inputDirection;
 
     public Dictionary<GameValue.WeaponType, List<AttackData>> AttackDataDic => _attackDataDic;
     // public Queue<AttackData> AttackQueue => _attackQueue;
@@ -90,7 +91,7 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
     private Coroutine _attackintervalCoroutin;
     private bool _runningCoroutine;
 
-    private bool _doNotMovePlayer = false;                          // 플레이어의 이동을 강제로 막는 플래그
+    // private bool _doNotMovePlayer = false;                          // 플레이어의 이동을 강제로 막는 플래그
 
     // 일반적인 움직임의 상태 (대기, 걷기, 달리기...)
     public bool IsNormalState
@@ -159,8 +160,8 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
 
     private void FixedUpdate()
     {
-        if (!_doNotMovePlayer)
-            _movement.MovementUpdate();
+        // if (_stateMachine.CurrentState != _attackState)
+        //     _movement.MovementUpdate();
 
         _movement.GravityUpdate();
     }
@@ -177,9 +178,23 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
         }
     }
 
-    public void SetMovementSpeed(float speed)
+    /// <summary>
+    /// Movement의 액션을 호출
+    /// </summary>
+    /// <param name="adjustmentValue">속도 조절용 인자</param>
+    public void DoMove(float adjustmentValue)
     {
-        _movement.SetSpeed(speed);
+        _movement.MovementAction(_inputDirection, _moveSpeed * adjustmentValue);
+    }
+
+    /// <summary>
+    /// Movement의 액션을 호출 (특정 방향으로 움직이고 싶으면 이걸로)
+    /// </summary>
+    /// <param name="direction">이동 방향 인자</param>
+    /// <param name="adjustmentValue">속도 조절용 인자</param>
+    public void DoMove(Vector3 direction, float adjustmentValue)
+    {
+        _movement.MovementAction(direction, adjustmentValue);
     }
 
     public void DoJump()
@@ -338,10 +353,10 @@ public partial class PlayerController : MonoBehaviour, IAttack, IDamage
         _lastAttackIndex = false;
     }
 
-    public void SetDoNotMovePlayer(bool active)
-    {
-        _doNotMovePlayer = active;
-    }
+    // public void SetDoNotMovePlayer(bool active)
+    // {
+    //     _doNotMovePlayer = active;
+    // }
 
     public void EndOfLanding()
     {

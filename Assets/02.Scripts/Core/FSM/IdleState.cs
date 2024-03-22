@@ -14,6 +14,8 @@ namespace FSM
         {
             base.OperateEnter();
 
+            _speedAdjustments = 1f;
+
             // 현재 locomotion 값을 가져옴
             _currLengthOfVector = GetFloatParam(_player.ThisAnimData.AnimParamBlendLocomotion);
         }

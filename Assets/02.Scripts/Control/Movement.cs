@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 
 /// <summary>
 /// 캐릭터의 움직임과 관련된 클래스
@@ -35,6 +36,8 @@ public class Movement : MonoBehaviour
 
     // jump peak
     private bool _wasPeaked = false;        // 고점 여러 번 체크되는 것 방지
+
+    public UnityEngine.Events.UnityAction<Vector3, float> MovementAction;
 
     // properties
     private float _camAngle
@@ -80,6 +83,20 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+
+        MovementAction += MoveCallback;
+    }
+
+    private void MoveCallback(Vector3 direction, float speed)
+    {
+        if (direction == Vector3.zero || direction.magnitude < .1f)
+            return;
+
+        float targetAngle = GetTargetAngleV2(direction);
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
+
+        SetRotation(angle);
+        MoveToV2(targetAngle, direction, speed);
     }
 
     // 실제 캐릭터를 이동시키는 함수
@@ -108,6 +125,18 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private float GetTargetAngleV2(Vector3 direction)
+    {
+        if (TryGetComponent(out PlayerController player))
+            return Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+        else
+        {
+            var directionToTarget = (direction - transform.position).normalized;
+
+            return Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg;
+        }
+    }
+
     private void SetRotation(float angle)
     {
         transform.rotation = Quaternion.Euler(new Vector3(0f, angle, 0f));
@@ -123,6 +152,18 @@ public class Movement : MonoBehaviour
             moveDirection = (_direction - transform.position).normalized;
 
         _controller.Move(moveDirection * _applySpeed * Time.deltaTime);
+    }
+
+    private void MoveToV2(float targetAngle, Vector3 direction, float speed)
+    {
+        Vector3 moveDirection;
+
+        if (TryGetComponent(out PlayerController player))
+            moveDirection = Quaternion.Euler(new Vector3(0f, targetAngle, 0f)) * Vector3.forward;
+        else
+            moveDirection = (direction - transform.position).normalized;
+
+        _controller.Move(moveDirection * speed * Time.deltaTime);
     }
 
     public void SetDirection(Vector3 direction)

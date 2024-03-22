@@ -127,14 +127,14 @@ public partial class PlayerController : MonoBehaviour
         if (_readyToCrouch)
             CancelCrouchAction?.Invoke();
 
-        _targetDamp = doSprint ? GameValue._baseLocomotionMaxValue : _moveDirection.magnitude;
+        _targetDamp = doSprint ? GameValue._baseLocomotionMaxValue : _inputDirection.magnitude;
         _stateMachine.SwitchState(doSprint ? _sprintState : _idleState);
     }
 
     private void CancelSprint()
     {
         _readyToSprint = false;
-        _targetDamp = _moveDirection.magnitude;
+        _targetDamp = _inputDirection.magnitude;
 
         if (_readyToCrouch)
             return;
