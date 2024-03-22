@@ -17,6 +17,7 @@ public class EnemyController : MonoBehaviour
         Chase,
         Attack,
         Alert,
+        MissTarget,
         RunAway,
     }
 
@@ -54,8 +55,9 @@ public class EnemyController : MonoBehaviour
     protected List<INode> _rootNodeList;
 
     protected List<INode> _attackNodeList;              // 공격 노드 리스트
+    protected List<INode> _readyToAttackNodeList;       // 전투 준비 노드 리스트
     protected List<INode> _chaseNodeList;               // 추격 노드 리스트
-    protected List<INode> _alertNodeList;               // 주의 노드 리스트
+    protected List<INode> _alertNodeList;               // 타겟 놓침 노드 리스트
     protected List<INode> _patrolNodeList;              // 순찰 노드 리스트
 
     protected EnemyState _state;
@@ -92,9 +94,9 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        // _btRunner.Operate();
+        _btRunner.Operate();
 
-        // _movement.GravityUpdate();
+        _movement.GravityUpdate();
     }
 
     private INode SettingBT()
@@ -106,9 +108,9 @@ public class EnemyController : MonoBehaviour
     {
         _rootNodeList = new List<INode>
         {
-            // AttackNode(),
+            AttackNode(),
+            ReadyToAttack(),
             ChaseNode(),
-            // AlertNode(),
             PatrolNode()
         };
 
@@ -120,10 +122,58 @@ public class EnemyController : MonoBehaviour
     {
         _chaseNodeList = new List<INode>
         {
-
+            new ActionNode(CheckAttaking),
+            new ActionNode(CheckAttackRange),
+            new ActionNode(DoAttack),
         };
 
         return new SequenceNode(_chaseNodeList);
+    }
+
+    private INode.ENodeState CheckAttaking()
+    {
+        if (_targetTr == null)
+            return INode.ENodeState.FailureState;
+
+        // 현재 공격 중이면 running 반환
+        if (_state == EnemyState.Attack)
+            return INode.ENodeState.RunningState;
+
+        return INode.ENodeState.SuccessState;
+    }
+
+    private INode.ENodeState CheckAttackRange()
+    {
+        return INode.ENodeState.FailureState;
+    }
+
+    private INode.ENodeState DoAttack()
+    {
+        return INode.ENodeState.FailureState;
+    }
+    #endregion
+
+    #region ReadyToAttack
+    private SequenceNode ReadyToAttack()
+    {
+        _readyToAttackNodeList = new List<INode>()
+        {
+            new ActionNode(DoCombatIdle),
+            new ActionNode(DoCombatPatrol),
+        };
+
+        return new SequenceNode(_readyToAttackNodeList);
+    }
+
+    // 공격 대기
+    private INode.ENodeState DoCombatIdle()
+    {
+        return INode.ENodeState.FailureState;
+    }
+
+    private INode.ENodeState DoCombatPatrol()
+    {
+        return INode.ENodeState.FailureState;
     }
     #endregion
 
@@ -185,7 +235,6 @@ public class EnemyController : MonoBehaviour
 
         _movement.MovementUpdate();
     }
-
     #endregion
 
     #region AlertNode
@@ -201,7 +250,8 @@ public class EnemyController : MonoBehaviour
 
     private INode.ENodeState DoAlert()
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
+        return INode.ENodeState.FailureState;
     }
     #endregion
 
