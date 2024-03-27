@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjectA.Charactes
 {
     public partial class PlayerControls : CharacterControls
     {
-        // components
-        private PlayerInputAction _inputActions;
-
         // variables
         private float _verticalInput;
         private float _horizontalInput;
@@ -18,7 +13,12 @@ namespace ProjectA.Charactes
         {
             base.Awake();
 
+            _animData = new PlayerAnimData();
+
+            _animData.InitializeDatas();
             _movement.Initialize();
+
+            InitializeStates();
         }
 
         protected override void Update()
@@ -26,6 +26,8 @@ namespace ProjectA.Charactes
             base.Update();
 
             MovementUpdate();
+
+            _stateMachine.DoOperatorUpdate();
         }
 
         private void MovementUpdate()

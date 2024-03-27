@@ -1,23 +1,24 @@
 using System;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 namespace ProjectA.Charactes
 {
     public partial class PlayerControls : CharacterControls
     {
+        // components
+        private PlayerInputAction _inputActions;
+
         protected override void OnEnable()
         {
             base.OnEnable();
 
             if (_inputActions == null)
-            {
                 _inputActions = new PlayerInputAction();
 
-                if (_inputActions != null)
-                    RegistInputActions();
-            }
+            RegistInputActions();
+            RegistFSMActions();
         }
 
         protected override void OnDisable()
@@ -26,6 +27,8 @@ namespace ProjectA.Charactes
 
             if (_inputActions != null)
                 UnregistInputActions();
+
+            UnregistFSMActions();
         }
 
         private void RegistInputActions()

@@ -1,45 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 
-[Serializable]
-public class CharacterAnimData
+namespace ProjectA.Charactes
 {
-    protected string _animParamDeath = "Trigger_Death";
-    protected string _animParamDrawWeapon = "Trigger_DrawWeapon";
-    protected string _animParamSheathWeapon = "Trigger_SheathWeapon";
-    protected string _animParamAttack = "Trigger_Attack";
-    protected string _animParamFalling = "Bool_Falling";
-    protected string _animParamLanding = "Bool_Landing";
-    protected string _animParamBlendLocomotion = "Float_Locomotion";
-
-    // 읽기 전용
-    public int AnimParamDeath { get; private set; }
-    public int AnimParamDrawWeapon { get; private set; }
-    public int AnimParamSheathWeapon { get; private set; }
-    public int AnimParamAttack { get; private set; }
-    public int AnimParamFalling { get; private set; }
-    public int AnimParamLanding { get; private set; }
-    public int AnimParamBlendLocomotion { get; private set; }
-
-    protected bool _isInit = false;
-    public bool IsInit => _isInit;
-
-    /// <summary>
-    /// 애니 해시 초기화
-    /// </summary>
-    public virtual void Initialize()
+    public class CharacterAnimData
     {
-        AnimParamDeath = Animator.StringToHash(_animParamDeath);
-        AnimParamDrawWeapon = Animator.StringToHash(_animParamDrawWeapon);
-        AnimParamSheathWeapon = Animator.StringToHash(_animParamSheathWeapon);
-        AnimParamAttack = Animator.StringToHash(_animParamAttack);
-        AnimParamFalling = Animator.StringToHash(_animParamFalling);
-        AnimParamLanding = Animator.StringToHash(_animParamLanding);
-        AnimParamBlendLocomotion = Animator.StringToHash(_animParamBlendLocomotion);
+        private string _animNameLocomotion = "Locomotion";
+        private string _animParamVerticalValue = "VerticalValue";
+        private string _animParamHorizontalValue = "HorizontalValue";
 
-        _isInit = true;
+        public int AnimNameLocomotion { get; private set; }
+        public int AnimParamVerticalValue { get; private set; }
+        public int AnimParamHorizontalValue { get; private set; }
+
+        public virtual void InitializeDatas()
+        {
+            AnimNameLocomotion = Animator.StringToHash(_animNameLocomotion);
+            AnimParamVerticalValue = Animator.StringToHash(_animParamVerticalValue);
+            AnimParamHorizontalValue = Animator.StringToHash(_animParamHorizontalValue);
+        }
     }
 }
