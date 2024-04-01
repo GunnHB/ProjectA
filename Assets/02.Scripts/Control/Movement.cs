@@ -10,15 +10,14 @@ namespace ProjectA.Charactes
         private CharacterController _controller;
 
         // actions
-        public Action<Vector3, float> MoveAction;
-        public Action<float> RotateAction;
+        public Action<Vector3, float> MovementAction;
 
         // variables
         private Vector3 _currentMovementVector;
         private Vector3 _vectorSmoothVelocity;
         private float _smoothTime = .1f;
 
-        private float _floatSmoothVelocity;
+        private float _turnSmoothVelocity;
 
         private bool IsPlayer => TryGetComponent(out PlayerControls player);
 
@@ -26,18 +25,19 @@ namespace ProjectA.Charactes
         {
             _controller = GetComponent<CharacterController>();
 
-            MoveAction += MoveCallback;
-            RotateAction += RotateCallback;
+            MovementAction += MovementCallback;
         }
 
-        private void MoveCallback(Vector3 targetDirection, float speed)
+        private void MovementCallback(Vector3 targetDirection, float speed)
         {
-            if (targetDirection.magnitude < .1f)
+            if (targetDirection == Vector3.zero || targetDirection.magnitude < .1f)
                 return;
 
             float targetAngle = GetTargetAngle(targetDirection);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _smoothTime);
 
-            RotateAction?.Invoke(targetAngle);
+            transform.rotation = Quaternion.Euler(new Vector3(0f, angle, 0f));
+
             MoveTo(targetAngle, targetDirection, speed);
         }
 
@@ -54,24 +54,12 @@ namespace ProjectA.Charactes
             _controller.Move(_currentMovementVector * speed * Time.deltaTime);
         }
 
-        private void RotateCallback(float targetAngle)
-        {
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _floatSmoothVelocity, _smoothTime);
-
-            transform.rotation = Quaternion.Euler(new Vector3(0f, angle, 0f));
-        }
-
         private float GetTargetAngle(Vector3 direction)
         {
             float camAngle = IsPlayer ? Camera.main.transform.eulerAngles.y : 0f;
             Vector3 tempDir = IsPlayer ? direction : (direction - transform.position).normalized;
 
             return Mathf.Atan2(tempDir.x, tempDir.z) * Mathf.Rad2Deg + camAngle;
-        }
-
-        public Vector3 GetCurrentMovementVector()
-        {
-            return _currentMovementVector;
         }
     }
 }

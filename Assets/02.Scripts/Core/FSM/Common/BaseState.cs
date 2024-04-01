@@ -6,8 +6,7 @@ namespace ProjectA.Charactes.FSM
     {
         protected CharacterControls _controls;
 
-        protected float _currVerticalValue = 0f;
-        protected float _currHorizontalValue = 0f;
+        protected float _currLocomotionValue = 0f;
 
         public BaseState(CharacterControls controls)
         {
@@ -16,8 +15,7 @@ namespace ProjectA.Charactes.FSM
 
         public virtual void OperateEnter()
         {
-            _currVerticalValue = GetFloat(_controls.ThisAnimData.AnimParamVerticalValue);
-            _currHorizontalValue = GetFloat(_controls.ThisAnimData.AnimParamHorizontalValue);
+            _currLocomotionValue = GetFloat(_controls.ThisAnimData.AnimParamLocomotionValue);
         }
 
         public virtual void OperateExit()

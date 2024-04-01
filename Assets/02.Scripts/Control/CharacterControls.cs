@@ -15,11 +15,16 @@ namespace ProjectA.Charactes
         protected CharacterAnimData _animData;
 
         // variables
-        protected float _movementSpeed = 3f;
+        protected float _movementSpeed = 4f;
+        protected bool _doMovement = false;
+        protected float _moveAmount;
+        protected float _smoothVelocity;
+        protected float _smoothTime = .1f;
 
         // properties
         public Animator ThisAnimator => _animator;
         public CharacterAnimData ThisAnimData => _animData;
+        public float MoveAmount => _moveAmount;
 
         protected virtual void Awake()
         {
@@ -40,22 +45,6 @@ namespace ProjectA.Charactes
         protected virtual void Update()
         {
 
-        }
-
-        public float GetVerticalValue()
-        {
-            if (Mathf.Abs(_movement.GetCurrentMovementVector().z) < .001f)
-                return 0;
-            else
-                return Mathf.Abs(_movement.GetCurrentMovementVector().z);
-        }
-
-        public float GetHorizontalValue()
-        {
-            if (Mathf.Abs(_movement.GetCurrentMovementVector().x) < .001f)
-                return 0;
-            else
-                return Mathf.Abs(_movement.GetCurrentMovementVector().x);
         }
     }
 }

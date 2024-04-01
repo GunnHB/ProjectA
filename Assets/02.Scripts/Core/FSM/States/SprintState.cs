@@ -1,8 +1,8 @@
 namespace ProjectA.Charactes.FSM
 {
-    public class NormalState : BaseState
+    public class SprintState : BaseState
     {
-        public NormalState(CharacterControls controls) : base(controls)
+        public SprintState(CharacterControls controls) : base(controls)
         {
         }
 
@@ -14,8 +14,6 @@ namespace ProjectA.Charactes.FSM
         public override void OperateUpdate()
         {
             base.OperateUpdate();
-
-            SetFloat(_controls.ThisAnimData.AnimParamLocomotionValue, (_controls as PlayerControls).MoveAmount);
         }
 
         public override void OperateExit()

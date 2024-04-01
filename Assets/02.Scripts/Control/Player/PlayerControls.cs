@@ -5,9 +5,8 @@ namespace ProjectA.Charactes
     public partial class PlayerControls : CharacterControls
     {
         // variables
-        private float _verticalInput;
-        private float _horizontalInput;
         private Vector3 _moveDirection;
+        private bool _isMoving;
 
         protected override void Awake()
         {
@@ -32,7 +31,7 @@ namespace ProjectA.Charactes
 
         private void MovementUpdate()
         {
-            _movement.MoveAction?.Invoke(_moveDirection, _movementSpeed);
+            _movement.MovementAction?.Invoke(_moveDirection, _movementSpeed);
         }
     }
 }

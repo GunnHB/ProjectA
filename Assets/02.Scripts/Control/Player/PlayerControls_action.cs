@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,7 @@ namespace ProjectA.Charactes
     {
         // components
         private PlayerInputAction _inputActions;
+        private Coroutine _movementCoroutine;
 
         protected override void OnEnable()
         {
@@ -35,6 +37,7 @@ namespace ProjectA.Charactes
         {
             // Movement
             RegistInputAction(_inputActions.PlayerActionMap.Movement, null, PerformedMovement, CanceledMovement);
+            RegistInputAction(_inputActions.PlayerActionMap.Sprint, StartedSprint);
 
             _inputActions.Enable();
         }
@@ -43,6 +46,7 @@ namespace ProjectA.Charactes
         {
             // Movement
             UnregistInputAction(_inputActions.PlayerActionMap.Movement, null, PerformedMovement, CanceledMovement);
+            UnregistInputAction(_inputActions.PlayerActionMap.Sprint, StartedSprint);
 
             _inputActions.Disable();
         }
@@ -82,18 +86,53 @@ namespace ProjectA.Charactes
         {
             var input = context.ReadValue<Vector2>();
 
-            _verticalInput = input.y;
-            _horizontalInput = input.x;
+            _moveDirection = new Vector3(input.x, 0f, input.y);
 
-            _moveDirection = new Vector3(_horizontalInput, 0, _verticalInput);
+            if (_movementCoroutine != null)
+            {
+                StopCoroutine(_movementCoroutine);
+                _movementCoroutine = null;
+            }
+
+            _movementCoroutine = StartCoroutine(nameof(Cor_Movement));
         }
 
         private void CanceledMovement(InputAction.CallbackContext context)
         {
-            _verticalInput = 0f;
-            _horizontalInput = 0f;
-
             _moveDirection = Vector3.zero;
+
+            if (_movementCoroutine != null)
+            {
+                StopCoroutine(_movementCoroutine);
+                _movementCoroutine = null;
+            }
+
+            _movementCoroutine = StartCoroutine(nameof(Cor_Movement));
+        }
+
+        private IEnumerator Cor_Movement()
+        {
+            float targetDamp = _moveDirection.magnitude;
+
+            while (true)
+            {
+                _moveAmount = Mathf.SmoothDamp(_moveAmount, targetDamp, ref _smoothVelocity, _smoothTime);
+
+                if (Mathf.Abs(targetDamp - _moveAmount) < .01f)
+                {
+                    _moveAmount = targetDamp == 0 ? 0 : targetDamp;
+                    yield break;
+                }
+
+                yield return null;
+            }
+        }
+        #endregion
+
+        #region Sprint
+        private void StartedSprint(InputAction.CallbackContext context)
+        {
+            _readyToSprint = !_readyToSprint;
         }
         #endregion
     }

@@ -11,13 +11,19 @@ namespace ProjectA.Charactes
 
         // states
         private IState _normalState;
+        private IState _sprintState;
 
         // actions
         public UnityAction NormalAction;
+        public UnityAction SprintAction;
+
+        // variables
+        private bool _readyToSprint = false;
 
         private void InitializeStates()
         {
             _normalState = new NormalState(this);
+            _sprintState = new SprintState(this);
 
             _stateMachine = new StateMachine(_normalState);
         }
@@ -25,17 +31,28 @@ namespace ProjectA.Charactes
         private void RegistFSMActions()
         {
             NormalAction += OnNormalCallback;
+            SprintAction += OnSprintCallback;
         }
 
         private void UnregistFSMActions()
         {
             NormalAction -= OnNormalCallback;
+            SprintAction -= OnSprintCallback;
         }
 
         #region Normal
         private void OnNormalCallback()
         {
-            NormalAction?.Invoke();
+            // NormalAction?.Invoke();
+            _stateMachine.SwitchState(_normalState);
+        }
+        #endregion
+
+        #region Sprint
+        private void OnSprintCallback()
+        {
+            _stateMachine.SwitchState(_sprintState);
+            // SprintAction?.Invoke();
         }
         #endregion
     }
